@@ -376,7 +376,7 @@ bool Vector<T, dim>::isZero() const {
 }
 
 template <Numeric T, u32 dim>
-T dot(Vector<T, dim> lhs, Vector<T, dim> rhs) {
+T dot(const Vector<T, dim>& lhs, const Vector<T, dim>& rhs) {
     T result = T(0);
     for (Index i = 0; i < dim; ++i) result += T(lhs[i]) * T(rhs[i]);
     return result;
@@ -415,37 +415,13 @@ Vector<T, dim> Vector<T, dim>::clamped(const Vector<T, dim>& low,
 }
 
 template <Numeric T>
-Vector<T, 3> cross(Vector<T, 3> lhs, Vector<T, 3> rhs) {
+Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs) {
     Vector<T, 3> result;
     result[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];
     result[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];
     result[2] = lhs[0] * rhs[1] - lhs[1] * rhs[0];
     return result;
 }
-
-template <Numeric T>
-    requires FormatWritable<T>
-struct FormatWriter<Vector<T, 2>> {
-    static void write(const Vector<T, 2>& value, StringBuffer& sb) {
-        format(sb, "({},{})", value[0], value[1]);
-    }
-};
-
-template <Numeric T>
-    requires FormatWritable<T>
-struct FormatWriter<Vector<T, 3>> {
-    static void write(const Vector<T, 3>& value, StringBuffer& sb) {
-        format(sb, "({},{},{})", value[0], value[1], value[2]);
-    }
-};
-
-template <Numeric T>
-    requires FormatWritable<T>
-struct FormatWriter<Vector<T, 4>> {
-    static void write(const Vector<T, 4>& value, StringBuffer& sb) {
-        format(sb, "({},{},{},{})", value[0], value[1], value[2], value[3]);
-    }
-};
 
 template <Numeric T, u32 dim>
     requires FormatWritable<T>

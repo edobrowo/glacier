@@ -3,5 +3,5 @@
 
 int main() {
     Vector3D vec(1.0, 2.0, 3.0);
-    println("vec.y = {}", vec.y);
+    println("vec = {}", vec);
 }
