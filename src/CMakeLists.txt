@@ -1,7 +1,11 @@
 add_subdirectory(util)
 add_subdirectory(math)
+add_subdirectory(material)
+add_subdirectory(geometry)
+add_subdirectory(scene)
+add_subdirectory(render)
 
 file(GLOB SRC "*.cpp")
 add_executable(Glacier ${SRC})
-target_link_libraries(Glacier PRIVATE math util ${LIBRARIES})
+target_link_libraries(Glacier PRIVATE scene render material ${LIBRARIES})
 target_include_directories(Glacier PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

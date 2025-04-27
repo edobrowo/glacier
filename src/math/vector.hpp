@@ -18,28 +18,38 @@ protected:
 
 }
 
+/// @brief Statically-sized vector class.
 template <Numeric T, u32 dim>
 class Vector : public VectorData<T, dim> {
 public:
     using Data = VectorData<T, dim>;
 
-    /// @brief Constructs a 1D vector with the specified component.
+    Vector();
+    ~Vector() = default;
+
     explicit Vector(const T c1)
         requires(dim == 1);
-
-    /// @brief Constructs a 2D vector with the specified components.
     Vector(const T c1, const T c2)
         requires(dim == 2);
-
-    /// @brief Constructs a 3D vector with the specified components.
     Vector(const T c1, const T c2, const T c3)
         requires(dim == 3);
-
-    /// @brief Constructs a 4D vector with the specified components.
     Vector(const T c1, const T c2, const T c3, const T c4)
         requires(dim == 4);
 
-    ~Vector() = default;
+    explicit Vector(const Vector<T, 3>& v)
+        requires(dim == 2);
+    explicit Vector(const Vector<T, 4>& v)
+        requires(dim == 2);
+
+    explicit Vector(const Vector<T, 4>& v)
+        requires(dim == 3);
+    Vector(const Vector<T, 2>& v, const T c1)
+        requires(dim == 3);
+
+    Vector(const Vector<T, 2>& v, const T c1, const T c2)
+        requires(dim == 4);
+    Vector(const Vector<T, 3>& v, const T c1)
+        requires(dim == 4);
 
     Vector(const Vector<T, dim>& other);
     Vector<T, dim>& operator=(const Vector<T, dim>& other);
@@ -86,8 +96,6 @@ public:
     const T* data() const;
 
 private:
-    Vector();
-
     using Data::components;
 };
 
@@ -166,27 +174,31 @@ struct VectorData<T, 4> {
 template <Numeric T, u32 dim>
 Vector<T, dim> Vector<T, dim>::zero() {
     Vector<T, dim> v;
-    for (Index i = 0; i < dim; ++i) v.components[i] = T(0);
+    for (Index i = 0; i < dim; ++i)
+        v.components[i] = T(0);
     return v;
 }
 
 template <Numeric T, u32 dim>
 Vector<T, dim> Vector<T, dim>::one() {
     Vector<T, dim> v;
-    for (Index i = 0; i < dim; ++i) v.components[i] = T(1);
+    for (Index i = 0; i < dim; ++i)
+        v.components[i] = T(1);
     return v;
 }
 
 template <Numeric T, u32 dim>
 Vector<T, dim> Vector<T, dim>::uniform(const T value) {
     Vector<T, dim> v;
-    for (Index i = 0; i < dim; ++i) v.components[i] = value;
+    for (Index i = 0; i < dim; ++i)
+        v.components[i] = value;
     return v;
 }
 
 template <Numeric T, u32 dim>
 Vector<T, dim>::Vector() {
-    for (Index i = 0; i < dim; ++i) components[i] = T();
+    for (Index i = 0; i < dim; ++i)
+        components[i] = T();
 }
 
 template <Numeric T, u32 dim>
@@ -224,6 +236,60 @@ Vector<T, dim>::Vector(const T c1, const T c2, const T c3, const T c4)
 }
 
 template <Numeric T, u32 dim>
+Vector<T, dim>::Vector(const Vector<T, 3>& v)
+    requires(dim == 2)
+{
+    components[0] = v.x;
+    components[1] = v.y;
+}
+
+template <Numeric T, u32 dim>
+Vector<T, dim>::Vector(const Vector<T, 4>& v)
+    requires(dim == 2)
+{
+    components[0] = v.x;
+    components[1] = v.y;
+}
+
+template <Numeric T, u32 dim>
+Vector<T, dim>::Vector(const Vector<T, 4>& v)
+    requires(dim == 3)
+{
+    components[0] = v.x;
+    components[1] = v.y;
+    components[2] = v.z;
+}
+
+template <Numeric T, u32 dim>
+Vector<T, dim>::Vector(const Vector<T, 2>& v, const T c1)
+    requires(dim == 3)
+{
+    components[0] = v.x;
+    components[1] = v.y;
+    components[2] = c1;
+}
+
+template <Numeric T, u32 dim>
+Vector<T, dim>::Vector(const Vector<T, 2>& v, const T c1, const T c2)
+    requires(dim == 4)
+{
+    components[0] = v.x;
+    components[1] = v.y;
+    components[2] = c1;
+    components[3] = c2;
+}
+
+template <Numeric T, u32 dim>
+Vector<T, dim>::Vector(const Vector<T, 3>& v, const T c1)
+    requires(dim == 4)
+{
+    components[0] = v.x;
+    components[1] = v.y;
+    components[2] = v.z;
+    components[3] = c1;
+}
+
+template <Numeric T, u32 dim>
 const T* Vector<T, dim>::data() const {
     return components;
 }
@@ -253,44 +319,51 @@ T& Vector<T, dim>::operator[](const Index i) {
 
 template <Numeric T, u32 dim>
 Vector<T, dim>& Vector<T, dim>::operator+=(const Vector<T, dim>& rhs) {
-    for (Index i = 0; i < dim; ++i) components[i] += rhs.components[i];
+    for (Index i = 0; i < dim; ++i)
+        components[i] += rhs.components[i];
     return *this;
 }
 
 template <Numeric T, u32 dim>
 Vector<T, dim>& Vector<T, dim>::operator-=(const Vector<T, dim>& rhs) {
-    for (Index i = 0; i < dim; ++i) components[i] -= rhs.components[i];
+    for (Index i = 0; i < dim; ++i)
+        components[i] -= rhs.components[i];
     return *this;
 }
 
 template <Numeric T, u32 dim>
 Vector<T, dim>& Vector<T, dim>::operator*=(const T rhs) {
-    for (Index i = 0; i < dim; ++i) components[i] *= rhs;
+    for (Index i = 0; i < dim; ++i)
+        components[i] *= rhs;
     return *this;
 }
 
 template <Numeric T, u32 dim>
 Vector<T, dim>& Vector<T, dim>::operator*=(const Vector<T, dim>& rhs) {
-    for (Index i = 0; i < dim; ++i) components[i] *= rhs.components[i];
+    for (Index i = 0; i < dim; ++i)
+        components[i] *= rhs.components[i];
     return *this;
 }
 
 template <Numeric T, u32 dim>
 Vector<T, dim>& Vector<T, dim>::operator/=(const T rhs) {
-    for (Index i = 0; i < dim; ++i) components[i] /= rhs;
+    for (Index i = 0; i < dim; ++i)
+        components[i] /= rhs;
     return *this;
 }
 
 template <Numeric T, u32 dim>
 Vector<T, dim>& Vector<T, dim>::operator/=(const Vector<T, dim>& rhs) {
-    for (Index i = 0; i < dim; ++i) components[i] /= rhs.components[i];
+    for (Index i = 0; i < dim; ++i)
+        components[i] /= rhs.components[i];
     return *this;
 }
 
 template <Numeric T, u32 dim>
 static Vector<T, dim> operator-(const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
-    for (Index i = 0; i < dim; ++i) result[i] = -rhs[i];
+    for (Index i = 0; i < dim; ++i)
+        result[i] = -rhs[i];
     return result;
 }
 
@@ -298,7 +371,8 @@ template <Numeric T, u32 dim>
 static Vector<T, dim> operator+(const Vector<T, dim>& lhs,
                                 const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
-    for (Index i = 0; i < dim; ++i) result[i] = lhs[i] + rhs[i];
+    for (Index i = 0; i < dim; ++i)
+        result[i] = lhs[i] + rhs[i];
     return result;
 }
 
@@ -306,35 +380,40 @@ template <Numeric T, u32 dim>
 static Vector<T, dim> operator-(const Vector<T, dim>& lhs,
                                 const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
-    for (Index i = 0; i < dim; ++i) result[i] = lhs[i] - rhs[i];
+    for (Index i = 0; i < dim; ++i)
+        result[i] = lhs[i] - rhs[i];
     return result;
 }
 
 template <Numeric T, u32 dim>
 static Vector<T, dim> operator*(const Vector<T, dim>& lhs, const T& rhs) {
     Vector<T, dim> result;
-    for (Index i = 0; i < dim; ++i) result[i] = lhs[i] * rhs;
+    for (Index i = 0; i < dim; ++i)
+        result[i] = lhs[i] * rhs;
     return result;
 }
 
 template <Numeric T, u32 dim>
 static Vector<T, dim> operator*(const T& lhs, const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
-    for (Index i = 0; i < dim; ++i) result[i] = lhs * rhs[i];
+    for (Index i = 0; i < dim; ++i)
+        result[i] = lhs * rhs[i];
     return result;
 }
 
 template <Numeric T, u32 dim>
 static Vector<T, dim> operator/(const Vector<T, dim>& lhs, const T& rhs) {
     Vector<T, dim> result;
-    for (Index i = 0; i < dim; ++i) result[i] = lhs[i] / rhs;
+    for (Index i = 0; i < dim; ++i)
+        result[i] = lhs[i] / rhs;
     return result;
 }
 
 template <Numeric T, u32 dim>
 static Vector<T, dim> operator/(const T& lhs, const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
-    for (Index i = 0; i < dim; ++i) result[i] = lhs / rhs[i];
+    for (Index i = 0; i < dim; ++i)
+        result[i] = lhs / rhs[i];
     return result;
 }
 
@@ -342,7 +421,8 @@ template <Numeric T, u32 dim>
 static Vector<T, dim> operator*(const Vector<T, dim>& lhs,
                                 const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
-    for (Index i = 0; i < dim; ++i) result[i] = lhs[i] * rhs[i];
+    for (Index i = 0; i < dim; ++i)
+        result[i] = lhs[i] * rhs[i];
     return result;
 }
 
@@ -350,7 +430,8 @@ template <Numeric T, u32 dim>
 static Vector<T, dim> operator/(const Vector<T, dim>& lhs,
                                 const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
-    for (Index i = 0; i < dim; ++i) result[i] = lhs[i] / rhs[i];
+    for (Index i = 0; i < dim; ++i)
+        result[i] = lhs[i] / rhs[i];
     return result;
 }
 
@@ -378,7 +459,8 @@ bool Vector<T, dim>::isZero() const {
 template <Numeric T, u32 dim>
 T dot(const Vector<T, dim>& lhs, const Vector<T, dim>& rhs) {
     T result = T(0);
-    for (Index i = 0; i < dim; ++i) result += T(lhs[i]) * T(rhs[i]);
+    for (Index i = 0; i < dim; ++i)
+        result += T(lhs[i]) * T(rhs[i]);
     return result;
 }
 
@@ -389,7 +471,7 @@ T Vector<T, dim>::lengthSqr() const {
 
 template <Numeric T, u32 dim>
 T Vector<T, dim>::length() const {
-    return ::sqrt(lengthSqr());
+    return std::sqrt(lengthSqr());
 }
 
 template <Numeric T, u32 dim>
@@ -428,7 +510,8 @@ template <Numeric T, u32 dim>
 struct FormatWriter<Vector<T, dim>> {
     static void write(const Vector<T, dim>& value, StringBuffer& sb) {
         sb.append("(");
-        for (Index i = 0; i < dim - 1; ++i) sb.appendFormat("{},", value[i]);
+        for (Index i = 0; i < dim - 1; ++i)
+            sb.appendFormat("{},", value[i]);
         sb.appendFormat("{}", value[dim - 1]);
         sb.append(")");
     }

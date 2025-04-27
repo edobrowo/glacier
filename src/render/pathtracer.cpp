@@ -1,0 +1,139 @@
+#include "pathtracer.hpp"
+
+#include <thread>
+#include <vector>
+
+#include "geometry/intersect.hpp"
+#include "scene/geometry_node.hpp"
+#include "util/log.hpp"
+
+Pathtracer::Pathtracer(const SceneGraph& scene, const Camera& camera)
+    : mScene(scene), mCamera(camera) {
+}
+
+Image Pathtracer::render() const {
+    Image image(mCamera.nx(), mCamera.ny());
+
+    const Size thread_count = 8;
+    Log::i("Hardware concurrency: {}", thread_count);
+
+    std::vector<std::thread> threads;
+
+    auto render_rows = [&](Index row_start, Index row_end) {
+        for (Index py = row_start; py < row_end; ++py) {
+            for (Index px = 0; px < mCamera.nx(); ++px) {
+                Vector3D color = Vector3D::zero();
+
+                for (Index sample = 0; sample < sSampleCount; ++sample) {
+                    const Ray ray = generate(px, py);
+
+                    color += shadeRecursive(ray, 1);
+                }
+
+                color *= sColorScale;
+
+                image.set(px, py, color);
+            }
+        }
+    };
+
+    const Size rows_per_thread = mCamera.ny() / thread_count;
+
+    for (Index i = 0; i < thread_count; ++i) {
+        const Index row_start = i * rows_per_thread;
+        const Index row_end = (i == thread_count - 1)
+                                  ? mCamera.ny()
+                                  : row_start + rows_per_thread;
+
+        threads.emplace_back(render_rows, row_start, row_end);
+    }
+
+    for (std::thread& thread : threads) {
+        thread.join();
+    }
+
+    return image;
+}
+
+Ray Pathtracer::generate(const Index px, const Index py) const {
+    const Point3D origin = mCamera.origin();
+    const Vector3D direction = (mCamera.sample(px, py) - origin).normalized();
+
+    return Ray(origin, direction);
+}
+
+Vector3D Pathtracer::shadeRecursive(const Ray& ray, const Size depth) const {
+    if (depth >= sTraceDepth)
+        return Vector3D::zero();
+
+    if (const Option<SurfaceInteraction> option = intersect(ray)) {
+        const ScatterRecord record =
+            option->material->scatter(ray, option->intersect);
+
+        return record.color * shadeRecursive(record.scattered, depth + 1);
+
+        // return 0.5 * (option->intersect.normal.normalized() +
+        // Vector3D::one());
+    }
+
+    return background(ray);
+}
+
+Option<SurfaceInteraction> Pathtracer::intersect(const Ray& ray) const {
+    return intersectRecursive(
+        mScene.root(), ray, Interval(0.001, math::infinity<f64>()));
+}
+
+Option<SurfaceInteraction> Pathtracer::intersectRecursive(
+    const SceneNodePtr& node, const Ray& ray, const Interval& bounds) const {
+    // Current closest intersection and interval.
+    Option<SurfaceInteraction> closest = std::nullopt;
+    Interval closest_bounds(bounds);
+
+    // On "the way down", transform the ray with the current node's inverse
+    // transformation.
+    const Ray inverse_ray = Ray(node->transform().inverse() * ray.origin,
+                                node->transform().inverse() * ray.direction);
+
+    // Compute the intersect with the current node if it contains a primitive.
+    if (node->kind() == SceneNode::Kind::Geometry) {
+        const GeometryNode* geo = static_cast<GeometryNode*>(node.get());
+        if (const Option<Intersect> intersect =
+                geo->primitive()->intersect(inverse_ray, bounds)) {
+            closest = SurfaceInteraction(*intersect, geo->material().get());
+            closest_bounds.max =
+                std::min(closest->intersect.t, closest_bounds.max);
+        }
+    }
+
+    // Recursively compute the intersection over all children nodes, and
+    // determine the minimum intersection.
+    for (const SceneNodePtr& child : node->children()) {
+        if (const Option<SurfaceInteraction> interaction =
+                intersectRecursive(child, inverse_ray, closest_bounds)) {
+            if (!closest || interaction->intersect.t < closest->intersect.t) {
+                closest = interaction;
+                closest_bounds.max = interaction->intersect.t;
+            }
+        }
+    }
+
+    // On "the way up", create a new ray where the origin is transformed with
+    // the current node's transformation, and the normal is transformed with
+    // the upper 3x3 of the transpose of the inverse of the current node's
+    // transformation.
+    if (closest) {
+        Intersect& i = closest->intersect;
+        i.position = node->transform().matrix() * i.position;
+        i.normal = (Matrix3D(transpose(node->transform().inverse())) * i.normal)
+                       .normalized();
+    }
+
+    return closest;
+}
+
+Vector3D Pathtracer::background(const Ray& ray) const {
+    const Vector3D direction = ray.direction.normalized();
+    const f64 a = 0.5 * (direction.y + 1.0);
+    return (1.0 - a) * Vector3D::uniform(1.0) + a * Vector3D(0.5, 0.7, 1.0);
+}

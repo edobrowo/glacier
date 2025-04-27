@@ -25,6 +25,12 @@ constexpr inline T signum_ztn(T value) {
     return -T(value <= T(0)) + T(value > T(0));
 }
 
+/// @brief Sign function that returns 1 if `value` is 0 (zero to positive).
+template <Numeric T>
+constexpr inline T signum_ztp(T value) {
+    return -T(value < T(0)) + T(value >= T(0));
+}
+
 /// @brief Square function.
 template <Numeric T>
 constexpr inline T sqr(T value) {

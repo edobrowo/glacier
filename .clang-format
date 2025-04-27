@@ -8,6 +8,7 @@ TabWidth: 4
 NamespaceIndentation: None
 AllowShortFunctionsOnASingleLine: false
 AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
 SortIncludes: true
 IndentCaseLabels: false
 AccessModifierOffset: -4

@@ -3,6 +3,7 @@
 #include <concepts>
 #include <cstdint>
 #include <iostream>
+#include <optional>
 #include <type_traits>
 
 /// @brief 8-bit signed integral type.
@@ -33,6 +34,10 @@ using Size = std::uint64_t;
 
 /// @brief Index into a contiguous container.
 using Index = std::uint64_t;
+
+/// @brief Option type.
+template <typename T>
+using Option = std::optional<T>;
 
 /// @brief Integral or floating-point type.
 template <typename T>
