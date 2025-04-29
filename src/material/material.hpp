@@ -1,7 +1,7 @@
 #pragma once
 
-#include "geometry/intersect.hpp"
 #include "math/vector.hpp"
+#include "primitive/intersect.hpp"
 #include "scatter_record.hpp"
 
 /// @brief Material base class. Defines how rays are scattered or transmitted
@@ -28,5 +28,5 @@ protected:
     Kind mKind;
 };
 
-using MaterialPtr = std::unique_ptr<Material>;
+using MaterialPtr = std::shared_ptr<Material>;
 using MaterialTempPtr = const Material*;

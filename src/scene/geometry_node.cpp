@@ -2,18 +2,9 @@
 
 GeometryNode::GeometryNode(const char* name,
                            PrimitivePtr&& primitive,
-                           MaterialPtr&& material)
-    : SceneNode(name),
-      mPrimitive(std::move(primitive)),
-      mMaterial(std::move(material)) {
+                           MaterialPtr material)
+    : SceneNode(name), mPrimitive(std::move(primitive)), mMaterial(material) {
     mKind = Kind::Geometry;
-}
-
-GeometryNodePtr GeometryNode::make(const char* name,
-                                   PrimitivePtr&& primitive,
-                                   MaterialPtr&& material) {
-    return std::make_unique<GeometryNode>(
-        name, std::move(primitive), std::move(material));
 }
 
 const PrimitivePtr& GeometryNode::primitive() const {

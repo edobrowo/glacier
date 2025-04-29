@@ -2,7 +2,7 @@
 
 #include "intersect.hpp"
 #include "math/interval.hpp"
-#include "ray.hpp"
+#include "math/ray.hpp"
 #include "util/common.hpp"
 
 /// @brief Rendering primitive base class. Defines an interface for ray-surface
@@ -20,7 +20,7 @@ public:
     /// @brief Determines the closest intersect between a ray and primitive
     /// within the specified parameter bounds.
     virtual Option<Intersect> intersect(const Ray& ray,
-                                        const Interval& bounds) const = 0;
+                                        const Interval& bounds) const;
 
     /// @brief Retrieves the kind of the primitive.
     Kind kind() const;

@@ -21,9 +21,6 @@ public:
     explicit SceneNode(const char* name);
     ~SceneNode() = default;
 
-    /// @brief Constructs a SceneNodePtr.
-    static SceneNodePtr make(const char* name);
-
     /// @brief Retrieves the ID of the node.
     u64 id() const;
 
@@ -41,7 +38,7 @@ public:
     void addChild(SceneNodePtr&& child);
 
 public:
-    std::string mName;
+    std::string name;
 
 protected:
     static u64 sNextId;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "geometry/intersect.hpp"
 #include "material.hpp"
+#include "primitive/intersect.hpp"
 
 /// @brief Light ray-surface interaction record.
 struct SurfaceInteraction {

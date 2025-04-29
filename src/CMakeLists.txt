@@ -1,9 +1,10 @@
 add_subdirectory(util)
 add_subdirectory(math)
 add_subdirectory(material)
-add_subdirectory(geometry)
+add_subdirectory(primitive)
 add_subdirectory(scene)
 add_subdirectory(render)
+add_subdirectory(bindings)
 
 file(GLOB SRC "*.cpp")
 add_executable(Glacier ${SRC})

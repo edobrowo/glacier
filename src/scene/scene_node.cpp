@@ -2,12 +2,8 @@
 
 u64 SceneNode::sNextId = 0;
 
-SceneNodePtr SceneNode::make(const char* name) {
-    return std::make_unique<SceneNode>(name);
-}
-
 SceneNode::SceneNode(const char* name)
-    : mName(name),
+    : name(name),
       mId(sNextId),
       mKind(SceneNode::Kind::Null),
       mTransform(),

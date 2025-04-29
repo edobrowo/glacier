@@ -1,6 +1,6 @@
 #include "scene_graph.hpp"
 
-SceneGraph::SceneGraph() : mRoot(SceneNode::make("root")) {
+SceneGraph::SceneGraph() : mRoot(std::make_unique<SceneNode>("root")) {
 }
 
 const SceneNodePtr& SceneGraph::root() const {

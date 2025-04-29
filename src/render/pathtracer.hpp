@@ -1,11 +1,11 @@
 #pragma once
 
 #include "camera.hpp"
-#include "geometry/primitive.hpp"
 #include "image.hpp"
 #include "material/surface_interaction.hpp"
 #include "math/interval.hpp"
 #include "math/ray.hpp"
+#include "primitive/primitive.hpp"
 #include "scene/scene_graph.hpp"
 #include "util/common.hpp"
 

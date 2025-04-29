@@ -3,7 +3,7 @@
 #include <thread>
 #include <vector>
 
-#include "geometry/intersect.hpp"
+#include "primitive/intersect.hpp"
 #include "scene/geometry_node.hpp"
 #include "util/log.hpp"
 

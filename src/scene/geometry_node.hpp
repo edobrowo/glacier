@@ -1,25 +1,21 @@
 #pragma once
 
-#include "geometry/primitive.hpp"
 #include "material/material.hpp"
+#include "primitive/primitive.hpp"
 #include "scene_node.hpp"
 
 class GeometryNode;
 
 using GeometryNodePtr = std::unique_ptr<GeometryNode>;
 
-/// @brief Geometry scene node. Holds a rendering primitive.
+/// @brief Scene node that contains a primitive and a material for local
+/// illumination.
 class GeometryNode : public SceneNode {
 public:
     GeometryNode(const char* name,
                  PrimitivePtr&& primitive,
-                 MaterialPtr&& material);
+                 MaterialPtr material);
     ~GeometryNode() = default;
-
-    /// @brief Constructs a GeometryNodePtr.
-    static GeometryNodePtr make(const char* name,
-                                PrimitivePtr&& primitive,
-                                MaterialPtr&& material);
 
     /// @brief Retrieves a constant reference to the primitive.
     const PrimitivePtr& primitive() const;
