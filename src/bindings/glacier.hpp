@@ -13,6 +13,8 @@
 
 namespace py = pybind11;
 
+/// @brief Renders the scene from the given virtual camera to an image file at
+/// the specified path.
 void render(const char* path, const Camera& camera, SceneNodePtr&& root);
 
 PYBIND11_MODULE(glacier, m) {
@@ -83,7 +85,7 @@ PYBIND11_MODULE(glacier, m) {
              py::overload_cast<>(&SceneNode::transform),
              py::return_value_policy::reference_internal)
         .def("addChild", &SceneNode::addChild)
-        .def_readwrite("mName", &SceneNode::name);
+        .def_readwrite("name", &SceneNode::name);
 
     // GeometryNode class.
     py::class_<GeometryNode, SceneNode, py::smart_holder>(m, "GeometryNode");
