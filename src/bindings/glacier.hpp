@@ -92,7 +92,9 @@ PYBIND11_MODULE(glacier, m) {
 
     // SphereNode class.
     py::class_<SphereNode, GeometryNode, py::smart_holder>(m, "SphereNode")
-        .def(py::init<const char*, MaterialPtr>());
+        .def(py::init<const char*, MaterialPtr>(),
+             py::arg("name"),
+             py::arg("material"));
 
     // Camera class.
     py::class_<Camera>(m, "Camera")
@@ -102,18 +104,25 @@ PYBIND11_MODULE(glacier, m) {
                          f64 fov,
                          Size nx,
                          Size ny) {
-            if (look_from.size() != 3 || look_at.size() != 3 ||
-                up.size() != 3) {
-                throw std::runtime_error(
-                    "look_from, look_at, and up must be 3-element lists");
-            }
-            return new Camera(Point3D(look_from[0], look_from[1], look_from[2]),
-                              Point3D(look_at[0], look_at[1], look_at[2]),
-                              Vector3D(up[0], up[1], up[2]),
-                              fov,
-                              nx,
-                              ny);
-        }));
+                 if (look_from.size() != 3 || look_at.size() != 3 ||
+                     up.size() != 3) {
+                     throw std::runtime_error(
+                         "look_from, look_at, and up must be 3-element lists");
+                 }
+                 return new Camera(
+                     Point3D(look_from[0], look_from[1], look_from[2]),
+                     Point3D(look_at[0], look_at[1], look_at[2]),
+                     Vector3D(up[0], up[1], up[2]),
+                     fov,
+                     nx,
+                     ny);
+             }),
+             py::arg("look_from"),
+             py::arg("look_at"),
+             py::arg("up"),
+             py::arg("fov"),
+             py::arg("nx"),
+             py::arg("ny"));
 
     // render function.
     m.def(

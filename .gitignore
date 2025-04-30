@@ -5,6 +5,13 @@ CMakeCache.txt
 Makefile
 build/
 
+# Environment variables
+.env
+
+# pybind11
+module/
+stub/
+
 # Executables
 bin/
 
@@ -13,7 +20,3 @@ DS_Store/
 
 # VS
 .vscode/
-
-# Output
-frames/
-clips/
