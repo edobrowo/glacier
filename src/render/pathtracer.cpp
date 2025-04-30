@@ -15,22 +15,25 @@ Image Pathtracer::render() const {
     Image image(mCamera.nx(), mCamera.ny());
 
     const Size thread_count = 8;
-    Log::i("Hardware concurrency: {}", thread_count);
+    Log::i("Hardware concurrency = {}", thread_count);
 
     std::vector<std::thread> threads;
+
+    const f64 color_scale = 1.0 / static_cast<f64>(config.samplesPerPixel);
 
     auto render_rows = [&](Index row_start, Index row_end) {
         for (Index py = row_start; py < row_end; ++py) {
             for (Index px = 0; px < mCamera.nx(); ++px) {
                 Vector3D color = Vector3D::zero();
 
-                for (Index sample = 0; sample < sSampleCount; ++sample) {
+                for (Index sample = 0; sample < config.samplesPerPixel;
+                     ++sample) {
                     const Ray ray = generate(px, py);
 
                     color += shadeRecursive(ray, 1);
                 }
 
-                color *= sColorScale;
+                color *= color_scale;
 
                 image.set(px, py, color);
             }
@@ -63,17 +66,24 @@ Ray Pathtracer::generate(const Index px, const Index py) const {
 }
 
 Vector3D Pathtracer::shadeRecursive(const Ray& ray, const Size depth) const {
-    if (depth >= sTraceDepth)
+    if (depth >= config.traceDepth)
         return Vector3D::zero();
 
     if (const Option<SurfaceInteraction> option = intersect(ray)) {
         const ScatterRecord record =
             option->material->scatter(ray, option->intersect);
 
-        return record.color * shadeRecursive(record.scattered, depth + 1);
-
-        // return 0.5 * (option->intersect.normal.normalized() +
-        // Vector3D::one());
+        switch (config.renderingMode) {
+        case RenderingMode::Full:
+            return record.color * shadeRecursive(record.scattered, depth + 1);
+            break;
+        case RenderingMode::NormalMap:
+            return 0.5 *
+                   (option->intersect.normal.normalized() + Vector3D::one());
+            break;
+        default:
+            unreachable;
+        }
     }
 
     return background(ray);

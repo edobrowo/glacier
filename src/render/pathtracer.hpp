@@ -1,6 +1,7 @@
 #pragma once
 
 #include "camera.hpp"
+#include "config.hpp"
 #include "image.hpp"
 #include "material/surface_interaction.hpp"
 #include "math/interval.hpp"
@@ -19,11 +20,9 @@ public:
     /// @brief Renders the scene from the view of the camera.
     Image render() const;
 
-private:
-    static constexpr Size sTraceDepth = 50;
-    static constexpr Size sSampleCount = 100;
-    static constexpr f64 sColorScale = 1.0 / static_cast<f64>(sSampleCount);
+    Config config;
 
+private:
     /// @brief Generates a ray from the camera origin to the given pixel
     /// coordinates in worldspace.
     Ray generate(const Index px, const Index py) const;

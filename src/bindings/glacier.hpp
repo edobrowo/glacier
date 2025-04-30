@@ -6,6 +6,7 @@
 #include "material/lambertian.hpp"
 #include "material/material.hpp"
 #include "render/camera.hpp"
+#include "render/config.hpp"
 #include "scene/geometry_node.hpp"
 #include "scene/scene_node.hpp"
 #include "scene/sphere_node.hpp"
@@ -15,7 +16,10 @@ namespace py = pybind11;
 
 /// @brief Renders the scene from the given virtual camera to an image file at
 /// the specified path.
-void render(const char* path, const Camera& camera, SceneNodePtr&& root);
+void render(const char* path,
+            const Camera& camera,
+            SceneNodePtr&& root,
+            const Config& config);
 
 PYBIND11_MODULE(glacier, m) {
     m.doc() = "Glacier renderer module.";
@@ -136,13 +140,33 @@ PYBIND11_MODULE(glacier, m) {
              py::arg("nx"),
              py::arg("ny"));
 
+    // RenderingMode enum.
+    py::enum_<RenderingMode>(m, "RenderingMode")
+        .value("Full", RenderingMode::Full)
+        .value("NormalMap", RenderingMode::NormalMap)
+        .export_values();
+
+    // Config struct.
+    py::class_<Config>(m, "Config")
+        .def(py::init<>())
+        .def_readwrite("rendering_mode", &Config::renderingMode)
+        .def_readwrite("samples_per_pixel", &Config::samplesPerPixel)
+        .def_readwrite("trace_depth", &Config::traceDepth);
+
     // render function.
     m.def(
         "render",
-        [](const std::string& path, const Camera& camera, SceneNodePtr root) {
-            render(path.c_str(), camera, std::move(root));
+        [](const std::string& path,
+           const Camera& camera,
+           SceneNodePtr root,
+           std::optional<Config> config) {
+            render(path.c_str(),
+                   camera,
+                   std::move(root),
+                   config.value_or(Config()));
         },
         py::arg("path"),
         py::arg("camera"),
-        py::arg("root"));
+        py::arg("root"),
+        py::arg("config") = py::none());
 }

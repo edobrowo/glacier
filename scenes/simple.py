@@ -1,9 +1,11 @@
 import glacier
 from glacier import (
+    Camera,
+    Config,
     LambertianMaterial,
-    SphereNode,
+    RenderingMode,
     SceneNode,
-    Camera
+    SphereNode,
 )
 
 mat = LambertianMaterial(color=[0.5, 0.5, 0.5])
@@ -29,4 +31,7 @@ camera = Camera(
     ny=225
 )
 
-glacier.render("out.png", camera, root)
+config = Config()
+config.rendering_mode = RenderingMode.Full
+
+glacier.render("out.png", camera, root, config)
