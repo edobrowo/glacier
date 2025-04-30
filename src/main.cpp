@@ -1,34 +1,39 @@
-#include "material/lambertian.hpp"
-#include "primitive/sphere.hpp"
-#include "render/camera.hpp"
-#include "render/image.hpp"
-#include "render/pathtracer.hpp"
-#include "scene/geometry_node.hpp"
-#include "scene/scene_graph.hpp"
-#include "scene/sphere_node.hpp"
+#include <Python.h>
 
-int main() {
-    SceneGraph scene;
-    const Camera camera(Point3D(0.0, 0.0, 0.0),
-                        Point3D(0.0, 0.0, -1.0),
-                        Vector3D(0.0, 1.0, 0.0),
-                        90.0,
-                        400,
-                        225);
+#include <cstdlib>
 
-    MaterialPtr mat = std::make_shared<Lambertian>(Vector3D::uniform(0.5));
+#include "util/format.hpp"
 
-    GeometryNodePtr sphere = std::make_unique<SphereNode>("sphere", mat);
-    sphere->transform().t(0.0, 0.0, -1.0);
-    sphere->transform().s(0.5, 0.5, 0.5);
-    scene.root()->addChild(std::move(sphere));
+void usage() {
+    eprintln("Usage: Glacier <scene_python_script_file_path>");
+}
 
-    GeometryNodePtr ground = std::make_unique<SphereNode>("ground", mat);
-    ground->transform().t(0.0, -100.5, -1.0);
-    ground->transform().s(100.0, 100.0, 100.0);
-    scene.root()->addChild(std::move(ground));
+int main(int argc, char** argv) {
+    if (argc != 2) {
+        usage();
+        return EXIT_FAILURE;
+    }
 
-    const Image image = Pathtracer(scene, camera).render();
+    const char* path = argv[1];
 
-    image.save("out.png");
+    FILE* file = fopen(path, "r");
+
+    if (file != NULL) {
+        Py_Initialize();
+
+        int result = PyRun_SimpleFile(file, path);
+        fclose(file);
+
+        if (result != 0) {
+            eprintln("Error: Invalid Python script");
+            return EXIT_FAILURE;
+        }
+
+        Py_Finalize();
+    } else {
+        eprintln("Error: Path does not point to a valid file.");
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
 }
