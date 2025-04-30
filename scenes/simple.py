@@ -14,12 +14,12 @@ root = SceneNode("root")
 
 sphere = SphereNode("sphere", mat)
 sphere.t(0.0, 0.0, -1.0)
-sphere.s(0.5, 0.5, 0.5)
+sphere.s(0.5)
 root.add_child(sphere)
 
 ground = SphereNode("ground", mat)
 ground.t(0.0, -100.5, -1.0)
-ground.s(100.0, 100.0, 100.0)
+ground.s(100.0)
 root.add_child(ground)
 
 camera = Camera(

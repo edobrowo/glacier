@@ -100,6 +100,9 @@ PYBIND11_MODULE(glacier, m) {
              [](SceneNode& self, f64 x, f64 y, f64 z) {
                  self.transform().t(x, y, z);
              })
+        .def("s", [](SceneNode& self, f64 a) { self.transform().s(a, a, a); })
+        .def("r", [](SceneNode& self, f64 a) { self.transform().r(a, a, a); })
+        .def("t", [](SceneNode& self, f64 a) { self.transform().t(a, a, a); })
         .def("add_child", &SceneNode::addChild)
         .def_readwrite("name", &SceneNode::name);
 
