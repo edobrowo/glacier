@@ -11,22 +11,22 @@ mat = LambertianMaterial(color=[0.5, 0.5, 0.5])
 root = SceneNode("root")
 
 sphere = SphereNode("sphere", mat)
-sphere.transform().t(0.0, 0.0, -1.0)
-sphere.transform().s(0.5, 0.5, 0.5)
-root.addChild(sphere)
+sphere.t(0.0, 0.0, -1.0)
+sphere.s(0.5, 0.5, 0.5)
+root.add_child(sphere)
 
 ground = SphereNode("ground", mat)
-ground.transform().t(0.0, -100.5, -1.0)
-ground.transform().s(100.0, 100.0, 100.0)
-root.addChild(ground)
+ground.t(0.0, -100.5, -1.0)
+ground.s(100.0, 100.0, 100.0)
+root.add_child(ground)
 
 camera = Camera(
-    [0.0, 0.0, 0.0],
-    [0.0, 0.0, -1.0],
-    [0.0, 1.0, 0.0],
-    90.0,
-    400,
-    225
+    look_from=[0.0, 0.0, 0.0],
+    look_at=[0.0, 0.0, -1.0],
+    up=[0.0, 1.0, 0.0],
+    fov=90.0,
+    nx=400,
+    ny=225
 )
 
 glacier.render("out.png", camera, root)

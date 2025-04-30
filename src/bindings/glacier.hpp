@@ -46,8 +46,8 @@ PYBIND11_MODULE(glacier, m) {
         .def("s", py::overload_cast<f64, f64, f64>(&Transform::s))
         .def("r", py::overload_cast<f64, f64, f64>(&Transform::r))
         .def("t", py::overload_cast<f64, f64, f64>(&Transform::t))
-        .def("setOrder", &Transform::setOrder)
-        .def("setRotationOrder", &Transform::setRotationOrder);
+        .def("set_order", &Transform::setOrder)
+        .def("set_rotation_order", &Transform::setRotationOrder);
 
     // Material::Kind enum.
     py::enum_<Material::Kind>(m, "MaterialKind")
@@ -84,7 +84,19 @@ PYBIND11_MODULE(glacier, m) {
         .def("transform",
              py::overload_cast<>(&SceneNode::transform),
              py::return_value_policy::reference_internal)
-        .def("addChild", &SceneNode::addChild)
+        .def("s",
+             [](SceneNode& self, f64 x, f64 y, f64 z) {
+                 self.transform().s(x, y, z);
+             })
+        .def("r",
+             [](SceneNode& self, f64 x, f64 y, f64 z) {
+                 self.transform().r(x, y, z);
+             })
+        .def("t",
+             [](SceneNode& self, f64 x, f64 y, f64 z) {
+                 self.transform().t(x, y, z);
+             })
+        .def("add_child", &SceneNode::addChild)
         .def_readwrite("name", &SceneNode::name);
 
     // GeometryNode class.
