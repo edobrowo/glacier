@@ -46,7 +46,7 @@ template <std::floating_point T>
 Matrix<T, 4, 4> rotate(const T angle, const Vector<T, 3>& k) {
     // https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
 
-    Vector<T, 3> kn = k.normalized();
+    Vector<T, 3> kn = k.normalize();
 
     // clang-format off
     const Matrix<T, 3, 3> K(
@@ -146,16 +146,16 @@ template <std::floating_point T>
 Matrix<T, 4, 4> lookat(const Vector<T, 3>& eye,
                        const Vector<T, 3>& target,
                        const Vector<T, 3>& up) {
-    const Vector<T, 3> d((target - eye).normalized());
-    const Vector<T, 3> r(cross(d, up).normalized());
-    const Vector<T, 3> u(cross(r, d));
+    const Vector<T, 3> d((target - eye).normalize());
+    const Vector<T, 3> r(d.cross(up).normalize());
+    const Vector<T, 3> u(r.cross(d));
 
     // clang-format off
     return Matrix<T, 4, 4>(
         {
-            r[0],   r[1],   r[2], -dot(r, eye),
-            u[0],   u[1],   u[2], -dot(u, eye),
-           -d[0],  -d[1],  -d[2],  dot(d, eye),
+            r[0],   r[1],   r[2], -r.dot(eye),
+            u[0],   u[1],   u[2], -u.dot(eye),
+           -d[0],  -d[1],  -d[2],  d.dot(eye),
             T(0),   T(0),   T(0),  T(1)
         }
     );

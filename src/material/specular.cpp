@@ -22,13 +22,13 @@ ScatterRecord Specular::scatter(const Ray& incident,
     const Vector3D& n = intersect.normal;
     const Vector3D& l = incident.direction;
 
-    const Vector3D& r = l + -2.0 * dot(l, n) * n;
+    const Vector3D& r = l + -2.0 * l.dot(n) * n;
 
     // Construct local orthonormal basis with the reflected, tangent, and
     // bitangent vectors.
-    const Vector3D t = (r.x < 1.0) ? cross(r, Vector3D(1.0, 0.0, 0.0))
-                                   : cross(r, Vector3D(0.0, 1.0, 0.0));
-    const Vector3D b = cross(r, t);
+    const Vector3D t = (r.x < 1.0) ? r.cross(Vector3D(1.0, 0.0, 0.0))
+                                   : r.cross(Vector3D(0.0, 1.0, 0.0));
+    const Vector3D b = r.cross(t);
 
     // Compute the new direction from the spherical coordinates.
     const Vector3D direction =

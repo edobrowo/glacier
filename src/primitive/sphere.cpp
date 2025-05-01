@@ -12,9 +12,9 @@ Sphere::~Sphere() {
 Option<Intersect> Sphere::intersect(const Ray& ray,
                                     const Interval& bounds) const {
     // Set up quadratic.
-    const f64 a = ray.direction.lengthSqr();
-    const f64 b = 2.0 * dot(ray.direction, ray.origin.pos());
-    const f64 c = ray.origin.pos().lengthSqr() - 1.0;
+    const f64 a = ray.direction.dot();
+    const f64 b = 2.0 * ray.direction.dot(ray.origin.pos());
+    const f64 c = ray.origin.pos().dot() - 1.0;
 
     // Solve quadratic.
     std::pair<Option<f64>, Option<f64>> roots = math::quadratic_roots(a, b, c);
@@ -42,5 +42,5 @@ Option<Intersect> Sphere::intersect(const Ray& ray,
 
     const Point3D p = ray.at(t);
 
-    return Intersect(t, p, p.pos().normalized());
+    return Intersect(t, p, p.pos().normalize());
 }

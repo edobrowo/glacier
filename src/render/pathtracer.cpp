@@ -60,7 +60,7 @@ Image Pathtracer::render() const {
 
 Ray Pathtracer::generate(const Index px, const Index py) const {
     const Point3D origin = mCamera.origin();
-    const Vector3D direction = (mCamera.sample(px, py) - origin).normalized();
+    const Vector3D direction = (mCamera.sample(px, py) - origin).normalize();
 
     return Ray(origin, direction);
 }
@@ -79,7 +79,7 @@ Vector3D Pathtracer::shadeRecursive(const Ray& ray, const Size depth) const {
             break;
         case RenderingMode::NormalMap:
             return 0.5 *
-                   (option->intersect.normal.normalized() + Vector3D::one());
+                   (option->intersect.normal.normalize() + Vector3D::one());
             break;
         default:
             unreachable;
@@ -136,14 +136,14 @@ Option<SurfaceInteraction> Pathtracer::intersectRecursive(
         Intersect& i = closest->intersect;
         i.position = node->transform().matrix() * i.position;
         i.normal = (Matrix3D(transpose(node->transform().inverse())) * i.normal)
-                       .normalized();
+                       .normalize();
     }
 
     return closest;
 }
 
 Vector3D Pathtracer::background(const Ray& ray) const {
-    const Vector3D direction = ray.direction.normalized();
+    const Vector3D direction = ray.direction.normalize();
     const f64 a = 0.5 * (direction.y + 1.0);
     return (1.0 - a) * Vector3D::uniform(1.0) + a * Vector3D(0.5, 0.7, 1.0);
 }

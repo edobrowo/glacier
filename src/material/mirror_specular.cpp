@@ -10,7 +10,7 @@ ScatterRecord MirrorSpecular::scatter(const Ray& incident,
     const Vector3D& n = intersect.normal;
     const Vector3D& l = incident.direction;
 
-    const Vector3D& r = l + -2.0 * dot(l, n) * n;
+    const Vector3D& r = l + -2.0 * l.dot(n) * n;
 
     const Ray scattered(p, r);
 

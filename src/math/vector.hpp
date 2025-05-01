@@ -73,24 +73,28 @@ public:
     Vector<T, dim>& operator/=(const T rhs);
     Vector<T, dim>& operator/=(const Vector<T, dim>& rhs);
 
-    /// @brief Determines whether the vector is a zero vector.
-    bool isZero() const;
-
-    /// @brief Determines the squared length of the vector.
-    T lengthSqr() const;
-
     /// @brief Determines the L2 norm of the vector.
     T length() const;
 
+    /// @brief Determines the squared length of the vector.
+    T dot() const;
+
+    /// @brief Determines the dot product with another vector.
+    T dot(const Vector<T, dim>& other) const;
+
+    /// @brief Determines the cross product with another vector.
+    Vector<T, dim> cross(const Vector<T, dim>& other) const
+        requires(dim == 3);
+
     /// @brief Creates a new vector that is normalized.
-    Vector<T, dim> normalized() const;
+    Vector<T, dim> normalize() const;
 
     /// @brief Creates a new vector clamped by the specified uniform bounds.
-    Vector<T, dim> clamped(const T low, const T high) const;
+    Vector<T, dim> clamp(const T low, const T high) const;
 
     /// @brief Creates a new vector clamped by the specified vector bounds.
-    Vector<T, dim> clamped(const Vector<T, dim>& low,
-                           const Vector<T, dim>& high) const;
+    Vector<T, dim> clamp(const Vector<T, dim>& low,
+                         const Vector<T, dim>& high) const;
 
     /// @brief Retrieves a pointer to the components buffer.
     const T* data() const;
@@ -449,38 +453,41 @@ static bool operator!=(const Vector<T, dim>& lhs, const Vector<T, dim>& rhs) {
 }
 
 template <Numeric T, u32 dim>
-bool Vector<T, dim>::isZero() const {
-    for (Index i = 0; i < dim; ++i)
-        if (components[i] != T(0))
-            return false;
-    return true;
+T Vector<T, dim>::length() const {
+    return std::sqrt(dot());
 }
 
 template <Numeric T, u32 dim>
-T dot(const Vector<T, dim>& lhs, const Vector<T, dim>& rhs) {
+T Vector<T, dim>::dot() const {
+    return (*this).dot(*this);
+}
+
+template <Numeric T, u32 dim>
+T Vector<T, dim>::dot(const Vector<T, dim>& other) const {
     T result = T(0);
     for (Index i = 0; i < dim; ++i)
-        result += T(lhs[i]) * T(rhs[i]);
+        result += components[i] * other[i];
     return result;
 }
 
 template <Numeric T, u32 dim>
-T Vector<T, dim>::lengthSqr() const {
-    return dot(*this, *this);
+Vector<T, dim> Vector<T, dim>::cross(const Vector<T, dim>& other) const
+    requires(dim == 3)
+{
+    Vector<T, dim> result;
+    result[0] = components[1] * other[2] - components[2] * other[1];
+    result[1] = components[2] * other[0] - components[0] * other[2];
+    result[2] = components[0] * other[1] - components[1] * other[0];
+    return result;
 }
 
 template <Numeric T, u32 dim>
-T Vector<T, dim>::length() const {
-    return std::sqrt(lengthSqr());
-}
-
-template <Numeric T, u32 dim>
-Vector<T, dim> Vector<T, dim>::normalized() const {
+Vector<T, dim> Vector<T, dim>::normalize() const {
     return *this / length();
 }
 
 template <Numeric T, u32 dim>
-Vector<T, dim> Vector<T, dim>::clamped(const T low, const T high) const {
+Vector<T, dim> Vector<T, dim>::clamp(const T low, const T high) const {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = math::clamp(components[i], low, high);
@@ -488,20 +495,11 @@ Vector<T, dim> Vector<T, dim>::clamped(const T low, const T high) const {
 }
 
 template <Numeric T, u32 dim>
-Vector<T, dim> Vector<T, dim>::clamped(const Vector<T, dim>& low,
-                                       const Vector<T, dim>& high) const {
+Vector<T, dim> Vector<T, dim>::clamp(const Vector<T, dim>& low,
+                                     const Vector<T, dim>& high) const {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = math::clamp(components[i], low[i], high[i]);
-    return result;
-}
-
-template <Numeric T>
-Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs) {
-    Vector<T, 3> result;
-    result[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];
-    result[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];
-    result[2] = lhs[0] * rhs[1] - lhs[1] * rhs[0];
     return result;
 }
 

@@ -16,9 +16,9 @@ Camera::Camera(const Point3D& look_from,
 
     // Camera frame.
     mOrigin = look_from;
-    mW = (look_from - look_at).normalized();
-    mU = (cross(up, mW)).normalized();
-    mV = cross(mW, mU);
+    mW = (look_from - look_at).normalize();
+    mU = (up.cross(mW)).normalize();
+    mV = mW.cross(mU);
 
     // View dimensions.
     const f64 aspect = static_cast<f64>(nx) / static_cast<f64>(ny);
