@@ -5,6 +5,8 @@
 
 #include "material/lambertian.hpp"
 #include "material/material.hpp"
+#include "material/mirror_specular.hpp"
+#include "material/specular.hpp"
 #include "render/camera.hpp"
 #include "render/config.hpp"
 #include "scene/geometry_node.hpp"
@@ -57,6 +59,8 @@ PYBIND11_MODULE(glacier, m) {
     py::enum_<Material::Kind>(m, "MaterialKind")
         .value("Null", Material::Kind::Null)
         .value("Lambertian", Material::Kind::Lambertian)
+        .value("Specular", Material::Kind::Specular)
+        .value("MirrorSpecular", Material::Kind::MirrorSpecular)
         .export_values();
 
     // Material class.
@@ -71,6 +75,32 @@ PYBIND11_MODULE(glacier, m) {
                          "Lambertian color must be a 3-element list");
                  }
                  return new Lambertian(Vector3D(color[0], color[1], color[2]));
+             }),
+             py::arg("color"));
+
+    // SpecularMaterial class.
+    py::class_<Specular, Material, py::smart_holder>(m, "SpecularMaterial")
+        .def(py::init([](std::vector<f64> color, const f64 phong) {
+                 if (color.size() != 3) {
+                     throw std::runtime_error(
+                         "Specular color must be a 3-element list");
+                 }
+                 return new Specular(Vector3D(color[0], color[1], color[2]),
+                                     phong);
+             }),
+             py::arg("color"),
+             py::arg("phong"));
+
+    // MirrorSpecularMaterial class.
+    py::class_<MirrorSpecular, Material, py::smart_holder>(
+        m, "MirrorSpecularMaterial")
+        .def(py::init([](std::vector<f64> color) {
+                 if (color.size() != 3) {
+                     throw std::runtime_error(
+                         "MirrorSpecular color must be a 3-element list");
+                 }
+                 return new MirrorSpecular(
+                     Vector3D(color[0], color[1], color[2]));
              }),
              py::arg("color"));
 

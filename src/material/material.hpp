@@ -11,6 +11,8 @@ public:
     enum class Kind {
         Null = 0,
         Lambertian,
+        Specular,
+        MirrorSpecular,
     };
 
     Material();

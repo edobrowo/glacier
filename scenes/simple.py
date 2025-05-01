@@ -3,21 +3,30 @@ from glacier import (
     Camera,
     Config,
     LambertianMaterial,
+    SpecularMaterial,
+    MirrorSpecularMaterial,
     RenderingMode,
     SceneNode,
     SphereNode,
 )
 
-mat = LambertianMaterial(color=[0.5, 0.5, 0.5])
+diffuse = LambertianMaterial(color=[0.5, 0.5, 0.5])
+specular = SpecularMaterial(color=[0.9, 0.9, 0.9], phong=10)
+mirror = MirrorSpecularMaterial(color=[1, 1, 1])
 
 root = SceneNode("root")
 
-sphere = SphereNode("sphere", mat)
-sphere.t(0.0, 0.0, -1.0)
-sphere.s(0.5)
-root.add_child(sphere)
+s1 = SphereNode("s1", specular)
+s1.t(-1.0, 0.0, -1.0)
+s1.s(0.5)
+root.add_child(s1)
 
-ground = SphereNode("ground", mat)
+s2 = SphereNode("s2", mirror)
+s2.t(1.0, 0.0, -1.0)
+s2.s(0.5)
+root.add_child(s2)
+
+ground = SphereNode("ground", diffuse)
 ground.t(0.0, -100.5, -1.0)
 ground.s(100.0)
 root.add_child(ground)
