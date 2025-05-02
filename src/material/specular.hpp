@@ -2,10 +2,11 @@
 
 #include "material.hpp"
 
+/// @brief Phong-based specular material.
 class Specular : public Material {
 public:
     Specular(const Vector3D& color, const f64 phong);
-    ~Specular() = default;
+    virtual ~Specular();
 
     /// @brief Scatters the incident ray where the material appearance
     /// properties correspond to a specular reflector controlled with a Phong

@@ -1,10 +1,14 @@
 #include "specular.hpp"
 
+#include "math/vector_ops.hpp"
 #include "util/thread_random.hpp"
 
 Specular::Specular(const Vector3D& color, const f64 phong)
     : mColor(color), mPhong(phong) {
     mKind = Kind::Specular;
+}
+
+Specular::~Specular() {
 }
 
 ScatterRecord Specular::scatter(const Ray& incident,
@@ -22,18 +26,9 @@ ScatterRecord Specular::scatter(const Ray& incident,
     const Vector3D& n = intersect.normal;
     const Vector3D& l = incident.direction;
 
-    const Vector3D& r = l + -2.0 * l.dot(n) * n;
+    const Vector3D r = math::reflect(l, n);
 
-    // Construct local orthonormal basis with the reflected, tangent, and
-    // bitangent vectors.
-    const Vector3D t = (r.x < 1.0) ? r.cross(Vector3D(1.0, 0.0, 0.0))
-                                   : r.cross(Vector3D(0.0, 1.0, 0.0));
-    const Vector3D b = r.cross(t);
-
-    // Compute the new direction from the spherical coordinates.
-    const Vector3D direction =
-        std::cos(alpha) * r +
-        std::sin(alpha) * (std::cos(beta) * t + std::sin(beta) * b);
+    const Vector3D direction = math::perturb(r, alpha, beta);
 
     const Ray scattered(p, direction);
 

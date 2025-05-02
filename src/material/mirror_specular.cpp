@@ -1,7 +1,12 @@
 #include "mirror_specular.hpp"
 
+#include "math/vector_ops.hpp"
+
 MirrorSpecular::MirrorSpecular(const Vector3D& color) : mColor(color) {
     mKind = Kind::MirrorSpecular;
+}
+
+MirrorSpecular::~MirrorSpecular() {
 }
 
 ScatterRecord MirrorSpecular::scatter(const Ray& incident,
@@ -10,7 +15,7 @@ ScatterRecord MirrorSpecular::scatter(const Ray& incident,
     const Vector3D& n = intersect.normal;
     const Vector3D& l = incident.direction;
 
-    const Vector3D& r = l + -2.0 * l.dot(n) * n;
+    const Vector3D& r = math::reflect(l, n);
 
     const Ray scattered(p, r);
 

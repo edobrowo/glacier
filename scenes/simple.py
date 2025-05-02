@@ -4,32 +4,44 @@ from glacier import (
     Config,
     LambertianMaterial,
     SpecularMaterial,
-    MirrorSpecularMaterial,
+    DielectricMaterial,
     RenderingMode,
     SceneNode,
     SphereNode,
 )
 
-diffuse = LambertianMaterial(color=[0.5, 0.5, 0.5])
-specular = SpecularMaterial(color=[0.9, 0.9, 0.9], phong=10)
-mirror = MirrorSpecularMaterial(color=[1, 1, 1])
+mat_ground = LambertianMaterial(color=[0.8, 0.8, 0.0])
+mat_center = LambertianMaterial(color=[0.1, 0.2, 0.5])
+mat_left = DielectricMaterial(eta=1.5)
+mat_bubble = DielectricMaterial(eta=1.0 / 1.5)
+mat_right = SpecularMaterial(color=[0.8, 0.6, 0.2], phong=1.0)
 
 root = SceneNode("root")
 
-s1 = SphereNode("s1", specular)
-s1.t(-1.0, 0.0, -1.0)
-s1.s(0.5)
-root.add_child(s1)
-
-s2 = SphereNode("s2", mirror)
-s2.t(1.0, 0.0, -1.0)
-s2.s(0.5)
-root.add_child(s2)
-
-ground = SphereNode("ground", diffuse)
+ground = SphereNode("ground", mat_ground)
 ground.t(0.0, -100.5, -1.0)
 ground.s(100.0)
 root.add_child(ground)
+
+center = SphereNode("center", mat_center)
+center.t(0.0, 0.0, -1.2)
+center.s(0.5)
+root.add_child(center)
+
+left = SphereNode("left", mat_left)
+left.t(-1.0, 0.0, -1.0)
+left.s(0.5)
+root.add_child(left)
+
+# bubble = SphereNode("bubble", mat_bubble)
+# bubble.t(-1.0, 0.0, -1.0)
+# bubble.s(0.4)
+# root.add_child(bubble)
+
+right = SphereNode("right", mat_right)
+right.t(1.0, 0.0, -1.0)
+right.s(0.5)
+root.add_child(right)
 
 camera = Camera(
     look_from=[0.0, 0.0, 0.0],

@@ -3,6 +3,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
+#include "material/dielectric.hpp"
 #include "material/lambertian.hpp"
 #include "material/material.hpp"
 #include "material/mirror_specular.hpp"
@@ -61,6 +62,7 @@ PYBIND11_MODULE(glacier, m) {
         .value("Lambertian", Material::Kind::Lambertian)
         .value("Specular", Material::Kind::Specular)
         .value("MirrorSpecular", Material::Kind::MirrorSpecular)
+        .value("Dielectric", Material::Kind::Dielectric)
         .export_values();
 
     // Material class.
@@ -103,6 +105,11 @@ PYBIND11_MODULE(glacier, m) {
                      Vector3D(color[0], color[1], color[2]));
              }),
              py::arg("color"));
+
+    // DielectricMaterial class.
+    py::class_<Dielectric, Material, py::smart_holder>(m, "DielectricMaterial")
+        .def(py::init([](const f64 eta) { return new Dielectric(eta); }),
+             py::arg("eta"));
 
     // SceneNode::Kind enum.
     py::enum_<SceneNode::Kind>(m, "SceneNodeKind")

@@ -13,6 +13,7 @@ public:
         Lambertian,
         Specular,
         MirrorSpecular,
+        Dielectric
     };
 
     Material();
