@@ -153,7 +153,6 @@ Option<SurfaceInteraction> Pathtracer::intersectRecursive(
 }
 
 Vector3D Pathtracer::background(const Ray& ray) const {
-    return Vector3D::uniform(0.1);
     const Vector3D direction = ray.direction.normalize();
     const f64 a = 0.5 * (direction.y + 1.0);
     return (1.0 - a) * Vector3D::uniform(1.0) + a * Vector3D(0.5, 0.7, 1.0);

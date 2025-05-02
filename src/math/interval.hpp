@@ -18,6 +18,9 @@ public:
     /// @brief The universe interval, defined [-infty, infty].
     static const Interval universe;
 
+    /// @brief The unit interval, defined [0, 1].
+    static const Interval unit;
+
     /// @brief Determines whether `a` lines within the interval, inclusive.
     bool contains(const f64 a) const;
 

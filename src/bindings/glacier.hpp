@@ -9,9 +9,11 @@
 #include "material/material.hpp"
 #include "material/mirror_specular.hpp"
 #include "material/specular.hpp"
+#include "math/numeric.hpp"
 #include "render/camera.hpp"
 #include "render/config.hpp"
 #include "scene/geometry_node.hpp"
+#include "scene/quad_node.hpp"
 #include "scene/scene_node.hpp"
 #include "scene/sphere_node.hpp"
 #include "util/common.hpp"
@@ -52,7 +54,10 @@ PYBIND11_MODULE(glacier, m) {
     py::class_<Transform>(m, "Transform")
         .def(py::init<>())
         .def("s", py::overload_cast<f64, f64, f64>(&Transform::s))
-        .def("r", py::overload_cast<f64, f64, f64>(&Transform::r))
+        .def("r",
+             [](SceneNode& self, const f64 x, const f64 y, const f64 z) {
+                 self.transform().r(math::rad(x), math::rad(y), math::rad(z));
+             })
         .def("t", py::overload_cast<f64, f64, f64>(&Transform::t))
         .def("set_order", &Transform::setOrder)
         .def("set_rotation_order", &Transform::setRotationOrder);
@@ -139,20 +144,26 @@ PYBIND11_MODULE(glacier, m) {
              py::overload_cast<>(&SceneNode::transform),
              py::return_value_policy::reference_internal)
         .def("s",
-             [](SceneNode& self, f64 x, f64 y, f64 z) {
+             [](SceneNode& self, const f64 x, const f64 y, const f64 z) {
                  self.transform().s(x, y, z);
              })
         .def("r",
-             [](SceneNode& self, f64 x, f64 y, f64 z) {
-                 self.transform().r(x, y, z);
+             [](SceneNode& self, const f64 x, const f64 y, const f64 z) {
+                 self.transform().r(math::rad(x), math::rad(y), math::rad(z));
              })
         .def("t",
-             [](SceneNode& self, f64 x, f64 y, f64 z) {
+             [](SceneNode& self, const f64 x, const f64 y, const f64 z) {
                  self.transform().t(x, y, z);
              })
-        .def("s", [](SceneNode& self, f64 a) { self.transform().s(a, a, a); })
-        .def("r", [](SceneNode& self, f64 a) { self.transform().r(a, a, a); })
-        .def("t", [](SceneNode& self, f64 a) { self.transform().t(a, a, a); })
+        .def("s",
+             [](SceneNode& self, const f64 a) { self.transform().s(a, a, a); })
+        .def("r",
+             [](SceneNode& self, const f64 a) {
+                 const f64 r = math::rad(a);
+                 self.transform().r(r, r, r);
+             })
+        .def("t",
+             [](SceneNode& self, const f64 a) { self.transform().t(a, a, a); })
         .def("add_child", &SceneNode::addChild)
         .def_readwrite("name", &SceneNode::name);
 
@@ -161,6 +172,12 @@ PYBIND11_MODULE(glacier, m) {
 
     // SphereNode class.
     py::class_<SphereNode, GeometryNode, py::smart_holder>(m, "SphereNode")
+        .def(py::init<const char*, MaterialPtr>(),
+             py::arg("name"),
+             py::arg("material"));
+
+    // QuadNode class.
+    py::class_<QuadNode, GeometryNode, py::smart_holder>(m, "QuadNode")
         .def(py::init<const char*, MaterialPtr>(),
              py::arg("name"),
              py::arg("material"));

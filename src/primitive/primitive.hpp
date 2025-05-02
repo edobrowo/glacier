@@ -12,6 +12,7 @@ public:
     enum class Kind {
         Null = 0,
         Sphere,
+        Quad,
     };
 
     Primitive();

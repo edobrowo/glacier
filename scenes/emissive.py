@@ -1,10 +1,8 @@
 import glacier
 from glacier import (
     Camera,
-    Config,
     LambertianMaterial,
     EmissiveMaterial,
-    RenderingMode,
     SceneNode,
     SphereNode,
 )
@@ -33,7 +31,4 @@ camera = Camera(
     ny=225
 )
 
-config = Config()
-config.rendering_mode = RenderingMode.Full
-
-glacier.render("out.png", camera, root, config)
+glacier.render("out.png", camera, root)

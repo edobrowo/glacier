@@ -4,6 +4,7 @@ const Interval Interval::empty =
     Interval(math::infinity<f64>(), -math::infinity<f64>());
 const Interval Interval::universe =
     Interval(-math::infinity<f64>(), math::infinity<f64>());
+const Interval Interval::unit = Interval(0.0, 1.0);
 
 Interval::Interval(const f64 min, const f64 max) : min(min), max(max) {
 }
