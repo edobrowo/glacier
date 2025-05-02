@@ -11,8 +11,8 @@ public:
     /// @brief Scatters the incident ray where the material appearance
     /// properties correspond to a specular reflector controlled with a Phong
     /// coefficient.
-    virtual ScatterRecord scatter(const Ray& incident,
-                                  const Intersect& intersect) const override;
+    virtual Option<ScatterRecord> scatter(
+        const Ray& incident, const Intersect& intersect) const override;
 
 private:
     Vector3D mColor;

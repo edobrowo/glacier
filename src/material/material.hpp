@@ -13,7 +13,8 @@ public:
         Lambertian,
         Specular,
         MirrorSpecular,
-        Dielectric
+        Dielectric,
+        Emissive,
     };
 
     Material();
@@ -21,8 +22,8 @@ public:
 
     /// @brief Scatters the incident ray according to local surface geometry and
     /// material appearance properties.
-    virtual ScatterRecord scatter(const Ray& incident,
-                                  const Intersect& intersect) const = 0;
+    virtual Option<ScatterRecord> scatter(const Ray& incident,
+                                          const Intersect& intersect) const;
 
     /// @brief Retrieves the kind of the material.
     Kind kind() const;
@@ -32,4 +33,3 @@ protected:
 };
 
 using MaterialPtr = std::shared_ptr<Material>;
-using MaterialTempPtr = const Material*;

@@ -3,6 +3,7 @@
 #include <thread>
 #include <vector>
 
+#include "material/emissive.hpp"
 #include "primitive/intersect.hpp"
 #include "scene/geometry_node.hpp"
 #include "util/log.hpp"
@@ -70,16 +71,25 @@ Vector3D Pathtracer::shadeRecursive(const Ray& ray, const Size depth) const {
         return Vector3D::zero();
 
     if (const Option<SurfaceInteraction> option = intersect(ray)) {
-        const ScatterRecord record =
-            option->material->scatter(ray, option->intersect);
+        const MaterialPtr mat = option->material;
+        const Intersect& i = option->intersect;
+
+        const Option<ScatterRecord> record = mat->scatter(ray, i);
 
         switch (config.renderingMode) {
         case RenderingMode::Full:
-            return record.color * shadeRecursive(record.scattered, depth + 1);
+            if (record) {
+                return record->color *
+                       shadeRecursive(record->scattered, depth + 1);
+            } else {
+                if (mat->kind() == Material::Kind::Emissive)
+                    return static_cast<Emissive*>(mat.get())->emitted();
+                else
+                    return Vector3D::zero();
+            }
             break;
         case RenderingMode::NormalMap:
-            return 0.5 *
-                   (option->intersect.normal.normalize() + Vector3D::one());
+            return 0.5 * (i.normal.normalize() + Vector3D::one());
             break;
         default:
             unreachable;
@@ -110,7 +120,7 @@ Option<SurfaceInteraction> Pathtracer::intersectRecursive(
         const GeometryNode* geo = static_cast<GeometryNode*>(node.get());
         if (const Option<Intersect> intersect =
                 geo->primitive()->intersect(inverse_ray, bounds)) {
-            closest = SurfaceInteraction(*intersect, geo->material().get());
+            closest = SurfaceInteraction(*intersect, geo->material());
             closest_bounds.max =
                 std::min(closest->intersect.t, closest_bounds.max);
         }
@@ -143,6 +153,7 @@ Option<SurfaceInteraction> Pathtracer::intersectRecursive(
 }
 
 Vector3D Pathtracer::background(const Ray& ray) const {
+    return Vector3D::uniform(0.1);
     const Vector3D direction = ray.direction.normalize();
     const f64 a = 0.5 * (direction.y + 1.0);
     return (1.0 - a) * Vector3D::uniform(1.0) + a * Vector3D(0.5, 0.7, 1.0);

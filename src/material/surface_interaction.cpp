@@ -1,7 +1,7 @@
 #include "surface_interaction.hpp"
 
 SurfaceInteraction::SurfaceInteraction(const Intersect& intersect,
-                                       MaterialTempPtr material)
+                                       MaterialPtr material)
     : intersect(intersect), material(material) {
 }
 

@@ -10,8 +10,8 @@ public:
     virtual ~Dielectric();
 
     /// @brief Scatters the incident ray via refraction.
-    virtual ScatterRecord scatter(const Ray& incident,
-                                  const Intersect& intersect) const override;
+    virtual Option<ScatterRecord> scatter(
+        const Ray& incident, const Intersect& intersect) const override;
 
 private:
     f64 mEta;

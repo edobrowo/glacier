@@ -6,9 +6,9 @@
 /// @brief Light ray-surface interaction record.
 struct SurfaceInteraction {
     Intersect intersect;
-    MaterialTempPtr material;
+    MaterialPtr material;
 
-    SurfaceInteraction(const Intersect& intersect, MaterialTempPtr material);
+    SurfaceInteraction(const Intersect& intersect, MaterialPtr material);
     ~SurfaceInteraction() = default;
 
     SurfaceInteraction(const SurfaceInteraction& other);
