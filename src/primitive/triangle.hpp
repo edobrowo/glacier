@@ -4,11 +4,11 @@
 #include "math/vector.hpp"
 #include "primitive.hpp"
 
-/// @brief Quad (bounded plane) 2D primitive.
-class Quad : public Primitive {
+/// @brief Triangle primitive.
+class Triangle : public Primitive {
 public:
-    Quad(const Point3D& Q, const Vector3D& u, const Vector3D& v);
-    virtual ~Quad();
+    Triangle(const Point3D& Q, const Vector3D& u, const Vector3D& v);
+    virtual ~Triangle();
 
     virtual Option<Intersect> intersect(const Ray& ray,
                                         const Interval& bounds) const override;

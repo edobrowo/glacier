@@ -13,6 +13,7 @@ public:
         Null = 0,
         Sphere,
         Quad,
+        Triangle,
     };
 
     Primitive();
