@@ -12,6 +12,7 @@
 #include "math/numeric.hpp"
 #include "render/camera.hpp"
 #include "render/config.hpp"
+#include "scene/disk_node.hpp"
 #include "scene/geometry_node.hpp"
 #include "scene/quad_node.hpp"
 #include "scene/scene_node.hpp"
@@ -215,6 +216,26 @@ PYBIND11_MODULE(glacier, m) {
                                     Point3D(Q[0], Q[1], Q[2]),
                                     Vector3D(u[0], u[1], u[2]),
                                     Vector3D(v[0], v[1], v[2]));
+        }));
+
+    // DiskNode class.
+    py::class_<DiskNode, GeometryNode, py::smart_holder>(m, "DiskNode")
+        .def(py::init<const char*, MaterialPtr>(),
+             py::arg("name"),
+             py::arg("material"))
+        .def(py::init([](const char* name,
+                         MaterialPtr mat,
+                         std::vector<f64> Q,
+                         std::vector<f64> u,
+                         std::vector<f64> v) {
+            if (Q.size() != 3 || u.size() != 3 || v.size() != 3) {
+                throw std::runtime_error("Q, u, and v must be 3-element lists");
+            }
+            return new DiskNode(name,
+                                mat,
+                                Point3D(Q[0], Q[1], Q[2]),
+                                Vector3D(u[0], u[1], u[2]),
+                                Vector3D(v[0], v[1], v[2]));
         }));
 
     // Camera class.

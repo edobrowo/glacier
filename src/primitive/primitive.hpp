@@ -14,6 +14,7 @@ public:
         Sphere,
         Quad,
         Triangle,
+        Disk,
     };
 
     Primitive();
