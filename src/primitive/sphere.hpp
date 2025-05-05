@@ -7,7 +7,7 @@
 class Sphere : public Primitive {
 public:
     Sphere();
-    virtual ~Sphere();
+    ~Sphere() override = default;
 
     /// @brief Computes the surface intersection with a sphere centered at the
     /// origin with unit radius.

@@ -8,7 +8,7 @@
 class Disk : public Primitive {
 public:
     Disk(const Point3D& Q, const Vector3D& u, const Vector3D& v);
-    virtual ~Disk();
+    ~Disk() override = default;
 
     virtual Option<Intersect> intersect(const Ray& ray,
                                         const Interval& bounds) const override;

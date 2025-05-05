@@ -12,6 +12,7 @@
 #include "math/numeric.hpp"
 #include "render/camera.hpp"
 #include "render/config.hpp"
+#include "scene/cuboid_node.hpp"
 #include "scene/disk_node.hpp"
 #include "scene/geometry_node.hpp"
 #include "scene/quad_node.hpp"
@@ -236,6 +237,30 @@ PYBIND11_MODULE(glacier, m) {
                                 Point3D(Q[0], Q[1], Q[2]),
                                 Vector3D(u[0], u[1], u[2]),
                                 Vector3D(v[0], v[1], v[2]));
+        }));
+
+    // Cuboid node.
+    py::class_<CuboidNode, GeometryNode, py::smart_holder>(m, "CuboidNode")
+        .def(py::init<const char*, MaterialPtr>(),
+             py::arg("name"),
+             py::arg("material"))
+        .def(py::init([](const char* name,
+                         MaterialPtr mat,
+                         std::vector<f64> Q,
+                         std::vector<f64> x,
+                         std::vector<f64> y,
+                         std::vector<f64> z) {
+            if (Q.size() != 3 || x.size() != 3 || y.size() != 3 ||
+                z.size() != 3) {
+                throw std::runtime_error(
+                    "Q, x, y, and z must be 3-element lists");
+            }
+            return new CuboidNode(name,
+                                  mat,
+                                  Point3D(Q[0], Q[1], Q[2]),
+                                  Vector3D(x[0], x[1], x[2]),
+                                  Vector3D(y[0], y[1], y[2]),
+                                  Vector3D(z[0], z[1], z[2]));
         }));
 
     // Camera class.

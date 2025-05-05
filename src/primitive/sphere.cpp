@@ -6,9 +6,6 @@ Sphere::Sphere() : Primitive() {
     mKind = Kind::Sphere;
 }
 
-Sphere::~Sphere() {
-}
-
 Option<Intersect> Sphere::intersect(const Ray& ray,
                                     const Interval& bounds) const {
     // Set up quadratic.

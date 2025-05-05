@@ -10,9 +10,6 @@ Disk::Disk(const Point3D& Q, const Vector3D& u, const Vector3D& v)
     mW = mNormal / mNormal.dot();
 };
 
-Disk::~Disk() {
-}
-
 Option<Intersect> Disk::intersect(const Ray& ray,
                                   const Interval& bounds) const {
     const f64 denom = mNormal.dot(ray.direction);

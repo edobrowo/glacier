@@ -8,7 +8,7 @@
 class Triangle : public Primitive {
 public:
     Triangle(const Point3D& Q, const Vector3D& u, const Vector3D& v);
-    virtual ~Triangle();
+    ~Triangle() override = default;
 
     virtual Option<Intersect> intersect(const Ray& ray,
                                         const Interval& bounds) const override;
