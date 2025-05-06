@@ -174,7 +174,8 @@ template <>
 struct FormatWriter<const char*> {
     static void write(const char* value, StringBuffer& sb) {
         const char* ptr = value;
-        while (*ptr != '\0') sb.putSafe(*ptr++);
+        while (*ptr != '\0')
+            sb.putSafe(*ptr++);
     }
 };
 
@@ -182,7 +183,8 @@ template <>
 struct FormatWriter<char*> {
     static void write(char* value, StringBuffer& sb) {
         const char* ptr = value;
-        while (*ptr != '\0') sb.putSafe(*ptr++);
+        while (*ptr != '\0')
+            sb.putSafe(*ptr++);
     }
 };
 
@@ -291,5 +293,19 @@ struct FormatWriter<std::map<K, V>> {
                 sb.append(", ", 2);
         }
         sb.putSafe('}');
+    }
+};
+
+template <typename T>
+    requires FormatWritable<T>
+struct FormatWriter<Option<T>> {
+    static void write(const Option<T>& opt, StringBuffer& sb) {
+        if (opt) {
+            sb.append("Some(", 5);
+            FormatWriter<T>::write(*opt, sb);
+            sb.putSafe(')');
+        } else {
+            sb.append("None", 4);
+        }
     }
 };

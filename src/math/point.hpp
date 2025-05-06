@@ -367,3 +367,15 @@ Point<T, dim> blend(const Point<T, dim>& lhs,
 
     return result;
 }
+
+template <Numeric T, u32 dim>
+    requires FormatWritable<T>
+struct FormatWriter<Point<T, dim>> {
+    static void write(const Point<T, dim>& value, StringBuffer& sb) {
+        sb.append("(");
+        for (Index i = 0; i < dim - 1; ++i)
+            sb.appendFormat("{},", value[i]);
+        sb.appendFormat("{}", value[dim - 1]);
+        sb.append(")");
+    }
+};
