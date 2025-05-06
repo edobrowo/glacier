@@ -30,6 +30,11 @@ struct FaceVertex {
     i64 position;
     Option<i64> texture;
     Option<i64> normal;
+
+    bool operator==(const FaceVertex& other) const {
+        return position == other.position && texture == other.texture &&
+               normal == other.normal;
+    }
 };
 
 struct Face {
@@ -43,7 +48,7 @@ struct ObjObject {
 
     // Vertex data.
     std::vector<Point3D> vertexPositions;
-    std::vector<Point3D> vertexTextureCoordinates;
+    std::vector<Point3D> vertexTexture;
     std::vector<Vector3D> vertexNormals;
 
     // Elements.
@@ -229,9 +234,9 @@ struct FormatWriter<ObjObject> {
         if (!obj.vertexPositions.empty())
             sb.putSafe('\n');
 
-        for (const Point3D& vt : obj.vertexTextureCoordinates)
+        for (const Point3D& vt : obj.vertexTexture)
             sb.appendFormat("vt {} {} {}\n", vt.x, vt.y, vt.z);
-        if (!obj.vertexTextureCoordinates.empty())
+        if (!obj.vertexTexture.empty())
             sb.putSafe('\n');
 
         for (const Vector3D& vn : obj.vertexNormals)

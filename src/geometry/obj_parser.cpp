@@ -165,7 +165,7 @@ View ObjParser::parseLine(View view, ObjData& data) const {
     }
     case Keyword::VertexTexture: {
         const ParseResult<Point3D> result = parseVertexTexture(view);
-        obj.vertexTextureCoordinates.push_back(result.value);
+        obj.vertexTexture.push_back(result.value);
         view = result.rest;
         break;
     }
@@ -477,7 +477,7 @@ Option<Index> ObjParser::findUnescapedNewline(const View view) const {
 void ObjParser::convertIndices(ObjData& data) const {
     for (ObjObject& obj : data.objects) {
         const i64 v_size = obj.vertexPositions.size();
-        const i64 vt_size = obj.vertexTextureCoordinates.size();
+        const i64 vt_size = obj.vertexTexture.size();
         const i64 vn_size = obj.vertexNormals.size();
 
         for (i64& p : obj.points)

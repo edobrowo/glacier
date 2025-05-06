@@ -15,6 +15,7 @@
 #include "scene/cuboid_node.hpp"
 #include "scene/disk_node.hpp"
 #include "scene/geometry_node.hpp"
+#include "scene/mesh_node.hpp"
 #include "scene/quad_node.hpp"
 #include "scene/scene_node.hpp"
 #include "scene/sphere_node.hpp"
@@ -262,6 +263,13 @@ PYBIND11_MODULE(glacier, m) {
                                   Vector3D(y[0], y[1], y[2]),
                                   Vector3D(z[0], z[1], z[2]));
         }));
+
+    // Mesh node.
+    py::class_<MeshNode, GeometryNode, py::smart_holder>(m, "MeshNode")
+        .def(py::init<const char*, MaterialPtr, const char*>(),
+             py::arg("name"),
+             py::arg("material"),
+             py::arg("path"));
 
     // Camera class.
     py::class_<Camera>(m, "Camera")

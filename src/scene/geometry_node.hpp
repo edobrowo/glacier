@@ -23,7 +23,7 @@ public:
     /// @brief Retrieves a constant reference to the material.
     const MaterialPtr& material() const;
 
-private:
+protected:
     PrimitivePtr mPrimitive;
     MaterialPtr mMaterial;
 };
