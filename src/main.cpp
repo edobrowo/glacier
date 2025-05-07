@@ -1,6 +1,7 @@
 #include <Python.h>
 
 #include <cstdlib>
+#include <string_view>
 
 #include "util/format.hpp"
 

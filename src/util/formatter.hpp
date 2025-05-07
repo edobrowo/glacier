@@ -3,6 +3,7 @@
 #include <cstring>
 #include <map>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "common.hpp"
@@ -194,7 +195,14 @@ struct FormatWriter<char*> {
 template <>
 struct FormatWriter<std::string> {
     static void write(const std::string& value, StringBuffer& sb) {
-        sb.append(value.c_str(), value.size());
+        sb.append(value);
+    }
+};
+
+template <>
+struct FormatWriter<std::string_view> {
+    static void write(const std::string_view value, StringBuffer& sb) {
+        sb.append(value);
     }
 };
 
@@ -263,7 +271,7 @@ template <std::floating_point F>
 struct FormatWriter<F> {
     static void write(F value, StringBuffer& sb) {
         // TODO: RTW for float printing.
-        sb.append(std::to_string(value).c_str());
+        sb.append(std::to_string(value));
     }
 };
 

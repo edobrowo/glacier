@@ -512,10 +512,10 @@ template <Numeric T, u32 dim>
     requires FormatWritable<T>
 struct FormatWriter<Vector<T, dim>> {
     static void write(const Vector<T, dim>& value, StringBuffer& sb) {
-        sb.append("(");
+        sb.putSafe('(');
         for (Index i = 0; i < dim - 1; ++i)
             sb.appendFormat("{},", value[i]);
         sb.appendFormat("{}", value[dim - 1]);
-        sb.append(")");
+        sb.putSafe(')');
     }
 };

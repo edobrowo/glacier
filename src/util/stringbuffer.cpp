@@ -50,6 +50,12 @@ void StringBuffer::append(const std::string& str) {
     mNext += str.size();
 }
 
+void StringBuffer::append(const std::string_view view) {
+    expand(mNext + view.size());
+    std::memcpy(mBuffer + mNext, view.data(), view.size());
+    mNext += view.size();
+}
+
 void StringBuffer::expand(const Size size) {
     if (size > mCapacity) {
         mCapacity += (size / CAPACITY_INCREMENT + 1) * CAPACITY_INCREMENT;

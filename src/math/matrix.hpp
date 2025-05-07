@@ -454,14 +454,14 @@ template <std::floating_point T, u32 p, u32 q>
     requires FormatWritable<T>
 struct FormatWriter<Matrix<T, p, q>> {
     static void write(const Matrix<T, p, q>& value, StringBuffer& sb) {
-        sb.append("[");
+        sb.putSafe('[');
         for (Index i = 0; i < p - 1; ++i) {
-            sb.append("[");
+            sb.putSafe('[');
             for (Index j = 0; j < q - 1; ++j)
                 sb.appendFormat("{},", value(i, j));
             sb.appendFormat("{}],", value(i, q - 1));
         }
-        sb.append("[");
+        sb.putSafe('[');
         for (Index j = 0; j < q - 1; ++j)
             sb.appendFormat("{},", value(p - 1, j));
         sb.appendFormat("{}]]", value(p - 1, q - 1));

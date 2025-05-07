@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string_view>
+
 #include "common.hpp"
 
 // TODO: Wide characters.
@@ -16,8 +18,10 @@ public:
 
     void put(const char c);
     void putSafe(const char c);
+
     void append(const char* str, const Size length);
     void append(const std::string& str);
+    void append(const std::string_view view);
 
     template <typename... Targs>
     void appendFormat(const char* format_string, Targs... args) {
