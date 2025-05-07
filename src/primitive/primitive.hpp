@@ -16,7 +16,8 @@ public:
         Triangle,
         Disk,
         Cuboid,
-        Mesh
+        Mesh,
+        Tube,
     };
 
     Primitive();

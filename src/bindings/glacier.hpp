@@ -20,6 +20,7 @@
 #include "scene/scene_node.hpp"
 #include "scene/sphere_node.hpp"
 #include "scene/triangle_node.hpp"
+#include "scene/tube_node.hpp"
 #include "util/common.hpp"
 
 namespace py = pybind11;
@@ -338,6 +339,26 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("material"),
             py::arg("path")
         );
+
+    // Tube node.
+    py::class_<TubeNode, GeometryNode, py::smart_holder>(m, "TubeNode")
+        .def(
+            py::init<const char*, MaterialPtr>(),
+            py::arg("name"),
+            py::arg("material")
+        )
+        .def(py::init([](const char* name,
+                         MaterialPtr mat,
+                         std::vector<f64> base,
+                         const f64 radius,
+                         const f64 height) {
+            if (base.size() != 3) {
+                throw std::runtime_error("base must be 3-element lists");
+            }
+            return new TubeNode(
+                name, mat, Point3D(base[0], base[1], base[2]), radius, height
+            );
+        }));
 
     // Camera class.
     py::class_<Camera>(m, "Camera")
