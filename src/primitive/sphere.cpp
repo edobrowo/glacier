@@ -2,16 +2,21 @@
 
 #include "math/rootfinding.hpp"
 
-Sphere::Sphere() : Primitive() {
+Sphere::Sphere() : Primitive(), mCenter(), mRadius(1.0) {
     mKind = Kind::Sphere;
+}
+
+Sphere::Sphere(const Point3D& center, const f64 radius)
+    : Primitive(), mCenter(center), mRadius(radius) {
 }
 
 Option<Intersect> Sphere::intersect(const Ray& ray,
                                     const Interval& bounds) const {
     // Set up quadratic.
+    const Vector3D oc = ray.origin - mCenter;
     const f64 a = ray.direction.dot();
-    const f64 b = 2.0 * ray.direction.dot(ray.origin.pos());
-    const f64 c = ray.origin.pos().dot() - 1.0;
+    const f64 b = 2.0 * ray.direction.dot(oc);
+    const f64 c = oc.dot() - math::sqr(mRadius);
 
     // Solve quadratic.
     std::pair<Option<f64>, Option<f64>> roots = math::quadratic_roots(a, b, c);
@@ -39,5 +44,5 @@ Option<Intersect> Sphere::intersect(const Ray& ray,
 
     const Point3D p = ray.at(t);
 
-    return Intersect(t, p, p.pos().normalize());
+    return Intersect(t, p, (p - mCenter) / mRadius);
 }
