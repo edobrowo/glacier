@@ -6,8 +6,8 @@ Primitive::Primitive() : mKind(Primitive::Kind::Null) {
 Primitive::~Primitive() {
 }
 
-Option<Intersect> Primitive::intersect(const Ray& ray,
-                                       const Interval& bounds) const {
+Option<Intersect> Primitive::intersect(const Ray& ray, const Interval& bounds)
+    const {
     return std::nullopt;
 }
 

@@ -22,8 +22,9 @@ public:
 
     /// @brief Scatters the incident ray according to local surface geometry and
     /// material appearance properties.
-    virtual Option<ScatterRecord> scatter(const Ray& incident,
-                                          const Intersect& intersect) const;
+    virtual Option<ScatterRecord> scatter(
+        const Ray& incident, const Intersect& intersect
+    ) const;
 
     /// @brief Retrieves the kind of the material.
     Kind kind() const;

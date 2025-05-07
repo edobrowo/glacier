@@ -1,8 +1,8 @@
 #include "intersect.hpp"
 
-Intersect::Intersect(const f64 t,
-                     const Point3D& position,
-                     const Vector3D& normal)
+Intersect::Intersect(
+    const f64 t, const Point3D& position, const Vector3D& normal
+)
     : t(t), position(position), normal(normal) {
 }
 

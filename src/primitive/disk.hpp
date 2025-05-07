@@ -7,11 +7,12 @@
 /// @brief Disk primitive.
 class Disk : public Primitive {
 public:
+    Disk();
     Disk(const Point3D& Q, const Vector3D& u, const Vector3D& v);
     ~Disk() override = default;
 
-    virtual Option<Intersect> intersect(const Ray& ray,
-                                        const Interval& bounds) const override;
+    virtual Option<Intersect> intersect(const Ray& ray, const Interval& bounds)
+        const override;
 
 private:
     Point3D mQ;

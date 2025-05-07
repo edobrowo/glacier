@@ -11,8 +11,9 @@ Specular::Specular(const Vector3D& color, const f64 phong)
 Specular::~Specular() {
 }
 
-Option<ScatterRecord> Specular::scatter(const Ray& incident,
-                                        const Intersect& intersect) const {
+Option<ScatterRecord> Specular::scatter(
+    const Ray& incident, const Intersect& intersect
+) const {
     const f64 x1 = thread_rng::uniform<f64>();
     const f64 x2 = thread_rng::uniform<f64>();
 

@@ -31,12 +31,14 @@ void Image::save(const char* path) const {
         return;
     }
 
-    const int error = stbi_write_png(path,
-                                     static_cast<int>(mWidth),
-                                     static_cast<int>(mHeight),
-                                     3,
-                                     mData,
-                                     static_cast<int>(mWidth * 3));
+    const int error = stbi_write_png(
+        path,
+        static_cast<int>(mWidth),
+        static_cast<int>(mHeight),
+        3,
+        mData,
+        static_cast<int>(mWidth * 3)
+    );
 
     if (!error)
         Log::f("Failed to save image");

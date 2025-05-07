@@ -12,8 +12,8 @@ public:
 
     /// @brief Computes the surface intersection with a sphere centered at the
     /// origin with unit radius.
-    virtual Option<Intersect> intersect(const Ray& ray,
-                                        const Interval& bounds) const override;
+    virtual Option<Intersect> intersect(const Ray& ray, const Interval& bounds)
+        const override;
 
 private:
     Point3D mCenter;

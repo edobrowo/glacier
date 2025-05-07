@@ -296,8 +296,9 @@ T& Point<T, dim>::operator[](const Index i) {
 }
 
 template <Numeric T, u32 dim>
-static Point<T, dim> operator+(const Point<T, dim>& lhs,
-                               const Vector<T, dim>& rhs) {
+static Point<T, dim> operator+(
+    const Point<T, dim>& lhs, const Vector<T, dim>& rhs
+) {
     Point<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] + rhs[i];
@@ -305,8 +306,9 @@ static Point<T, dim> operator+(const Point<T, dim>& lhs,
 }
 
 template <Numeric T, u32 dim>
-static Point<T, dim> operator+(const Vector<T, dim>& lhs,
-                               const Point<T, dim>& rhs) {
+static Point<T, dim> operator+(
+    const Vector<T, dim>& lhs, const Point<T, dim>& rhs
+) {
     Point<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] + rhs[i];
@@ -314,8 +316,9 @@ static Point<T, dim> operator+(const Vector<T, dim>& lhs,
 }
 
 template <Numeric T, u32 dim>
-static Point<T, dim> operator-(const Point<T, dim>& lhs,
-                               const Vector<T, dim>& rhs) {
+static Point<T, dim> operator-(
+    const Point<T, dim>& lhs, const Vector<T, dim>& rhs
+) {
     Point<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] - rhs[i];
@@ -323,8 +326,9 @@ static Point<T, dim> operator-(const Point<T, dim>& lhs,
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator-(const Point<T, dim>& lhs,
-                                const Point<T, dim>& rhs) {
+static Vector<T, dim> operator-(
+    const Point<T, dim>& lhs, const Point<T, dim>& rhs
+) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] - rhs[i];
@@ -353,9 +357,9 @@ T dist(const Point<T, dim>& lhs, const Point<T, dim>& rhs) {
 }
 
 template <Numeric T, u32 dim>
-Point<T, dim> blend(const Point<T, dim>& lhs,
-                    const Point<T, dim>& rhs,
-                    const T a) {
+Point<T, dim> blend(
+    const Point<T, dim>& lhs, const Point<T, dim>& rhs, const T a
+) {
     assertm(T(0) <= a && a <= T(1), "a must be in [0, 1]");
 
     Point<T, dim> result;

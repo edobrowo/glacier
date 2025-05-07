@@ -26,10 +26,12 @@ namespace py = pybind11;
 
 /// @brief Renders the scene from the given virtual camera to an image file at
 /// the specified path.
-void render(const char* path,
-            const Camera& camera,
-            SceneNodePtr&& root,
-            const Config& config);
+void render(
+    const char* path,
+    const Camera& camera,
+    SceneNodePtr&& root,
+    const Config& config
+);
 
 PYBIND11_MODULE(glacier, m) {
     m.doc() = "Glacier renderer module.";
@@ -58,10 +60,12 @@ PYBIND11_MODULE(glacier, m) {
     py::class_<Transform>(m, "Transform")
         .def(py::init<>())
         .def("s", py::overload_cast<f64, f64, f64>(&Transform::s))
-        .def("r",
-             [](SceneNode& self, const f64 x, const f64 y, const f64 z) {
-                 self.transform().r(math::rad(x), math::rad(y), math::rad(z));
-             })
+        .def(
+            "r",
+            [](SceneNode& self, const f64 x, const f64 y, const f64 z) {
+                self.transform().r(math::rad(x), math::rad(y), math::rad(z));
+            }
+        )
         .def("t", py::overload_cast<f64, f64, f64>(&Transform::t))
         .def("set_order", &Transform::setOrder)
         .def("set_rotation_order", &Transform::setRotationOrder);
@@ -82,56 +86,72 @@ PYBIND11_MODULE(glacier, m) {
 
     // LambertianMaterial class.
     py::class_<Lambertian, Material, py::smart_holder>(m, "LambertianMaterial")
-        .def(py::init([](std::vector<f64> color) {
-                 if (color.size() != 3) {
-                     throw std::runtime_error(
-                         "Lambertian color must be a 3-element list");
-                 }
-                 return new Lambertian(Vector3D(color[0], color[1], color[2]));
-             }),
-             py::arg("color"));
+        .def(
+            py::init([](std::vector<f64> color) {
+                if (color.size() != 3) {
+                    throw std::runtime_error(
+                        "Lambertian color must be a 3-element list"
+                    );
+                }
+                return new Lambertian(Vector3D(color[0], color[1], color[2]));
+            }),
+            py::arg("color")
+        );
 
     // SpecularMaterial class.
     py::class_<Specular, Material, py::smart_holder>(m, "SpecularMaterial")
-        .def(py::init([](std::vector<f64> color, const f64 phong) {
-                 if (color.size() != 3) {
-                     throw std::runtime_error(
-                         "Specular color must be a 3-element list");
-                 }
-                 return new Specular(Vector3D(color[0], color[1], color[2]),
-                                     phong);
-             }),
-             py::arg("color"),
-             py::arg("phong"));
+        .def(
+            py::init([](std::vector<f64> color, const f64 phong) {
+                if (color.size() != 3) {
+                    throw std::runtime_error(
+                        "Specular color must be a 3-element list"
+                    );
+                }
+                return new Specular(
+                    Vector3D(color[0], color[1], color[2]), phong
+                );
+            }),
+            py::arg("color"),
+            py::arg("phong")
+        );
 
     // MirrorSpecularMaterial class.
     py::class_<MirrorSpecular, Material, py::smart_holder>(
-        m, "MirrorSpecularMaterial")
-        .def(py::init([](std::vector<f64> color) {
-                 if (color.size() != 3) {
-                     throw std::runtime_error(
-                         "MirrorSpecular color must be a 3-element list");
-                 }
-                 return new MirrorSpecular(
-                     Vector3D(color[0], color[1], color[2]));
-             }),
-             py::arg("color"));
+        m, "MirrorSpecularMaterial"
+    )
+        .def(
+            py::init([](std::vector<f64> color) {
+                if (color.size() != 3) {
+                    throw std::runtime_error(
+                        "MirrorSpecular color must be a 3-element list"
+                    );
+                }
+                return new MirrorSpecular(Vector3D(color[0], color[1], color[2])
+                );
+            }),
+            py::arg("color")
+        );
 
     // DielectricMaterial class.
     py::class_<Dielectric, Material, py::smart_holder>(m, "DielectricMaterial")
-        .def(py::init([](const f64 eta) { return new Dielectric(eta); }),
-             py::arg("eta"));
+        .def(
+            py::init([](const f64 eta) { return new Dielectric(eta); }),
+            py::arg("eta")
+        );
 
     // EmissiveMaterial class.
     py::class_<Emissive, Material, py::smart_holder>(m, "EmissiveMaterial")
-        .def(py::init([](std::vector<f64> color) {
-                 if (color.size() != 3) {
-                     throw std::runtime_error(
-                         "Emissive color must be a 3-element list");
-                 }
-                 return new Emissive(Vector3D(color[0], color[1], color[2]));
-             }),
-             py::arg("color"));
+        .def(
+            py::init([](std::vector<f64> color) {
+                if (color.size() != 3) {
+                    throw std::runtime_error(
+                        "Emissive color must be a 3-element list"
+                    );
+                }
+                return new Emissive(Vector3D(color[0], color[1], color[2]));
+            }),
+            py::arg("color")
+        );
 
     // SceneNode::Kind enum.
     py::enum_<SceneNode::Kind>(m, "SceneNodeKind")
@@ -144,30 +164,44 @@ PYBIND11_MODULE(glacier, m) {
         .def(py::init<const char*>())
         .def("id", &SceneNode::id)
         .def("kind", &SceneNode::kind)
-        .def("transform",
-             py::overload_cast<>(&SceneNode::transform),
-             py::return_value_policy::reference_internal)
-        .def("s",
-             [](SceneNode& self, const f64 x, const f64 y, const f64 z) {
-                 self.transform().s(x, y, z);
-             })
-        .def("r",
-             [](SceneNode& self, const f64 x, const f64 y, const f64 z) {
-                 self.transform().r(math::rad(x), math::rad(y), math::rad(z));
-             })
-        .def("t",
-             [](SceneNode& self, const f64 x, const f64 y, const f64 z) {
-                 self.transform().t(x, y, z);
-             })
-        .def("s",
-             [](SceneNode& self, const f64 a) { self.transform().s(a, a, a); })
-        .def("r",
-             [](SceneNode& self, const f64 a) {
-                 const f64 r = math::rad(a);
-                 self.transform().r(r, r, r);
-             })
-        .def("t",
-             [](SceneNode& self, const f64 a) { self.transform().t(a, a, a); })
+        .def(
+            "transform",
+            py::overload_cast<>(&SceneNode::transform),
+            py::return_value_policy::reference_internal
+        )
+        .def(
+            "s",
+            [](SceneNode& self, const f64 x, const f64 y, const f64 z) {
+                self.transform().s(x, y, z);
+            }
+        )
+        .def(
+            "r",
+            [](SceneNode& self, const f64 x, const f64 y, const f64 z) {
+                self.transform().r(math::rad(x), math::rad(y), math::rad(z));
+            }
+        )
+        .def(
+            "t",
+            [](SceneNode& self, const f64 x, const f64 y, const f64 z) {
+                self.transform().t(x, y, z);
+            }
+        )
+        .def(
+            "s",
+            [](SceneNode& self, const f64 a) { self.transform().s(a, a, a); }
+        )
+        .def(
+            "r",
+            [](SceneNode& self, const f64 a) {
+                const f64 r = math::rad(a);
+                self.transform().r(r, r, r);
+            }
+        )
+        .def(
+            "t",
+            [](SceneNode& self, const f64 a) { self.transform().t(a, a, a); }
+        )
         .def("add_child", &SceneNode::addChild)
         .def_readwrite("name", &SceneNode::name);
 
@@ -176,15 +210,32 @@ PYBIND11_MODULE(glacier, m) {
 
     // SphereNode class.
     py::class_<SphereNode, GeometryNode, py::smart_holder>(m, "SphereNode")
-        .def(py::init<const char*, MaterialPtr>(),
-             py::arg("name"),
-             py::arg("material"));
+        .def(
+            py::init<const char*, MaterialPtr>(),
+            py::arg("name"),
+            py::arg("material")
+        )
+        .def(py::init([](const char* name,
+                         MaterialPtr mat,
+                         std::vector<f64> center,
+                         const f64 radius) {
+            if (center.size() != 3)
+                throw std::runtime_error("center must be 3-element list");
+
+            if (radius <= 0)
+                throw std::runtime_error("radius must be nonnegative");
+            return new SphereNode(
+                name, mat, Point3D(center[0], center[1], center[2]), radius
+            );
+        }));
 
     // QuadNode class.
     py::class_<QuadNode, GeometryNode, py::smart_holder>(m, "QuadNode")
-        .def(py::init<const char*, MaterialPtr>(),
-             py::arg("name"),
-             py::arg("material"))
+        .def(
+            py::init<const char*, MaterialPtr>(),
+            py::arg("name"),
+            py::arg("material")
+        )
         .def(py::init([](const char* name,
                          MaterialPtr mat,
                          std::vector<f64> Q,
@@ -193,18 +244,22 @@ PYBIND11_MODULE(glacier, m) {
             if (Q.size() != 3 || u.size() != 3 || v.size() != 3) {
                 throw std::runtime_error("Q, u, and v must be 3-element lists");
             }
-            return new QuadNode(name,
-                                mat,
-                                Point3D(Q[0], Q[1], Q[2]),
-                                Vector3D(u[0], u[1], u[2]),
-                                Vector3D(v[0], v[1], v[2]));
+            return new QuadNode(
+                name,
+                mat,
+                Point3D(Q[0], Q[1], Q[2]),
+                Vector3D(u[0], u[1], u[2]),
+                Vector3D(v[0], v[1], v[2])
+            );
         }));
 
     // TriangleNode class.
     py::class_<TriangleNode, GeometryNode, py::smart_holder>(m, "TriangleNode")
-        .def(py::init<const char*, MaterialPtr>(),
-             py::arg("name"),
-             py::arg("material"))
+        .def(
+            py::init<const char*, MaterialPtr>(),
+            py::arg("name"),
+            py::arg("material")
+        )
         .def(py::init([](const char* name,
                          MaterialPtr mat,
                          std::vector<f64> Q,
@@ -213,18 +268,22 @@ PYBIND11_MODULE(glacier, m) {
             if (Q.size() != 3 || u.size() != 3 || v.size() != 3) {
                 throw std::runtime_error("Q, u, and v must be 3-element lists");
             }
-            return new TriangleNode(name,
-                                    mat,
-                                    Point3D(Q[0], Q[1], Q[2]),
-                                    Vector3D(u[0], u[1], u[2]),
-                                    Vector3D(v[0], v[1], v[2]));
+            return new TriangleNode(
+                name,
+                mat,
+                Point3D(Q[0], Q[1], Q[2]),
+                Vector3D(u[0], u[1], u[2]),
+                Vector3D(v[0], v[1], v[2])
+            );
         }));
 
     // DiskNode class.
     py::class_<DiskNode, GeometryNode, py::smart_holder>(m, "DiskNode")
-        .def(py::init<const char*, MaterialPtr>(),
-             py::arg("name"),
-             py::arg("material"))
+        .def(
+            py::init<const char*, MaterialPtr>(),
+            py::arg("name"),
+            py::arg("material")
+        )
         .def(py::init([](const char* name,
                          MaterialPtr mat,
                          std::vector<f64> Q,
@@ -233,18 +292,22 @@ PYBIND11_MODULE(glacier, m) {
             if (Q.size() != 3 || u.size() != 3 || v.size() != 3) {
                 throw std::runtime_error("Q, u, and v must be 3-element lists");
             }
-            return new DiskNode(name,
-                                mat,
-                                Point3D(Q[0], Q[1], Q[2]),
-                                Vector3D(u[0], u[1], u[2]),
-                                Vector3D(v[0], v[1], v[2]));
+            return new DiskNode(
+                name,
+                mat,
+                Point3D(Q[0], Q[1], Q[2]),
+                Vector3D(u[0], u[1], u[2]),
+                Vector3D(v[0], v[1], v[2])
+            );
         }));
 
     // Cuboid node.
     py::class_<CuboidNode, GeometryNode, py::smart_holder>(m, "CuboidNode")
-        .def(py::init<const char*, MaterialPtr>(),
-             py::arg("name"),
-             py::arg("material"))
+        .def(
+            py::init<const char*, MaterialPtr>(),
+            py::arg("name"),
+            py::arg("material")
+        )
         .def(py::init([](const char* name,
                          MaterialPtr mat,
                          std::vector<f64> Q,
@@ -254,50 +317,59 @@ PYBIND11_MODULE(glacier, m) {
             if (Q.size() != 3 || x.size() != 3 || y.size() != 3 ||
                 z.size() != 3) {
                 throw std::runtime_error(
-                    "Q, x, y, and z must be 3-element lists");
+                    "Q, x, y, and z must be 3-element lists"
+                );
             }
-            return new CuboidNode(name,
-                                  mat,
-                                  Point3D(Q[0], Q[1], Q[2]),
-                                  Vector3D(x[0], x[1], x[2]),
-                                  Vector3D(y[0], y[1], y[2]),
-                                  Vector3D(z[0], z[1], z[2]));
+            return new CuboidNode(
+                name,
+                mat,
+                Point3D(Q[0], Q[1], Q[2]),
+                Vector3D(x[0], x[1], x[2]),
+                Vector3D(y[0], y[1], y[2]),
+                Vector3D(z[0], z[1], z[2])
+            );
         }));
 
     // Mesh node.
     py::class_<MeshNode, GeometryNode, py::smart_holder>(m, "MeshNode")
-        .def(py::init<const char*, MaterialPtr, const char*>(),
-             py::arg("name"),
-             py::arg("material"),
-             py::arg("path"));
+        .def(
+            py::init<const char*, MaterialPtr, const char*>(),
+            py::arg("name"),
+            py::arg("material"),
+            py::arg("path")
+        );
 
     // Camera class.
     py::class_<Camera>(m, "Camera")
-        .def(py::init([](std::vector<f64> look_from,
-                         std::vector<f64> look_at,
-                         std::vector<f64> up,
-                         f64 fov,
-                         Size nx,
-                         Size ny) {
-                 if (look_from.size() != 3 || look_at.size() != 3 ||
-                     up.size() != 3) {
-                     throw std::runtime_error(
-                         "look_from, look_at, and up must be 3-element lists");
-                 }
-                 return new Camera(
-                     Point3D(look_from[0], look_from[1], look_from[2]),
-                     Point3D(look_at[0], look_at[1], look_at[2]),
-                     Vector3D(up[0], up[1], up[2]),
-                     fov,
-                     nx,
-                     ny);
-             }),
-             py::arg("look_from"),
-             py::arg("look_at"),
-             py::arg("up"),
-             py::arg("fov"),
-             py::arg("nx"),
-             py::arg("ny"));
+        .def(
+            py::init([](std::vector<f64> look_from,
+                        std::vector<f64> look_at,
+                        std::vector<f64> up,
+                        f64 fov,
+                        Size nx,
+                        Size ny) {
+                if (look_from.size() != 3 || look_at.size() != 3 ||
+                    up.size() != 3) {
+                    throw std::runtime_error(
+                        "look_from, look_at, and up must be 3-element lists"
+                    );
+                }
+                return new Camera(
+                    Point3D(look_from[0], look_from[1], look_from[2]),
+                    Point3D(look_at[0], look_at[1], look_at[2]),
+                    Vector3D(up[0], up[1], up[2]),
+                    fov,
+                    nx,
+                    ny
+                );
+            }),
+            py::arg("look_from"),
+            py::arg("look_at"),
+            py::arg("up"),
+            py::arg("fov"),
+            py::arg("nx"),
+            py::arg("ny")
+        );
 
     // RenderingMode enum.
     py::enum_<RenderingMode>(m, "RenderingMode")
@@ -319,13 +391,13 @@ PYBIND11_MODULE(glacier, m) {
            const Camera& camera,
            SceneNodePtr root,
            std::optional<Config> config) {
-            render(path.c_str(),
-                   camera,
-                   std::move(root),
-                   config.value_or(Config()));
+            render(
+                path.c_str(), camera, std::move(root), config.value_or(Config())
+            );
         },
         py::arg("path"),
         py::arg("camera"),
         py::arg("root"),
-        py::arg("config") = py::none());
+        py::arg("config") = py::none()
+    );
 }

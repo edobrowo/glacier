@@ -20,3 +20,4 @@ IndentPPDirectives: None
 AllowShortEnumsOnASingleLine: false
 BinPackParameters: false
 BinPackArguments: false
+AlignAfterOpenBracket: BlockIndent

@@ -4,12 +4,14 @@
 #include "util/log.hpp"
 #include "util/thread_random.hpp"
 
-Camera::Camera(const Point3D& look_from,
-               const Point3D& look_at,
-               const Vector3D& up,
-               const f64 fov,
-               const Size nx,
-               const Size ny) {
+Camera::Camera(
+    const Point3D& look_from,
+    const Point3D& look_at,
+    const Vector3D& up,
+    const f64 fov,
+    const Size nx,
+    const Size ny
+) {
     // Raster image dimensions.
     mNx = nx;
     mNy = ny;
@@ -43,8 +45,9 @@ const Point3D& Camera::origin() const {
 }
 
 static inline Vector2D sample_unit_square() {
-    return Vector2D(thread_rng::uniform(-0.5, 0.5),
-                    thread_rng::uniform(-0.5, 0.5));
+    return Vector2D(
+        thread_rng::uniform(-0.5, 0.5), thread_rng::uniform(-0.5, 0.5)
+    );
 }
 
 Point3D Camera::p(const Index px, const Index py) const {

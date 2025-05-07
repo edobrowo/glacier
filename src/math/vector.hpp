@@ -93,8 +93,8 @@ public:
     Vector<T, dim> clamp(const T low, const T high) const;
 
     /// @brief Creates a new vector clamped by the specified vector bounds.
-    Vector<T, dim> clamp(const Vector<T, dim>& low,
-                         const Vector<T, dim>& high) const;
+    Vector<T, dim> clamp(const Vector<T, dim>& low, const Vector<T, dim>& high)
+        const;
 
     /// @brief Retrieves a pointer to the components buffer.
     const T* data() const;
@@ -372,8 +372,9 @@ static Vector<T, dim> operator-(const Vector<T, dim>& rhs) {
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator+(const Vector<T, dim>& lhs,
-                                const Vector<T, dim>& rhs) {
+static Vector<T, dim> operator+(
+    const Vector<T, dim>& lhs, const Vector<T, dim>& rhs
+) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] + rhs[i];
@@ -381,8 +382,9 @@ static Vector<T, dim> operator+(const Vector<T, dim>& lhs,
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator-(const Vector<T, dim>& lhs,
-                                const Vector<T, dim>& rhs) {
+static Vector<T, dim> operator-(
+    const Vector<T, dim>& lhs, const Vector<T, dim>& rhs
+) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] - rhs[i];
@@ -422,8 +424,9 @@ static Vector<T, dim> operator/(const T& lhs, const Vector<T, dim>& rhs) {
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator*(const Vector<T, dim>& lhs,
-                                const Vector<T, dim>& rhs) {
+static Vector<T, dim> operator*(
+    const Vector<T, dim>& lhs, const Vector<T, dim>& rhs
+) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] * rhs[i];
@@ -431,8 +434,9 @@ static Vector<T, dim> operator*(const Vector<T, dim>& lhs,
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator/(const Vector<T, dim>& lhs,
-                                const Vector<T, dim>& rhs) {
+static Vector<T, dim> operator/(
+    const Vector<T, dim>& lhs, const Vector<T, dim>& rhs
+) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] / rhs[i];
@@ -495,8 +499,9 @@ Vector<T, dim> Vector<T, dim>::clamp(const T low, const T high) const {
 }
 
 template <Numeric T, u32 dim>
-Vector<T, dim> Vector<T, dim>::clamp(const Vector<T, dim>& low,
-                                     const Vector<T, dim>& high) const {
+Vector<T, dim> Vector<T, dim>::clamp(
+    const Vector<T, dim>& low, const Vector<T, dim>& high
+) const {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = math::clamp(components[i], low[i], high[i]);

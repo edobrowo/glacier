@@ -496,10 +496,9 @@ void ObjParser::convertIndices(obj::Polyline& line, const i64 v_size) const {
         i = (i > 0) ? i - 1 : v_size + i;
 }
 
-void ObjParser::convertIndices(obj::Face& face,
-                               const i64 v_size,
-                               const i64 vt_size,
-                               const i64 vn_size) const {
+void ObjParser::convertIndices(
+    obj::Face& face, const i64 v_size, const i64 vt_size, const i64 vn_size
+) const {
     for (FaceVertex& v : face.vertices) {
         i64& vp = v.position;
         Option<i64>& vt = v.texture;

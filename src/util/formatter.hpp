@@ -45,8 +45,9 @@ struct Token {
 /// @param format_string Format string.
 /// @param length Length of the parse string.
 /// @return Sequence of parse tokens.
-std::vector<Token> parseFormatString(const char* format_string,
-                                     const Size length) {
+std::vector<Token> parseFormatString(
+    const char* format_string, const Size length
+) {
     std::vector<Token> tokens;
     Token::Kind current = Token::Kind::None;
 
@@ -114,7 +115,8 @@ public:
                 "unexpected number of formatter args (num_args={}, "
                 "num_formatters={})",
                 num_args,
-                num_formatters);
+                num_formatters
+            );
             throw std::runtime_error(sb.str());
         }
 
@@ -125,7 +127,8 @@ public:
                 FormatWriter<std::decay_t<decltype(args)>>::write(args, sb);
                 ++i;
             }(),
-            ...);
+            ...
+        );
         writeLiterals(sb, tokens, i);
     }
 
@@ -133,9 +136,9 @@ private:
     const char* mFormatString;
     Size mLength;
 
-    Index writeLiterals(StringBuffer& sb,
-                        const std::vector<Token>& tokens,
-                        const Index start) {
+    Index writeLiterals(
+        StringBuffer& sb, const std::vector<Token>& tokens, const Index start
+    ) {
         Index i = start, n = tokens.size();
         while (i < n && tokens[i].kind != Token::Kind::Formatter) {
             Token token = tokens[i];

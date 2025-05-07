@@ -11,7 +11,8 @@ public:
 
     /// @brief Scatters the incident ray via refraction.
     virtual Option<ScatterRecord> scatter(
-        const Ray& incident, const Intersect& intersect) const override;
+        const Ray& incident, const Intersect& intersect
+    ) const override;
 
 private:
     f64 mEta;

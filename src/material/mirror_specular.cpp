@@ -10,7 +10,8 @@ MirrorSpecular::~MirrorSpecular() {
 }
 
 Option<ScatterRecord> MirrorSpecular::scatter(
-    const Ray& incident, const Intersect& intersect) const {
+    const Ray& incident, const Intersect& intersect
+) const {
     const Point3D& p = intersect.position;
     const Vector3D& n = intersect.normal;
     const Vector3D& l = incident.direction;

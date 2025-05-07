@@ -11,9 +11,11 @@ namespace std {
 template <>
 struct hash<obj::FaceVertex> {
     std::size_t operator()(const obj::FaceVertex& v) const {
-        return ((std::hash<i64>()(v.position) << 1) ^
-                (std::hash<Option<i64>>()(v.texture) << 2) ^
-                std::hash<Option<i64>>()(v.normal));
+        return (
+            (std::hash<i64>()(v.position) << 1) ^
+            (std::hash<Option<i64>>()(v.texture) << 2) ^
+            std::hash<Option<i64>>()(v.normal)
+        );
     }
 };
 
@@ -103,6 +105,7 @@ template <typename Vertex>
 struct FormatWriter<IndexedMesh<Vertex>> {
     static void write(const IndexedMesh<Vertex>& mesh, StringBuffer& sb) {
         sb.appendFormat(
-            "Vertices: {}\nTriangles: {}", mesh.vertices(), mesh.triangles());
+            "Vertices: {}\nTriangles: {}", mesh.vertices(), mesh.triangles()
+        );
     }
 };

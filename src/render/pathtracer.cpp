@@ -101,19 +101,22 @@ Vector3D Pathtracer::shadeRecursive(const Ray& ray, const Size depth) const {
 
 Option<SurfaceInteraction> Pathtracer::intersect(const Ray& ray) const {
     return intersectRecursive(
-        mScene.root(), ray, Interval(0.001, math::infinity<f64>()));
+        mScene.root(), ray, Interval(0.001, math::infinity<f64>())
+    );
 }
 
 Option<SurfaceInteraction> Pathtracer::intersectRecursive(
-    const SceneNodePtr& node, const Ray& ray, const Interval& bounds) const {
+    const SceneNodePtr& node, const Ray& ray, const Interval& bounds
+) const {
     // Current closest intersection and interval.
     Option<SurfaceInteraction> closest = std::nullopt;
     Interval closest_bounds(bounds);
 
     // On "the way down", transform the ray with the current node's inverse
     // transformation.
-    const Ray inverse_ray = Ray(node->transform().inverse() * ray.origin,
-                                node->transform().inverse() * ray.direction);
+    const Ray inverse_ray =
+        Ray(node->transform().inverse() * ray.origin,
+            node->transform().inverse() * ray.direction);
 
     // Compute the intersect with the current node if it contains a primitive.
     if (node->kind() == SceneNode::Kind::Geometry) {

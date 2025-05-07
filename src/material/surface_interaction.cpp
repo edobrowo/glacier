@@ -1,7 +1,8 @@
 #include "surface_interaction.hpp"
 
-SurfaceInteraction::SurfaceInteraction(const Intersect& intersect,
-                                       MaterialPtr material)
+SurfaceInteraction::SurfaceInteraction(
+    const Intersect& intersect, MaterialPtr material
+)
     : intersect(intersect), material(material) {
 }
 
@@ -9,8 +10,8 @@ SurfaceInteraction::SurfaceInteraction(const SurfaceInteraction& other)
     : intersect(other.intersect), material(other.material) {
 }
 
-SurfaceInteraction SurfaceInteraction::operator=(
-    const SurfaceInteraction& other) {
+SurfaceInteraction SurfaceInteraction::operator=(const SurfaceInteraction& other
+) {
     intersect = other.intersect;
     material = other.material;
 

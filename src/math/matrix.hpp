@@ -234,8 +234,9 @@ static Matrix<T, p, q> operator-(const Matrix<T, p, q>& rhs) {
 }
 
 template <std::floating_point T, u32 p, u32 q>
-static Matrix<T, p, q> operator+(const Matrix<T, p, q>& lhs,
-                                 const Matrix<T, p, q>& rhs) {
+static Matrix<T, p, q> operator+(
+    const Matrix<T, p, q>& lhs, const Matrix<T, p, q>& rhs
+) {
     Matrix<T, p, q> result;
     for (Index row = 0; row < p; ++row)
         for (Index col = 0; col < q; ++col)
@@ -244,8 +245,9 @@ static Matrix<T, p, q> operator+(const Matrix<T, p, q>& lhs,
 }
 
 template <std::floating_point T, u32 p, u32 q>
-static Matrix<T, p, q> operator-(const Matrix<T, p, q>& lhs,
-                                 const Matrix<T, p, q>& rhs) {
+static Matrix<T, p, q> operator-(
+    const Matrix<T, p, q>& lhs, const Matrix<T, p, q>& rhs
+) {
     Matrix<T, p, q> result;
     for (Index row = 0; row < p; ++row)
         for (Index col = 0; col < q; ++col)
@@ -290,8 +292,9 @@ static Matrix<T, p, q> operator/(const T lhs, const Matrix<T, p, q>& rhs) {
 }
 
 template <std::floating_point T, u32 p, u32 q>
-static Vector<T, p> operator*(const Matrix<T, p, q>& lhs,
-                              const Vector<T, q> rhs) {
+static Vector<T, p> operator*(
+    const Matrix<T, p, q>& lhs, const Vector<T, q> rhs
+) {
     Vector<T, p> result;
     for (Index row = 0; row < p; ++row)
         for (Index col = 0; col < q; ++col)
@@ -300,8 +303,9 @@ static Vector<T, p> operator*(const Matrix<T, p, q>& lhs,
 }
 
 template <std::floating_point T>
-static Vector<T, 3> operator*(const Matrix<T, 4, 4>& lhs,
-                              const Vector<T, 3>& rhs) {
+static Vector<T, 3> operator*(
+    const Matrix<T, 4, 4>& lhs, const Vector<T, 3>& rhs
+) {
     Vector<T, 3> result;
     for (Index row = 0; row < 3; ++row)
         for (Index col = 0; col < 3; ++col)
@@ -310,8 +314,9 @@ static Vector<T, 3> operator*(const Matrix<T, 4, 4>& lhs,
 }
 
 template <std::floating_point T>
-static Point<T, 3> operator*(const Matrix<T, 4, 4>& lhs,
-                             const Point<T, 3>& rhs) {
+static Point<T, 3> operator*(
+    const Matrix<T, 4, 4>& lhs, const Point<T, 3>& rhs
+) {
     Point<T, 3> result;
     for (Index row = 0; row < 3; ++row)
         for (Index col = 0; col < 3; ++col)
@@ -323,8 +328,9 @@ static Point<T, 3> operator*(const Matrix<T, 4, 4>& lhs,
 }
 
 template <std::floating_point T, u32 p, u32 q, u32 r>
-static Matrix<T, p, r> operator*(const Matrix<T, p, q>& lhs,
-                                 const Matrix<T, q, r>& rhs) {
+static Matrix<T, p, r> operator*(
+    const Matrix<T, p, q>& lhs, const Matrix<T, q, r>& rhs
+) {
     Matrix<T, p, r> result;
     for (Index row = 0; row < p; ++row)
         for (Index col = 0; col < r; ++col)
@@ -357,9 +363,9 @@ static Matrix<T, q, p> transpose(const Matrix<T, p, q>& value) {
 }
 
 template <std::floating_point T, u32 p1, u32 q1, u32 p2, u32 q2>
-static Matrix<T, p2, q2> embed_zero(const Matrix<T, p1, q1>& value,
-                                    const Index x,
-                                    const Index y) {
+static Matrix<T, p2, q2> embed_zero(
+    const Matrix<T, p1, q1>& value, const Index x, const Index y
+) {
     assertm(x < p1, "x not less than p1");
     assertm(p1 <= p2, "p1 not less than or equal to p2");
     assertm(y < q1, "y not less than q1");
@@ -372,9 +378,9 @@ static Matrix<T, p2, q2> embed_zero(const Matrix<T, p1, q1>& value,
 }
 
 template <std::floating_point T, u32 dim1, u32 dim2>
-static Matrix<T, dim2, dim2> embed_ident(const Matrix<T, dim1, dim1>& value,
-                                         const Index x,
-                                         const Index y) {
+static Matrix<T, dim2, dim2> embed_ident(
+    const Matrix<T, dim1, dim1>& value, const Index x, const Index y
+) {
     assertm(x < dim1, "x not less than dim1");
     assertm(y < dim1, "y not less than dim1");
     assertm(dim1 <= dim2, "dim1 not less than or equal to dim2");

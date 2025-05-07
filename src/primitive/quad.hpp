@@ -7,11 +7,12 @@
 /// @brief Quad (bounded plane) 2D primitive.
 class Quad : public Primitive {
 public:
+    Quad();
     Quad(const Point3D& Q, const Vector3D& u, const Vector3D& v);
     ~Quad() override = default;
 
-    virtual Option<Intersect> intersect(const Ray& ray,
-                                        const Interval& bounds) const override;
+    virtual Option<Intersect> intersect(const Ray& ray, const Interval& bounds)
+        const override;
 
 private:
     Point3D mQ;

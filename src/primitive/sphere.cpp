@@ -8,10 +8,11 @@ Sphere::Sphere() : Primitive(), mCenter(), mRadius(1.0) {
 
 Sphere::Sphere(const Point3D& center, const f64 radius)
     : Primitive(), mCenter(center), mRadius(radius) {
+    mKind = Kind::Sphere;
 }
 
-Option<Intersect> Sphere::intersect(const Ray& ray,
-                                    const Interval& bounds) const {
+Option<Intersect> Sphere::intersect(const Ray& ray, const Interval& bounds)
+    const {
     // Set up quadratic.
     const Vector3D oc = ray.origin - mCenter;
     const f64 a = ray.direction.dot();

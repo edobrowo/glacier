@@ -11,7 +11,8 @@ public:
     /// @brief Scatters the incident ray where the material appearance
     /// properties correspond to a cosine distributed diffuse material.
     virtual Option<ScatterRecord> scatter(
-        const Ray& incident, const Intersect& intersect) const override;
+        const Ray& incident, const Intersect& intersect
+    ) const override;
 
 private:
     Vector3D mColor;

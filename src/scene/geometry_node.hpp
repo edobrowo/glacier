@@ -12,9 +12,9 @@ using GeometryNodePtr = std::unique_ptr<GeometryNode>;
 /// illumination.
 class GeometryNode : public SceneNode {
 public:
-    GeometryNode(const char* name,
-                 PrimitivePtr&& primitive,
-                 MaterialPtr material);
+    GeometryNode(
+        const char* name, PrimitivePtr&& primitive, MaterialPtr material
+    );
     ~GeometryNode() = default;
 
     /// @brief Retrieves a constant reference to the primitive.

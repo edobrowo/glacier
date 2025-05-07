@@ -16,8 +16,9 @@ static f64 reflectance(const f64 cosine, const f64 ri) {
     return r0 + (1.0 - r0) * std::pow(1.0 - cosine, 5.0);
 }
 
-Option<ScatterRecord> Dielectric::scatter(const Ray& incident,
-                                          const Intersect& intersect) const {
+Option<ScatterRecord> Dielectric::scatter(
+    const Ray& incident, const Intersect& intersect
+) const {
     // TODO: handle entering upon intersection (or just more gracefully).
     const bool entering = incident.direction.dot(intersect.normal) > 0.0;
     const Vector3D n = entering ? -intersect.normal : intersect.normal;

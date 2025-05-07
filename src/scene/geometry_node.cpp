@@ -1,8 +1,8 @@
 #include "geometry_node.hpp"
 
-GeometryNode::GeometryNode(const char* name,
-                           PrimitivePtr&& primitive,
-                           MaterialPtr material)
+GeometryNode::GeometryNode(
+    const char* name, PrimitivePtr&& primitive, MaterialPtr material
+)
     : SceneNode(name), mPrimitive(std::move(primitive)), mMaterial(material) {
     mKind = Kind::Geometry;
 }

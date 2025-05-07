@@ -2,16 +2,26 @@
 
 #include "math/almost.hpp"
 
-Triangle::Triangle(const Point3D& Q, const Vector3D& u, const Vector3D& v)
-    : mQ(Q), mU(u), mV(v) {
+Triangle::Triangle()
+    : mQ(Point3D::zero()), mU(Vector3D::zero()), mV(Vector3D::zero()) {
     mKind = Kind::Triangle;
+
     mNormal = mU.cross(mV).normalize();
     mD = mNormal.dot(mQ.pos());
     mW = mNormal / mNormal.dot();
-};
+}
 
-Option<Intersect> Triangle::intersect(const Ray& ray,
-                                      const Interval& bounds) const {
+Triangle::Triangle(const Point3D& Q, const Vector3D& u, const Vector3D& v)
+    : mQ(Q), mU(u), mV(v) {
+    mKind = Kind::Triangle;
+
+    mNormal = mU.cross(mV).normalize();
+    mD = mNormal.dot(mQ.pos());
+    mW = mNormal / mNormal.dot();
+}
+
+Option<Intersect> Triangle::intersect(const Ray& ray, const Interval& bounds)
+    const {
     const f64 denom = mNormal.dot(ray.direction);
 
     // No hit if the ray is parallel to the plane.

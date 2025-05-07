@@ -2,9 +2,9 @@
 
 namespace math {
 
-const std::pair<Option<f64>, Option<f64>> quadratic_roots(const f64 a,
-                                                          const f64 b,
-                                                          const f64 c) {
+const std::pair<Option<f64>, Option<f64>> quadratic_roots(
+    const f64 a, const f64 b, const f64 c
+) {
     if (a == 0.0) {
         if (b == 0.0)
             // No roots case (I).

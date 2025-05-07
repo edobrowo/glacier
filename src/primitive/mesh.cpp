@@ -5,8 +5,8 @@
 Mesh::Mesh(const IndexedMesh<VertexP>& mesh) : mMesh(mesh) {
 }
 
-Option<Intersect> Mesh::intersect(const Ray& ray,
-                                  const Interval& bounds) const {
+Option<Intersect> Mesh::intersect(const Ray& ray, const Interval& bounds)
+    const {
     Option<Intersect> closest = std::nullopt;
 
     for (const IndexedTriangle& tri : mMesh.triangles()) {

@@ -33,41 +33,51 @@ public:
 template <typename... Targs>
 void Log::d(const char* format_string, const Targs&... args) {
     if constexpr (Log::level >= Log::Level::Debug)
-        println((std::string("{}\t| ") + format_string).c_str(),
-                Log::Level::Debug,
-                args...);
+        println(
+            (std::string("{}\t| ") + format_string).c_str(),
+            Log::Level::Debug,
+            args...
+        );
 }
 
 template <typename... Targs>
 void Log::i(const char* format_string, const Targs&... args) {
     if constexpr (Log::level >= Log::Level::Info)
-        println((std::string("{}\t| ") + format_string).c_str(),
-                Log::Level::Info,
-                args...);
+        println(
+            (std::string("{}\t| ") + format_string).c_str(),
+            Log::Level::Info,
+            args...
+        );
 }
 
 template <typename... Targs>
 void Log::w(const char* format_string, const Targs&... args) {
     if constexpr (Log::level >= Log::Level::Warning)
-        println((std::string("{}\t| ") + format_string).c_str(),
-                Log::Level::Warning,
-                args...);
+        println(
+            (std::string("{}\t| ") + format_string).c_str(),
+            Log::Level::Warning,
+            args...
+        );
 }
 
 template <typename... Targs>
 void Log::e(const char* format_string, const Targs&... args) {
     if constexpr (Log::level >= Log::Level::Error)
-        eprintln((std::string("{}\t| ") + format_string).c_str(),
-                 Log::Level::Error,
-                 args...);
+        eprintln(
+            (std::string("{}\t| ") + format_string).c_str(),
+            Log::Level::Error,
+            args...
+        );
 }
 
 template <typename... Targs>
 void Log::f(const char* format_string, const Targs&... args) {
     if constexpr (Log::level >= Log::Level::Fatal)
-        eprintln((std::string("{}\t| ") + format_string).c_str(),
-                 Log::Level::Fatal,
-                 args...);
+        eprintln(
+            (std::string("{}\t| ") + format_string).c_str(),
+            Log::Level::Fatal,
+            args...
+        );
 }
 
 template <>

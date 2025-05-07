@@ -10,8 +10,9 @@ Lambertian::Lambertian(const Vector3D& color) : Material(), mColor(color) {
 Lambertian::~Lambertian() {
 }
 
-Option<ScatterRecord> Lambertian::scatter(const Ray& incident,
-                                          const Intersect& intersect) const {
+Option<ScatterRecord> Lambertian::scatter(
+    const Ray& incident, const Intersect& intersect
+) const {
     const f64 x1 = thread_rng::uniform<f64>();
     const f64 x2 = thread_rng::uniform<f64>();
 

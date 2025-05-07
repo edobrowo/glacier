@@ -108,8 +108,8 @@ private:
     /// @brief Tries to parses a face vertex from the beginning of the view.
     /// @returns An optional ParseResult containing the parsed face vertex and
     /// the remaining view.
-    Option<obj::ParseResult<obj::FaceVertex>> tryParseFaceVertex(
-        obj::View view) const;
+    Option<obj::ParseResult<obj::FaceVertex>> tryParseFaceVertex(obj::View view
+    ) const;
 
     /// @brief Parses an object name grouping line from the beginning of the
     /// view.
@@ -175,10 +175,9 @@ private:
     void convertIndices(obj::Polyline& line, const i64 v_size) const;
 
     /// @brief Converts 1-based indices to 0-based nonnegative indices.
-    void convertIndices(obj::Face& face,
-                        const i64 v_size,
-                        const i64 vt_size,
-                        const i64 vn_size) const;
+    void convertIndices(
+        obj::Face& face, const i64 v_size, const i64 vt_size, const i64 vn_size
+    ) const;
 };
 
 template <>

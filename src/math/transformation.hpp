@@ -109,10 +109,9 @@ Matrix<T, 4, 4> rotateZ(const T angle) {
 }
 
 template <std::floating_point T>
-Matrix<T, 4, 4> perspective_fovy(const T fovy,
-                                 const T aspect,
-                                 const T n,
-                                 const T f) {
+Matrix<T, 4, 4> perspective_fovy(
+    const T fovy, const T aspect, const T n, const T f
+) {
     const T h = std::tan(fovy / T(2));
 
     // clang-format off
@@ -129,7 +128,8 @@ Matrix<T, 4, 4> perspective_fovy(const T fovy,
 
 template <std::floating_point T>
 Matrix<T, 4, 4> orthographic(
-    const T l, const T r, const T b, const T t, const T n, const T f) {
+    const T l, const T r, const T b, const T t, const T n, const T f
+) {
     // clang-format off
     return Matrix<T, 4, 4>(
         {
@@ -143,9 +143,9 @@ Matrix<T, 4, 4> orthographic(
 }
 
 template <std::floating_point T>
-Matrix<T, 4, 4> lookat(const Vector<T, 3>& eye,
-                       const Vector<T, 3>& target,
-                       const Vector<T, 3>& up) {
+Matrix<T, 4, 4> lookat(
+    const Vector<T, 3>& eye, const Vector<T, 3>& target, const Vector<T, 3>& up
+) {
     const Vector<T, 3> d((target - eye).normalize());
     const Vector<T, 3> r(d.cross(up).normalize());
     const Vector<T, 3> u(r.cross(d));

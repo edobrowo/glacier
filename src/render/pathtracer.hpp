@@ -34,9 +34,9 @@ private:
     Option<SurfaceInteraction> intersect(const Ray& ray) const;
 
     /// @brief Recursively finds the closest intersect.
-    Option<SurfaceInteraction> intersectRecursive(const SceneNodePtr& node,
-                                                  const Ray& ray,
-                                                  const Interval& bounds) const;
+    Option<SurfaceInteraction> intersectRecursive(
+        const SceneNodePtr& node, const Ray& ray, const Interval& bounds
+    ) const;
 
     /// @brief Background color given a ray.
     Vector3D background(const Ray& ray) const;

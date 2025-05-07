@@ -9,12 +9,14 @@
 /// conversion and pixel sampling.
 class Camera {
 public:
-    Camera(const Point3D& look_from,
-           const Point3D& look_at,
-           const Vector3D& up,
-           const f64 fov,
-           const Size nx,
-           const Size ny);
+    Camera(
+        const Point3D& look_from,
+        const Point3D& look_at,
+        const Vector3D& up,
+        const f64 fov,
+        const Size nx,
+        const Size ny
+    );
     ~Camera() = default;
 
     /// @brief Camera origin (equal to LookFrom).

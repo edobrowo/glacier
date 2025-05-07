@@ -4,10 +4,12 @@
 #include "render/pathtracer.hpp"
 #include "util/log.hpp"
 
-void render(const char* path,
-            const Camera& camera,
-            SceneNodePtr&& root,
-            const Config& config) {
+void render(
+    const char* path,
+    const Camera& camera,
+    SceneNodePtr&& root,
+    const Config& config
+) {
     SceneGraph scene;
 
     scene.root()->addChild(std::move(root));
