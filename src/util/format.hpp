@@ -4,6 +4,7 @@
 
 #include "common.hpp"
 #include "formatter.hpp"
+#include "formatter_std.hpp"
 #include "stringbuffer.hpp"
 
 /// @brief Formatter wrapper that creates a new std::string.

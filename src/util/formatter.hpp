@@ -1,10 +1,6 @@
 #pragma once
 
 #include <cstring>
-#include <map>
-#include <string>
-#include <string_view>
-#include <vector>
 
 #include "common.hpp"
 #include "stringbuffer.hpp"
@@ -193,20 +189,6 @@ struct FormatWriter<char*> {
 };
 
 template <>
-struct FormatWriter<std::string> {
-    static void write(const std::string& value, StringBuffer& sb) {
-        sb.append(value);
-    }
-};
-
-template <>
-struct FormatWriter<std::string_view> {
-    static void write(const std::string_view value, StringBuffer& sb) {
-        sb.append(value);
-    }
-};
-
-template <>
 struct FormatWriter<bool> {
     static void write(bool value, StringBuffer& sb) {
         if (value)
@@ -272,51 +254,5 @@ struct FormatWriter<F> {
     static void write(F value, StringBuffer& sb) {
         // TODO: RTW for float printing.
         sb.append(std::to_string(value));
-    }
-};
-
-template <typename T>
-    requires FormatWritable<T>
-struct FormatWriter<std::vector<T>> {
-    static void write(const std::vector<T>& vec, StringBuffer& sb) {
-        sb.putSafe('[');
-        for (auto iter = vec.begin(); iter != vec.end(); ++iter) {
-            FormatWriter<T>::write(*iter, sb);
-            if (distance(iter, vec.end()) > 1)
-                sb.putSafe(',');
-        }
-        sb.putSafe(']');
-    }
-};
-
-template <typename K, typename V>
-    requires FormatWritable<K> && FormatWritable<V>
-struct FormatWriter<std::map<K, V>> {
-    static void write(const std::map<K, V>& hashmap, StringBuffer& sb) {
-        sb.putSafe('{');
-        for (auto iter = hashmap.begin(); iter != hashmap.end(); ++iter) {
-            sb.putSafe('{');
-            FormatWriter<K>::write(iter->first, sb);
-            sb.putSafe(',');
-            FormatWriter<V>::write(iter->second, sb);
-            sb.putSafe('}');
-            if (distance(iter, hashmap.end()) > 1)
-                sb.append(", ", 2);
-        }
-        sb.putSafe('}');
-    }
-};
-
-template <typename T>
-    requires FormatWritable<T>
-struct FormatWriter<Option<T>> {
-    static void write(const Option<T>& opt, StringBuffer& sb) {
-        if (opt) {
-            sb.append("Some(", 5);
-            FormatWriter<T>::write(*opt, sb);
-            sb.putSafe(')');
-        } else {
-            sb.append("None", 4);
-        }
     }
 };
