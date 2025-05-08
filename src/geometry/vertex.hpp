@@ -4,31 +4,37 @@
 #include "math/vector.hpp"
 #include "util/format.hpp"
 
+/// @brief Vertex with position attribute.
 struct VertexP {
     Point3D position;
 };
 
+/// @brief Vertex with position and 2D texture attributes.
 struct VertexPT2 {
     Point3D position;
     Point2D texture;
 };
 
+/// @brief Vertex with position and 3D texture attributes.
 struct VertexPT3 {
     Point3D position;
     Point3D texture;
 };
 
+/// @brief Vertex with position and surface normal attributes.
 struct VertexPN {
     Point3D position;
     Vector3D normal;
 };
 
+/// @brief Vertex with position, 2D texture, and surface normal attributes.
 struct VertexPT2N {
     Point3D position;
     Point2D texture;
     Vector3D normal;
 };
 
+/// @brief Vertex with position, 3D texture, and surface normal attributes.
 struct VertexPT3N {
     Point3D position;
     Point3D texture;

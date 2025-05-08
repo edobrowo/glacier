@@ -6,13 +6,17 @@
 #include "primitive/mesh.hpp"
 #include "primitive/sphere.hpp"
 
+/// @brief Sphere geometry.
 class SphereGeo {
 public:
     SphereGeo();
     SphereGeo(const Point3D& center, const f64 radius);
     ~SphereGeo() = default;
 
+    /// @brief Convert the sphere to an implicit primitive representation.
     PrimitivePtr toImplicitPrimitive() const;
+
+    /// @brief Convert the sphere to a mesh via UV construction.
     PrimitivePtr toMeshPrimitive(const Size u_div, const Size v_div) const;
 
 private:

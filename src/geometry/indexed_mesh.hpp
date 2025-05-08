@@ -5,10 +5,13 @@
 
 #include "obj_parser.hpp"
 #include "vertex.hpp"
+
+/// @brief Triangle represented by 3 vertex indices.
 struct IndexedTriangle {
     Index a, b, c;
 };
 
+/// @brief Indexed mesh geometry representation.
 template <typename Vertex>
 class IndexedMesh {
 public:
@@ -16,10 +19,16 @@ public:
     explicit IndexedMesh(const ObjObject& obj);
     ~IndexedMesh() = default;
 
+    /// @brief Retrieve a constant reference to the vertex array.
     const std::vector<Vertex>& vertices() const;
+
+    /// @brief Retrieve a constant reference to the array of indexed triangles.
     const std::vector<IndexedTriangle>& triangles() const;
 
+    /// @brief Add a vertex to the mesh.
     void addVertex(const Vertex& v);
+
+    /// @brief Create a triangle from the vertices at the given indices.
     void addTriangle(const Index a, const Index b, const Index c);
 
 private:

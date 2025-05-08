@@ -4,6 +4,7 @@
 
 #include "math/interpolation.hpp"
 
+/// @brief Interpolate the point at parameters (u, v).
 static Point3D cubic_bezier_patch(
     std::span<const Point3D> p, const f64 u, const f64 v
 ) {

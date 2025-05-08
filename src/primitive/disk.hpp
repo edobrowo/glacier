@@ -11,6 +11,8 @@ public:
     Disk(const Point3D& Q, const Vector3D& u, const Vector3D& v);
     ~Disk() override = default;
 
+    /// @brief Computes the surface intersection with a disk represented by
+    /// barycentric coordinates.
     virtual Option<Intersect> intersect(const Ray& ray, const Interval& bounds)
         const override;
 

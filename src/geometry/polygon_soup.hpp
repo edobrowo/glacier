@@ -6,11 +6,13 @@
 #include "obj_parser.hpp"
 #include "vertex.hpp"
 
+/// @brief Polygon represented by an arbitrary sequence of vertices.
 template <typename Vertex>
 struct Polygon {
     std::vector<Vertex> vertices;
 };
 
+/// @brief Polygon soup geometry representation.
 template <typename Vertex>
 class PolygonSoup {
 public:
@@ -18,7 +20,8 @@ public:
     explicit PolygonSoup(const ObjObject& obj);
     ~PolygonSoup() = default;
 
-    const std::vector<Polygon<Vertex>> polygons() const;
+    /// @brief Retrieve a constant reference to the polygons in the soup.
+    const std::vector<Polygon<Vertex>>& polygons() const;
 
 private:
     std::vector<Polygon<Vertex>> mPolygons;
@@ -59,7 +62,7 @@ PolygonSoup<Vertex>::PolygonSoup(const ObjObject& obj) : mPolygons() {
 }
 
 template <typename Vertex>
-const std::vector<Polygon<Vertex>> PolygonSoup<Vertex>::polygons() const {
+const std::vector<Polygon<Vertex>>& PolygonSoup<Vertex>::polygons() const {
     return mPolygons;
 }
 

@@ -10,8 +10,8 @@ public:
     Sphere(const Point3D& center, const f64 radius);
     ~Sphere() override = default;
 
-    /// @brief Computes the surface intersection with a sphere centered at the
-    /// origin with unit radius.
+    /// @brief Computes the surface intersection with an implicit sphere
+    /// centered at the origin with unit radius.
     virtual Option<Intersect> intersect(const Ray& ray, const Interval& bounds)
         const override;
 

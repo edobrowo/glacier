@@ -10,7 +10,7 @@ public:
     Tube(const Point3D& center, const f64 radius, const f64 height);
     ~Tube() override = default;
 
-    /// @brief Computes the surface intersection with the tube.
+    /// @brief Computes the surface intersection with the implicit tube quadric.
     virtual Option<Intersect> intersect(const Ray& ray, const Interval& bounds)
         const override;
 

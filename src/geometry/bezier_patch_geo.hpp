@@ -8,15 +8,19 @@
 #include "primitive/mesh.hpp"
 #include "util/common.hpp"
 
+/// @brief Bezier patch geometry.
 class BezierPatchGeo {
 public:
     BezierPatchGeo(std::span<const Point3D> points);
     ~BezierPatchGeo() = default;
 
+    /// @brief Retrieve a constant reference to the control points.
     const std::array<Point3D, 16>& points() const;
 
+    /// @brief Evaluate the Bezier patch at parameters (u, v).
     Point3D eval(const f64 u, const f64 v) const;
 
+    /// @brief Convert the Bezier patch to a mesh via UV construction.
     PrimitivePtr toMeshPrimitive(const Size u_div, const Size v_div) const;
 
 private:
