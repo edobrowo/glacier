@@ -33,10 +33,10 @@ left.t(-1.0, 0.0, -1.0)
 left.s(0.5)
 root.add_child(left)
 
-# bubble = SphereNode("bubble", mat_bubble)
-# bubble.t(-1.0, 0.0, -1.0)
-# bubble.s(0.4)
-# root.add_child(bubble)
+bubble = SphereNode("bubble", mat_bubble)
+bubble.t(-1.0, 0.0, -1.0)
+bubble.s(0.4)
+root.add_child(bubble)
 
 right = SphereNode("right", mat_right)
 right.t(1.0, 0.0, -1.0)
@@ -54,5 +54,7 @@ camera = Camera(
 
 config = Config()
 config.rendering_mode = RenderingMode.Full
+config.samples_per_pixel = 100
+config.trace_depth = 50
 
 glacier.render("out.png", camera, root, config)

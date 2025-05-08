@@ -61,9 +61,12 @@ Option<Intersect> Tube::intersect(const Ray& ray, const Interval& bounds)
 
             // Compare hit point to z bounds.
             if (Interval(-mHeight / 2.0, mHeight / 2.0).contains(p.z)) {
-                const Vector3D normal =
-                    (p - Point3D(mCenter.x, mCenter.y, 0.0)) / mRadius;
-                closest = Intersect(t, p, normal);
+                Vector3D normal =
+                    Vector3D(p.x - mCenter.x, p.y - mCenter.y, 0.0) / mRadius;
+                if (ray.direction.dot(normal) > 0.0)
+                    closest = Intersect(t, p, -normal, Intersect::Face::Inside);
+                else
+                    closest = Intersect(t, p, normal, Intersect::Face::Outside);
             }
         }
     }
@@ -77,8 +80,13 @@ Option<Intersect> Tube::intersect(const Ray& ray, const Interval& bounds)
             const Point3D p = ray.at(t);
             const f64 dist2 = (p.x - mCenter.x) * (p.x - mCenter.x) +
                               (p.y - mCenter.y) * (p.y - mCenter.y);
-            if (dist2 <= mRadius * mRadius)
-                closest = Intersect(t, p, Vector3D(0, 0, 1));
+            const Vector3D normal = Vector3D(0, 0, 1);
+            if (dist2 <= mRadius * mRadius) {
+                if (ray.direction.dot(normal) > 0.0)
+                    closest = Intersect(t, p, -normal, Intersect::Face::Inside);
+                else
+                    closest = Intersect(t, p, normal, Intersect::Face::Outside);
+            }
         }
     }
 
@@ -91,8 +99,13 @@ Option<Intersect> Tube::intersect(const Ray& ray, const Interval& bounds)
             const Point3D p = ray.at(t);
             const f64 dist2 = (p.x - mCenter.x) * (p.x - mCenter.x) +
                               (p.y - mCenter.y) * (p.y - mCenter.y);
-            if (dist2 <= mRadius * mRadius)
-                closest = Intersect(t, p, Vector3D(0, 0, -1));
+            const Vector3D normal = Vector3D(0, 0, -1);
+            if (dist2 <= mRadius * mRadius) {
+                if (ray.direction.dot(normal) > 0.0)
+                    closest = Intersect(t, p, -normal, Intersect::Face::Inside);
+                else
+                    closest = Intersect(t, p, normal, Intersect::Face::Outside);
+            }
         }
     }
 

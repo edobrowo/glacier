@@ -1,7 +1,6 @@
 import glacier
 from glacier import (
     Camera,
-    Config,
     LambertianMaterial,
     SceneNode,
     TubeNode
@@ -24,8 +23,4 @@ camera = Camera(
     ny=225
 )
 
-config = Config()
-config.samples_per_pixel = 5
-config.trace_depth = 3
-
-glacier.render("out.png", camera, root, config)
+glacier.render("out.png", camera, root)

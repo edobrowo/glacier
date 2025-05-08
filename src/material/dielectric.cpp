@@ -19,9 +19,11 @@ static f64 reflectance(const f64 cosine, const f64 ri) {
 Option<ScatterRecord> Dielectric::scatter(
     const Ray& incident, const Intersect& intersect
 ) const {
-    // TODO: handle entering upon intersection (or just more gracefully).
-    const bool entering = incident.direction.dot(intersect.normal) > 0.0;
-    const Vector3D n = entering ? -intersect.normal : intersect.normal;
+    static const Vector3D color = Vector3D::one();
+
+    const bool entering = intersect.face == Intersect::Face::Outside;
+
+    const Vector3D n = intersect.normal;
     const f64 ri = entering ? mEta : (1.0 / mEta);
 
     const Vector3D l = incident.direction.normalize();
@@ -38,5 +40,5 @@ Option<ScatterRecord> Dielectric::scatter(
 
     const Ray scattered(intersect.position, direction);
 
-    return ScatterRecord(scattered, Vector3D::uniform(1.0f));
+    return ScatterRecord(scattered, color);
 }

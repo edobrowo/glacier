@@ -1,8 +1,8 @@
 import glacier
 from glacier import (
     Camera,
+    DiskNode,
     LambertianMaterial,
-    QuadNode,
     SceneNode,
 )
 
@@ -10,8 +10,8 @@ mat_disk = LambertianMaterial(color=[0.5, 0.5, 0.5])
 
 root = SceneNode("root")
 
-plane = QuadNode("plane", mat_disk)
-root.add_child(plane)
+disk = DiskNode("disk", mat_disk)
+root.add_child(disk)
 
 camera = Camera(
     look_from=[0.0, 0.0, -1.0],

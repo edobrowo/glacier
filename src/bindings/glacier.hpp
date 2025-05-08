@@ -216,19 +216,26 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("name"),
             py::arg("material")
         )
-        .def(py::init([](const char* name,
-                         MaterialPtr mat,
-                         std::vector<f64> center,
-                         const f64 radius) {
-            if (center.size() != 3)
-                throw std::runtime_error("center must be 3-element list");
+        .def(
+            py::init([](const char* name,
+                        MaterialPtr mat,
+                        std::vector<f64> center,
+                        const f64 radius) {
+                if (center.size() != 3)
+                    throw std::runtime_error("center must be 3-element list");
 
-            if (radius <= 0)
-                throw std::runtime_error("radius must be nonnegative");
-            return new SphereNode(
-                name, mat, Point3D(center[0], center[1], center[2]), radius
-            );
-        }));
+                if (radius <= 0)
+                    throw std::runtime_error("radius must be nonnegative");
+
+                return new SphereNode(
+                    name, mat, Point3D(center[0], center[1], center[2]), radius
+                );
+            }),
+            py::arg("name"),
+            py::arg("material"),
+            py::arg("center"),
+            py::arg("radius")
+        );
 
     // QuadNode class.
     py::class_<QuadNode, GeometryNode, py::smart_holder>(m, "QuadNode")
@@ -237,22 +244,31 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("name"),
             py::arg("material")
         )
-        .def(py::init([](const char* name,
-                         MaterialPtr mat,
-                         std::vector<f64> Q,
-                         std::vector<f64> u,
-                         std::vector<f64> v) {
-            if (Q.size() != 3 || u.size() != 3 || v.size() != 3) {
-                throw std::runtime_error("Q, u, and v must be 3-element lists");
-            }
-            return new QuadNode(
-                name,
-                mat,
-                Point3D(Q[0], Q[1], Q[2]),
-                Vector3D(u[0], u[1], u[2]),
-                Vector3D(v[0], v[1], v[2])
-            );
-        }));
+        .def(
+            py::init([](const char* name,
+                        MaterialPtr mat,
+                        std::vector<f64> Q,
+                        std::vector<f64> u,
+                        std::vector<f64> v) {
+                if (Q.size() != 3 || u.size() != 3 || v.size() != 3)
+                    throw std::runtime_error(
+                        "Q, u, and v must be 3-element lists"
+                    );
+
+                return new QuadNode(
+                    name,
+                    mat,
+                    Point3D(Q[0], Q[1], Q[2]),
+                    Vector3D(u[0], u[1], u[2]),
+                    Vector3D(v[0], v[1], v[2])
+                );
+            }),
+            py::arg("name"),
+            py::arg("material"),
+            py::arg("Q"),
+            py::arg("u"),
+            py::arg("v")
+        );
 
     // TriangleNode class.
     py::class_<TriangleNode, GeometryNode, py::smart_holder>(m, "TriangleNode")
@@ -261,22 +277,31 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("name"),
             py::arg("material")
         )
-        .def(py::init([](const char* name,
-                         MaterialPtr mat,
-                         std::vector<f64> Q,
-                         std::vector<f64> u,
-                         std::vector<f64> v) {
-            if (Q.size() != 3 || u.size() != 3 || v.size() != 3) {
-                throw std::runtime_error("Q, u, and v must be 3-element lists");
-            }
-            return new TriangleNode(
-                name,
-                mat,
-                Point3D(Q[0], Q[1], Q[2]),
-                Vector3D(u[0], u[1], u[2]),
-                Vector3D(v[0], v[1], v[2])
-            );
-        }));
+        .def(
+            py::init([](const char* name,
+                        MaterialPtr mat,
+                        std::vector<f64> Q,
+                        std::vector<f64> u,
+                        std::vector<f64> v) {
+                if (Q.size() != 3 || u.size() != 3 || v.size() != 3)
+                    throw std::runtime_error(
+                        "Q, u, and v must be 3-element lists"
+                    );
+
+                return new TriangleNode(
+                    name,
+                    mat,
+                    Point3D(Q[0], Q[1], Q[2]),
+                    Vector3D(u[0], u[1], u[2]),
+                    Vector3D(v[0], v[1], v[2])
+                );
+            }),
+            py::arg("name"),
+            py::arg("material"),
+            py::arg("Q"),
+            py::arg("u"),
+            py::arg("v")
+        );
 
     // DiskNode class.
     py::class_<DiskNode, GeometryNode, py::smart_holder>(m, "DiskNode")
@@ -285,22 +310,31 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("name"),
             py::arg("material")
         )
-        .def(py::init([](const char* name,
-                         MaterialPtr mat,
-                         std::vector<f64> Q,
-                         std::vector<f64> u,
-                         std::vector<f64> v) {
-            if (Q.size() != 3 || u.size() != 3 || v.size() != 3) {
-                throw std::runtime_error("Q, u, and v must be 3-element lists");
-            }
-            return new DiskNode(
-                name,
-                mat,
-                Point3D(Q[0], Q[1], Q[2]),
-                Vector3D(u[0], u[1], u[2]),
-                Vector3D(v[0], v[1], v[2])
-            );
-        }));
+        .def(
+            py::init([](const char* name,
+                        MaterialPtr mat,
+                        std::vector<f64> Q,
+                        std::vector<f64> u,
+                        std::vector<f64> v) {
+                if (Q.size() != 3 || u.size() != 3 || v.size() != 3)
+                    throw std::runtime_error(
+                        "Q, u, and v must be 3-element lists"
+                    );
+
+                return new DiskNode(
+                    name,
+                    mat,
+                    Point3D(Q[0], Q[1], Q[2]),
+                    Vector3D(u[0], u[1], u[2]),
+                    Vector3D(v[0], v[1], v[2])
+                );
+            }),
+            py::arg("name"),
+            py::arg("material"),
+            py::arg("Q"),
+            py::arg("u"),
+            py::arg("v")
+        );
 
     // Cuboid node.
     py::class_<CuboidNode, GeometryNode, py::smart_holder>(m, "CuboidNode")
@@ -309,27 +343,35 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("name"),
             py::arg("material")
         )
-        .def(py::init([](const char* name,
-                         MaterialPtr mat,
-                         std::vector<f64> Q,
-                         std::vector<f64> x,
-                         std::vector<f64> y,
-                         std::vector<f64> z) {
-            if (Q.size() != 3 || x.size() != 3 || y.size() != 3 ||
-                z.size() != 3) {
-                throw std::runtime_error(
-                    "Q, x, y, and z must be 3-element lists"
+        .def(
+            py::init([](const char* name,
+                        MaterialPtr mat,
+                        std::vector<f64> Q,
+                        std::vector<f64> x,
+                        std::vector<f64> y,
+                        std::vector<f64> z) {
+                if (Q.size() != 3 || x.size() != 3 || y.size() != 3 ||
+                    z.size() != 3)
+                    throw std::runtime_error(
+                        "Q, x, y, and z must be 3-element lists"
+                    );
+
+                return new CuboidNode(
+                    name,
+                    mat,
+                    Point3D(Q[0], Q[1], Q[2]),
+                    Vector3D(x[0], x[1], x[2]),
+                    Vector3D(y[0], y[1], y[2]),
+                    Vector3D(z[0], z[1], z[2])
                 );
-            }
-            return new CuboidNode(
-                name,
-                mat,
-                Point3D(Q[0], Q[1], Q[2]),
-                Vector3D(x[0], x[1], x[2]),
-                Vector3D(y[0], y[1], y[2]),
-                Vector3D(z[0], z[1], z[2])
-            );
-        }));
+            }),
+            py::arg("name"),
+            py::arg("material"),
+            py::arg("Q"),
+            py::arg("x"),
+            py::arg("y"),
+            py::arg("z")
+        );
 
     // Mesh node.
     py::class_<MeshNode, GeometryNode, py::smart_holder>(m, "MeshNode")
@@ -347,18 +389,29 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("name"),
             py::arg("material")
         )
-        .def(py::init([](const char* name,
-                         MaterialPtr mat,
-                         std::vector<f64> base,
-                         const f64 radius,
-                         const f64 height) {
-            if (base.size() != 3) {
-                throw std::runtime_error("base must be 3-element lists");
-            }
-            return new TubeNode(
-                name, mat, Point3D(base[0], base[1], base[2]), radius, height
-            );
-        }));
+        .def(
+            py::init([](const char* name,
+                        MaterialPtr mat,
+                        std::vector<f64> base,
+                        const f64 radius,
+                        const f64 height) {
+                if (base.size() != 3) {
+                    throw std::runtime_error("base must be 3-element lists");
+                }
+                return new TubeNode(
+                    name,
+                    mat,
+                    Point3D(base[0], base[1], base[2]),
+                    radius,
+                    height
+                );
+            }),
+            py::arg("name"),
+            py::arg("material"),
+            py::arg("base"),
+            py::arg("radius"),
+            py::arg("height")
+        );
 
     // Camera class.
     py::class_<Camera>(m, "Camera")

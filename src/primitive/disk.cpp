@@ -2,7 +2,10 @@
 
 #include "math/almost.hpp"
 
-Disk::Disk() : mQ(Point3D::zero()), mU(Vector3D::zero()), mV(Vector3D::zero()) {
+Disk::Disk()
+    : mQ(Point3D(0, 0, 0.0)),
+      mU(Vector3D(1.0, 0.0, 0.0)),
+      mV(Vector3D(0.0, 1.0, 0.0)) {
     mKind = Kind::Disk;
 
     mNormal = mU.cross(mV).normalize();
@@ -13,6 +16,7 @@ Disk::Disk() : mQ(Point3D::zero()), mU(Vector3D::zero()), mV(Vector3D::zero()) {
 Disk::Disk(const Point3D& Q, const Vector3D& u, const Vector3D& v)
     : mQ(Q), mU(u), mV(v) {
     mKind = Kind::Disk;
+
     mNormal = mU.cross(mV).normalize();
     mD = mNormal.dot(mQ.pos());
     mW = mNormal / mNormal.dot();
@@ -52,5 +56,8 @@ Option<Intersect> Disk::intersect(const Ray& ray, const Interval& bounds)
     if (almost::g(math::sqr(alpha / major) + math::sqr(beta / minor), 1.0))
         return std::nullopt;
 
-    return Intersect(t, P, mNormal);
+    if (ray.direction.dot(mNormal) > 0.0)
+        return Intersect(t, P, -mNormal, Intersect::Face::Inside);
+    else
+        return Intersect(t, P, mNormal, Intersect::Face::Outside);
 }

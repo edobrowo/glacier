@@ -45,5 +45,10 @@ Option<Intersect> Sphere::intersect(const Ray& ray, const Interval& bounds)
 
     const Point3D p = ray.at(t);
 
-    return Intersect(t, p, (p - mCenter) / mRadius);
+    const Vector3D normal = (p - mCenter) / mRadius;
+
+    if (ray.direction.dot(normal) > 0.0)
+        return Intersect(t, p, -normal, Intersect::Face::Inside);
+    else
+        return Intersect(t, p, normal, Intersect::Face::Outside);
 }

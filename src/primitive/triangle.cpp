@@ -3,7 +3,9 @@
 #include "math/almost.hpp"
 
 Triangle::Triangle()
-    : mQ(Point3D::zero()), mU(Vector3D::zero()), mV(Vector3D::zero()) {
+    : mQ(Point3D(-0.5, -0.5, 0.0)),
+      mU(Vector3D(1.0, 0.0, 0.0)),
+      mV(Vector3D(0.0, 1.0, 0.0)) {
     mKind = Kind::Triangle;
 
     mNormal = mU.cross(mV).normalize();
@@ -52,5 +54,8 @@ Option<Intersect> Triangle::intersect(const Ray& ray, const Interval& bounds)
         almost::g(alpha + beta, 1.0))
         return std::nullopt;
 
-    return Intersect(t, P, mNormal);
+    if (ray.direction.dot(mNormal) > 0.0)
+        return Intersect(t, P, -mNormal, Intersect::Face::Inside);
+    else
+        return Intersect(t, P, mNormal, Intersect::Face::Outside);
 }
