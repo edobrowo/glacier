@@ -43,6 +43,21 @@ struct Face {
 
 }
 
+namespace std {
+
+template <>
+struct hash<obj::FaceVertex> {
+    std::size_t operator()(const obj::FaceVertex& v) const {
+        return (
+            (std::hash<i64>()(v.position) << 1) ^
+            (std::hash<Option<i64>>()(v.texture) << 2) ^
+            std::hash<Option<i64>>()(v.normal)
+        );
+    }
+};
+
+}
+
 struct ObjObject {
     Option<std::string> name;
 
