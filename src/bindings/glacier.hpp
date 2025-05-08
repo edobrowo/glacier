@@ -236,6 +236,13 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("material"),
             py::arg("center"),
             py::arg("radius")
+        )
+        .def("renderAsImplicit", &SphereNode::renderAsImplicit)
+        .def(
+            "renderAsMesh",
+            &SphereNode::renderAsMesh,
+            py::arg("u_div"),
+            py::arg("v_div")
         );
 
     // QuadNode class.

@@ -3,9 +3,11 @@
 #include "triangle.hpp"
 
 Mesh::Mesh() : mMesh() {
+    mKind = Kind::Mesh;
 }
 
 Mesh::Mesh(const IndexedMesh<VertexP>& mesh) : mMesh(mesh) {
+    mKind = Kind::Mesh;
 }
 
 Option<Intersect> Mesh::intersect(const Ray& ray, const Interval& bounds)

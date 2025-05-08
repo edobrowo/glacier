@@ -39,7 +39,7 @@ Cuboid::Cuboid()
           ),
 
       }) {
-    mKind = Kind::Cuboid;
+    mKind = Kind::Implicit;
 }
 
 Cuboid::Cuboid(
@@ -67,7 +67,7 @@ Cuboid::Cuboid(
               Quad(o + y, z, x)
 
       }) {
-    mKind = Kind::Cuboid;
+    mKind = Kind::Implicit;
 }
 
 Option<Intersect> Cuboid::intersect(const Ray& ray, const Interval& bounds)

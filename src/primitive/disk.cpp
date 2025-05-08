@@ -6,7 +6,7 @@ Disk::Disk()
     : mQ(Point3D(0, 0, 0.0)),
       mU(Vector3D(1.0, 0.0, 0.0)),
       mV(Vector3D(0.0, 1.0, 0.0)) {
-    mKind = Kind::Disk;
+    mKind = Kind::Implicit;
 
     mNormal = mU.cross(mV).normalize();
     mD = mNormal.dot(mQ.pos());
@@ -15,7 +15,7 @@ Disk::Disk()
 
 Disk::Disk(const Point3D& Q, const Vector3D& u, const Vector3D& v)
     : mQ(Q), mU(u), mV(v) {
-    mKind = Kind::Disk;
+    mKind = Kind::Implicit;
 
     mNormal = mU.cross(mV).normalize();
     mD = mNormal.dot(mQ.pos());

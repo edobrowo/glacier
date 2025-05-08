@@ -11,13 +11,8 @@ class Primitive {
 public:
     enum class Kind {
         Null = 0,
-        Sphere,
-        Quad,
-        Triangle,
-        Disk,
-        Cuboid,
+        Implicit,
         Mesh,
-        Tube,
     };
 
     Primitive();

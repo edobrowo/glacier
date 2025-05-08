@@ -3,12 +3,12 @@
 #include "math/rootfinding.hpp"
 
 Sphere::Sphere() : Primitive(), mCenter(), mRadius(1.0) {
-    mKind = Kind::Sphere;
+    mKind = Kind::Implicit;
 }
 
 Sphere::Sphere(const Point3D& center, const f64 radius)
     : Primitive(), mCenter(center), mRadius(radius) {
-    mKind = Kind::Sphere;
+    mKind = Kind::Implicit;
 }
 
 Option<Intersect> Sphere::intersect(const Ray& ray, const Interval& bounds)

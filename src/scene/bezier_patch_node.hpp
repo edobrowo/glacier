@@ -1,6 +1,7 @@
 #pragma once
 
-#include "geometry/bezier_patch.hpp"
+#include <array>
+
 #include "geometry/indexed_mesh.hpp"
 #include "geometry_node.hpp"
 

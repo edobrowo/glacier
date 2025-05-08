@@ -8,12 +8,12 @@ Tube::Tube()
       mCenter(Point3D::zero()),
       mRadius(1.0),
       mHeight(1.0) {
-    mKind = Kind::Tube;
+    mKind = Kind::Implicit;
 }
 
 Tube::Tube(const Point3D& base, const f64 radius, const f64 height)
     : top(true), bot(true), mCenter(base), mRadius(radius), mHeight(1.0) {
-    mKind = Kind::Tube;
+    mKind = Kind::Implicit;
 }
 
 Option<Intersect> Tube::intersect(const Ray& ray, const Interval& bounds)
