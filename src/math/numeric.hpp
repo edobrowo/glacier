@@ -65,26 +65,6 @@ constexpr inline T unit_clamp(T value) {
     return clamp(value, T(0), T(1));
 }
 
-/// @brief Linear interpolation.
-template <std::floating_point T>
-constexpr inline T lerp(T t, T a, T b) {
-    return t * a + (T(1) - t) * b;
-}
-
-/// @brief Cubic interpolation.
-template <std::floating_point T>
-constexpr inline T cerp(T t, T a, T b, T c, T d) {
-    const T t2 = t * t;
-    const T t3 = t2 * t;
-
-    // clang-format off
-    return (       - T(0.5) * t +          t2 - T(0.5) * t3) * a +
-           (T(1.0)              - T(2.5) * t2 + T(1.5) * t3) * b +
-           (         T(0.5) * t + T(2.0) * t2 - T(1.5) * t3) * c +
-           (                    - T(0.5) * t2 + T(0.5) * t3) * d;
-    // clang-format on
-}
-
 /// @brief Scales a value with the range [min, max].
 template <Numeric T>
 constexpr inline T scale(T value, T min, T max) {

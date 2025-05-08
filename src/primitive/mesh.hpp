@@ -5,6 +5,7 @@
 
 class Mesh : public Primitive {
 public:
+    Mesh();
     Mesh(const IndexedMesh<VertexP>& mesh);
     ~Mesh() override = default;
 

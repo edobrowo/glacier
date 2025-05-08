@@ -12,6 +12,7 @@
 #include "math/numeric.hpp"
 #include "render/camera.hpp"
 #include "render/config.hpp"
+#include "scene/bezier_patch_node.hpp"
 #include "scene/cuboid_node.hpp"
 #include "scene/disk_node.hpp"
 #include "scene/geometry_node.hpp"
@@ -411,6 +412,57 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("base"),
             py::arg("radius"),
             py::arg("height")
+        );
+
+    // BezierPatch node.
+    py::class_<BezierPatchNode, GeometryNode, py::smart_holder>(
+        m, "BezierPatchNode"
+    )
+        .def(
+            py::init([](const char* name,
+                        MaterialPtr mat,
+                        std::vector<std::vector<f64>> points,
+                        const Size u_div,
+                        const Size v_div) {
+                if (points.size() != 16)
+                    throw std::runtime_error("points must be a 16-element lists"
+                    );
+
+                for (const std::vector<f64>& p : points) {
+                    if (p.size() != 3)
+                        throw std::runtime_error(
+                            "point must be a 3-element list"
+                        );
+                }
+
+                const std::array<Point3D, 16> control_points = {
+                    Point3D(points[0][0], points[0][1], points[0][2]),
+                    Point3D(points[1][0], points[1][1], points[1][2]),
+                    Point3D(points[2][0], points[2][1], points[2][2]),
+                    Point3D(points[3][0], points[3][1], points[3][2]),
+                    Point3D(points[4][0], points[4][1], points[4][2]),
+                    Point3D(points[5][0], points[5][1], points[5][2]),
+                    Point3D(points[6][0], points[6][1], points[6][2]),
+                    Point3D(points[7][0], points[7][1], points[7][2]),
+                    Point3D(points[8][0], points[8][1], points[8][2]),
+                    Point3D(points[9][0], points[9][1], points[9][2]),
+                    Point3D(points[10][0], points[10][1], points[10][2]),
+                    Point3D(points[11][0], points[11][1], points[11][2]),
+                    Point3D(points[12][0], points[12][1], points[12][2]),
+                    Point3D(points[13][0], points[13][1], points[13][2]),
+                    Point3D(points[14][0], points[14][1], points[14][2]),
+                    Point3D(points[15][0], points[15][1], points[15][2]),
+                };
+
+                return new BezierPatchNode(
+                    name, mat, control_points, u_div, v_div
+                );
+            }),
+            py::arg("name"),
+            py::arg("material"),
+            py::arg("control_points"),
+            py::arg("u_div"),
+            py::arg("v_div")
         );
 
     // Camera class.

@@ -2,6 +2,9 @@
 
 #include "triangle.hpp"
 
+Mesh::Mesh() : mMesh() {
+}
+
 Mesh::Mesh(const IndexedMesh<VertexP>& mesh) : mMesh(mesh) {
 }
 

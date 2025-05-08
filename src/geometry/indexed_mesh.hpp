@@ -19,6 +19,9 @@ public:
     const std::vector<Vertex>& vertices() const;
     const std::vector<IndexedTriangle>& triangles() const;
 
+    void addVertex(const Vertex& v);
+    void addTriangle(const Index a, const Index b, const Index c);
+
 private:
     std::vector<Vertex> mVertices;
     std::vector<IndexedTriangle> mTriangles;
@@ -73,6 +76,18 @@ const std::vector<Vertex>& IndexedMesh<Vertex>::vertices() const {
 template <typename Vertex>
 const std::vector<IndexedTriangle>& IndexedMesh<Vertex>::triangles() const {
     return mTriangles;
+}
+
+template <typename Vertex>
+void IndexedMesh<Vertex>::addVertex(const Vertex& v) {
+    mVertices.emplace_back(v);
+}
+
+template <typename Vertex>
+void IndexedMesh<Vertex>::addTriangle(
+    const Index a, const Index b, const Index c
+) {
+    mTriangles.emplace_back(a, b, c);
 }
 
 template <>

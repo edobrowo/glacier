@@ -67,9 +67,6 @@ public:
     T operator[](const Index i) const;
     T& operator[](const Index i);
 
-    /// @brief Determines whether the point is at (0, 0, 0).
-    bool isZero() const;
-
     /// @brief Builds the position vector corresponding to this point.
     Vector<T, dim> pos() const;
 
@@ -336,14 +333,6 @@ static Vector<T, dim> operator-(
 }
 
 template <Numeric T, u32 dim>
-bool Point<T, dim>::isZero() const {
-    for (Index i = 0; i < dim; ++i)
-        if (components[i] != T(0))
-            return false;
-    return true;
-}
-
-template <Numeric T, u32 dim>
 Vector<T, dim> Point<T, dim>::pos() const {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
@@ -358,16 +347,16 @@ T dist(const Point<T, dim>& lhs, const Point<T, dim>& rhs) {
 
 template <Numeric T, u32 dim>
 Point<T, dim> blend(
-    const Point<T, dim>& lhs, const Point<T, dim>& rhs, const T a
+    const T t, const Point<T, dim>& lhs, const Point<T, dim>& rhs
 ) {
-    assertm(T(0) <= a && a <= T(1), "a must be in [0, 1]");
+    assertm(T(0) <= t && t <= T(1), "t must be in [0, 1]");
 
     Point<T, dim> result;
 
-    const T a_inv = T(1) - a;
-    result[0] = a_inv * lhs[0] + a * rhs[0];
-    result[1] = a_inv * lhs[1] + a * rhs[1];
-    result[2] = a_inv * lhs[2] + a * rhs[2];
+    const T t_inv = T(1) - t;
+    result[0] = t_inv * lhs[0] + t * rhs[0];
+    result[1] = t_inv * lhs[1] + t * rhs[1];
+    result[2] = t_inv * lhs[2] + t * rhs[2];
 
     return result;
 }
