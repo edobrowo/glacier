@@ -17,3 +17,8 @@ DiskNode::DiskNode(
     : GeometryNode(name, std::make_unique<DiskGeo>(Q, u, v), material) {
     mPrimKind = Primitive::Kind::Implicit;
 }
+
+void DiskNode::setDivisions(const Size div) {
+    DiskGeo* geo = static_cast<DiskGeo*>(mGeometry.get());
+    geo->setDivisions(div);
+}

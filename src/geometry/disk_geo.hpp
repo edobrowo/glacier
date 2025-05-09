@@ -14,9 +14,13 @@ public:
 
     virtual PrimitivePtr primitive(const Primitive::Kind kind) const override;
 
+    /// @brief Set number of divisions for UV mesh construction
+    void setDivisions(const Size div);
+
 private:
     Point3D mQ;
     Vector3D mU, mV;
+    Size mDiv;
 
     /// @brief Convert the disk to an implicit primitive representation.
     PrimitivePtr buildImplicitPrimitive() const;

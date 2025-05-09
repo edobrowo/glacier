@@ -69,8 +69,12 @@ PYBIND11_MODULE(glacier, m) {
             }
         )
         .def("t", py::overload_cast<f64, f64, f64>(&Transform::t))
-        .def("set_order", &Transform::setOrder)
-        .def("set_rotation_order", &Transform::setRotationOrder);
+        .def("set_order", &Transform::setOrder, py::arg("order"))
+        .def(
+            "set_rotation_order",
+            &Transform::setRotationOrder,
+            py::arg("rot_order")
+        );
 
     // Material::Kind enum.
     py::enum_<Material::Kind>(m, "MaterialKind")
@@ -210,7 +214,7 @@ PYBIND11_MODULE(glacier, m) {
             "t",
             [](SceneNode& self, const f64 a) { self.transform().t(a, a, a); }
         )
-        .def("add_child", &SceneNode::addChild)
+        .def("add_child", &SceneNode::addChild, py::arg("child"))
         .def_readwrite("name", &SceneNode::name);
 
     // GeometryNode class.
@@ -244,7 +248,12 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("center"),
             py::arg("radius")
         )
-        .def("set_divisions", &SphereNode::setDivisions);
+        .def(
+            "set_divisions",
+            &SphereNode::setDivisions,
+            py::arg("u_div"),
+            py::arg("v_div")
+        );
 
     // QuadNode class.
     py::class_<QuadNode, GeometryNode, py::smart_holder>(m, "QuadNode")
@@ -343,7 +352,8 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("Q"),
             py::arg("u"),
             py::arg("v")
-        );
+        )
+        .def("set_divisions", &DiskNode::setDivisions, py::arg("div"));
 
     // Cuboid node.
     py::class_<CuboidNode, GeometryNode, py::smart_holder>(m, "CuboidNode")
@@ -421,7 +431,12 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("radius"),
             py::arg("height")
         )
-        .def("set_cap_vis", &TubeNode::setCapVisibility);
+        .def(
+            "set_cap_vis",
+            &TubeNode::setCapVisibility,
+            py::arg("top"),
+            py::arg("bottom")
+        );
 
     // BezierPatch node.
     py::class_<BezierPatchNode, GeometryNode, py::smart_holder>(
@@ -467,7 +482,12 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("material"),
             py::arg("control_points")
         )
-        .def("set_divisions", &BezierPatchNode::setDivisions);
+        .def(
+            "set_divisions",
+            &BezierPatchNode::setDivisions,
+            py::arg("u_div"),
+            py::arg("v_div")
+        );
 
     // Camera class.
     py::class_<Camera>(m, "Camera")

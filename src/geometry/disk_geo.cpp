@@ -26,6 +26,12 @@ PrimitivePtr DiskGeo::primitive(const Primitive::Kind kind) const {
     }
 }
 
+void DiskGeo::setDivisions(const Size div) {
+    assertm(div > 0, "div must be greater than 0");
+
+    mDiv = div;
+}
+
 PrimitivePtr DiskGeo::buildImplicitPrimitive() const {
     return std::make_unique<DiskPrim>(mQ, mU, mV);
 }
@@ -34,7 +40,25 @@ PrimitivePtr DiskGeo::buildImplicitPrimitive() const {
 PrimitivePtr DiskGeo::buildMeshPrimitive() const {
     IndexedMesh<VertexP> m;
 
-    // TODO:
+    const Point3D& center = mQ;
+    m.addVertex(VertexP{center});
+
+    const Index a = 0;
+
+    for (Index ui = 0; ui <= mDiv; ++ui) {
+        const f64 u = static_cast<f64>(ui) / mDiv;
+        const f64 theta = 2.0 * math::pi<f64>() * u;
+
+        const Point3D p = mQ + std::cos(theta) * mU + std::sin(theta) * mV;
+        m.addVertex(VertexP{p});
+
+        if (ui < mDiv) {
+            const Index b = ui + 1;
+            const Index c = ui + 2;
+
+            m.addTriangle(a, b, c);
+        }
+    }
 
     return std::make_unique<MeshPrim>(m);
 }

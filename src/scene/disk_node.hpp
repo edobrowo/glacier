@@ -13,4 +13,6 @@ public:
         const Vector3D& v
     );
     ~DiskNode() = default;
+
+    void setDivisions(const Size div);
 };
