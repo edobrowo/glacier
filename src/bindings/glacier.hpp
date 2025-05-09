@@ -436,7 +436,8 @@ PYBIND11_MODULE(glacier, m) {
             &TubeNode::setCapVisibility,
             py::arg("top"),
             py::arg("bottom")
-        );
+        )
+        .def("set_divisions", &TubeNode::setDivisions, py::arg("div"));
 
     // BezierPatch node.
     py::class_<BezierPatchNode, GeometryNode, py::smart_holder>(

@@ -24,3 +24,8 @@ void TubeNode::setCapVisibility(const bool top, const bool bottom) {
     TubeGeo* geo = static_cast<TubeGeo*>(mGeometry.get());
     geo->setCapVisibility(top, bottom);
 }
+
+void TubeNode::setDivisions(const Size div) {
+    TubeGeo* geo = static_cast<TubeGeo*>(mGeometry.get());
+    geo->setDivisions(div);
+}

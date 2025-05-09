@@ -15,4 +15,5 @@ public:
     ~TubeNode() = default;
 
     void setCapVisibility(const bool top, const bool bottom);
+    void setDivisions(const Size div);
 };

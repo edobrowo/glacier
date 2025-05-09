@@ -16,10 +16,14 @@ public:
 
     void setCapVisibility(const bool top, const bool bottom);
 
+    /// @brief Set number of divisions for UV mesh construction
+    void setDivisions(const Size div);
+
 private:
     Point3D mCenter;
     f64 mRadius, mHeight;
     bool mTopCap, mBottomCap;
+    Size mDiv;
 
     /// @brief Convert the tube to an implicit primitive representation.
     PrimitivePtr buildImplicitPrimitive() const;
