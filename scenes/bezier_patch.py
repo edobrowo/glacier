@@ -18,9 +18,10 @@ points = [
      [0.0, 3.0, 0.0],   [1.0, 3.0, 1.0],   [2.0, 3.0, -1.0],   [3.0, 3.0, 0.0] 
 ]
 
-bezier_patch = BezierPatchNode("bezier_patch", mat, control_points=points, u_div=16, v_div=16)
+bezier_patch = BezierPatchNode("bezier_patch", mat, control_points=points)
 bezier_patch.t(-1.5, -0.5, 0.0)
 bezier_patch.r(35.0, 0.0, 0.0)
+bezier_patch.set_divisions(16, 16)
 root.add_child(bezier_patch)
 
 camera = Camera(

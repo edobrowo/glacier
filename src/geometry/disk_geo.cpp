@@ -2,13 +2,13 @@
 
 #include "indexed_mesh.hpp"
 #include "math/constants.hpp"
-#include "primitive/disk.hpp"
-#include "primitive/mesh.hpp"
+#include "primitive/disk_prim.hpp"
+#include "primitive/mesh_prim.hpp"
 
 DiskGeo::DiskGeo()
     : mQ(Point3D(0, 0, 0.0)),
-      mU(Vector3D(1.0, 0.0, 0.0)),
-      mV(Vector3D(0.0, 1.0, 0.0)) {
+      mU(Vector3D(0.5, 0.0, 0.0)),
+      mV(Vector3D(0.0, 0.5, 0.0)) {
 }
 
 DiskGeo::DiskGeo(const Point3D& Q, const Vector3D& u, const Vector3D& v)
@@ -27,7 +27,7 @@ PrimitivePtr DiskGeo::primitive(const Primitive::Kind kind) const {
 }
 
 PrimitivePtr DiskGeo::buildImplicitPrimitive() const {
-    return std::make_unique<Disk>(mQ, mU, mV);
+    return std::make_unique<DiskPrim>(mQ, mU, mV);
 }
 
 // TODO: normals and texture coordinates
@@ -36,5 +36,5 @@ PrimitivePtr DiskGeo::buildMeshPrimitive() const {
 
     // TODO:
 
-    return std::make_unique<Mesh>(m);
+    return std::make_unique<MeshPrim>(m);
 }

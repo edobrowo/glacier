@@ -5,11 +5,10 @@
 #include "primitive.hpp"
 
 /// @brief Quad (bounded plane) 2D primitive.
-class Quad : public Primitive {
+class QuadPrim : public Primitive {
 public:
-    Quad();
-    Quad(const Point3D& Q, const Vector3D& u, const Vector3D& v);
-    ~Quad() override = default;
+    QuadPrim(const Point3D& Q, const Vector3D& u, const Vector3D& v);
+    ~QuadPrim() override = default;
 
     /// @brief Computes the surface intersection with a quadrilateral
     /// represented by barycentric coordinates.

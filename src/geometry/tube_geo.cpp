@@ -2,11 +2,11 @@
 
 #include "indexed_mesh.hpp"
 #include "math/constants.hpp"
-#include "primitive/mesh.hpp"
-#include "primitive/tube.hpp"
+#include "primitive/mesh_prim.hpp"
+#include "primitive/tube_prim.hpp"
 
 TubeGeo::TubeGeo()
-    : mCenter(), mRadius(1.0), mHeight(1.0), mTopCap(true), mBottomCap(true) {
+    : mCenter(), mRadius(0.5), mHeight(1.0), mTopCap(true), mBottomCap(true) {
 }
 
 TubeGeo::TubeGeo(const Point3D& center, const f64 radius, const f64 height)
@@ -34,7 +34,7 @@ void TubeGeo::setCapVisibility(const bool top, const bool bottom) {
 }
 
 PrimitivePtr TubeGeo::buildImplicitPrimitive() const {
-    return std::make_unique<Tube>(
+    return std::make_unique<TubePrim>(
         mCenter, mRadius, mHeight, mTopCap, mBottomCap
     );
 }
@@ -45,5 +45,5 @@ PrimitivePtr TubeGeo::buildMeshPrimitive() const {
 
     // TODO:
 
-    return std::make_unique<Mesh>(m);
+    return std::make_unique<MeshPrim>(m);
 }

@@ -1,6 +1,6 @@
 #include "bezier_patch_node.hpp"
 
-#include "primitive/mesh.hpp"
+#include "geometry/bezier_patch_geo.hpp"
 
 BezierPatchNode::BezierPatchNode(
     const char* name,

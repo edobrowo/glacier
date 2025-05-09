@@ -18,27 +18,27 @@ mat_right = SpecularMaterial(color=[0.8, 0.6, 0.2], phong=1.0)
 
 root = SceneNode("root")
 
-ground = SphereNode("ground", mat_ground)
+ground = SphereNode("ground", mat_ground, center=[0.0, 0.0, 0.0], radius=1)
 ground.t(0.0, -100.5, -1.0)
 ground.s(100.0)
 root.add_child(ground)
 
-center = SphereNode("center", mat_center)
+center = SphereNode("center", mat_center, center=[0.0, 0.0, 0.0], radius=1)
 center.t(0.0, 0.0, -1.2)
 center.s(0.5)
 root.add_child(center)
 
-left = SphereNode("left", mat_left)
+left = SphereNode("left", mat_left, center=[0.0, 0.0, 0.0], radius=1)
 left.t(-1.0, 0.0, -1.0)
 left.s(0.5)
 root.add_child(left)
 
-bubble = SphereNode("bubble", mat_bubble)
+bubble = SphereNode("bubble", mat_bubble, center=[0.0, 0.0, 0.0], radius=1)
 bubble.t(-1.0, 0.0, -1.0)
 bubble.s(0.4)
 root.add_child(bubble)
 
-right = SphereNode("right", mat_right)
+right = SphereNode("right", mat_right, center=[0.0, 0.0, 0.0], radius=1)
 right.t(1.0, 0.0, -1.0)
 right.s(0.5)
 root.add_child(right)

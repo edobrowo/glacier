@@ -3,11 +3,10 @@
 #include "geometry/indexed_mesh.hpp"
 #include "primitive.hpp"
 
-class Mesh : public Primitive {
+class MeshPrim : public Primitive {
 public:
-    Mesh();
-    Mesh(const IndexedMesh<VertexP>& mesh);
-    ~Mesh() override = default;
+    MeshPrim(const IndexedMesh<VertexP>& mesh);
+    ~MeshPrim() override = default;
 
     /// @brief Computes the surface intersection with the mesh by computing
     /// the intersection with all component triangles.

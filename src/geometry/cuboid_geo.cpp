@@ -2,8 +2,8 @@
 
 #include "indexed_mesh.hpp"
 #include "math/constants.hpp"
-#include "primitive/cuboid.hpp"
-#include "primitive/mesh.hpp"
+#include "primitive/cuboid_prim.hpp"
+#include "primitive/mesh_prim.hpp"
 
 CuboidGeo::CuboidGeo()
     : mQ(-0.5, -0.5, -0.5),
@@ -30,7 +30,7 @@ PrimitivePtr CuboidGeo::primitive(const Primitive::Kind kind) const {
 }
 
 PrimitivePtr CuboidGeo::buildImplicitPrimitive() const {
-    return std::make_unique<Cuboid>(mQ, mX, mY, mZ);
+    return std::make_unique<CuboidPrim>(mQ, mX, mY, mZ);
 }
 
 // TODO: normals and texture coordinates
@@ -71,5 +71,5 @@ PrimitivePtr CuboidGeo::buildMeshPrimitive() const {
     m.addTriangle(4, 0, 1);
     m.addTriangle(4, 1, 5);
 
-    return std::make_unique<Mesh>(m);
+    return std::make_unique<MeshPrim>(m);
 }

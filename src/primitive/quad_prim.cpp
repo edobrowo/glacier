@@ -1,19 +1,8 @@
-#include "disk.hpp"
+#include "quad_prim.hpp"
 
 #include "math/almost.hpp"
 
-Disk::Disk()
-    : mQ(Point3D(0, 0, 0.0)),
-      mU(Vector3D(1.0, 0.0, 0.0)),
-      mV(Vector3D(0.0, 1.0, 0.0)) {
-    mKind = Kind::Implicit;
-
-    mNormal = mU.cross(mV).normalize();
-    mD = mNormal.dot(mQ.pos());
-    mW = mNormal / mNormal.dot();
-}
-
-Disk::Disk(const Point3D& Q, const Vector3D& u, const Vector3D& v)
+QuadPrim::QuadPrim(const Point3D& Q, const Vector3D& u, const Vector3D& v)
     : mQ(Q), mU(u), mV(v) {
     mKind = Kind::Implicit;
 
@@ -22,7 +11,7 @@ Disk::Disk(const Point3D& Q, const Vector3D& u, const Vector3D& v)
     mW = mNormal / mNormal.dot();
 }
 
-Option<Intersect> Disk::intersect(const Ray& ray, const Interval& bounds)
+Option<Intersect> QuadPrim::intersect(const Ray& ray, const Interval& bounds)
     const {
     const f64 denom = mNormal.dot(ray.direction);
 
@@ -49,11 +38,8 @@ Option<Intersect> Disk::intersect(const Ray& ray, const Interval& bounds)
     const f64 alpha = (uv * pv - vv * pu) / denom_bary;
     const f64 beta = (uv * pu - uu * pv) / denom_bary;
 
-    const f64 major = mU.length();
-    const f64 minor = mV.length();
-
     // No hit if the ray is outside the plane boundaries.
-    if (almost::g(math::sqr(alpha / major) + math::sqr(beta / minor), 1.0))
+    if (!Interval::unit.contains(alpha) || !Interval::unit.contains(beta))
         return std::nullopt;
 
     if (ray.direction.dot(mNormal) > 0.0)

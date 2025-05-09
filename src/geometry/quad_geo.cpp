@@ -2,8 +2,8 @@
 
 #include "indexed_mesh.hpp"
 #include "math/constants.hpp"
-#include "primitive/mesh.hpp"
-#include "primitive/quad.hpp"
+#include "primitive/mesh_prim.hpp"
+#include "primitive/quad_prim.hpp"
 
 QuadGeo::QuadGeo()
     : mQ(Point3D(-0.5, -0.5, 0.0)),
@@ -27,7 +27,7 @@ PrimitivePtr QuadGeo::primitive(const Primitive::Kind kind) const {
 }
 
 PrimitivePtr QuadGeo::buildImplicitPrimitive() const {
-    return std::make_unique<Quad>(mQ, mU, mV);
+    return std::make_unique<QuadPrim>(mQ, mU, mV);
 }
 
 // TODO: normals and texture coordinates
@@ -42,5 +42,5 @@ PrimitivePtr QuadGeo::buildMeshPrimitive() const {
     m.addTriangle(0, 1, 3);
     m.addTriangle(0, 3, 2);
 
-    return std::make_unique<Mesh>(m);
+    return std::make_unique<MeshPrim>(m);
 }

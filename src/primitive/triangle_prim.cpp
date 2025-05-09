@@ -1,19 +1,10 @@
-#include "triangle.hpp"
+#include "triangle_prim.hpp"
 
 #include "math/almost.hpp"
 
-Triangle::Triangle()
-    : mQ(Point3D(-0.5, -0.5, 0.0)),
-      mU(Vector3D(1.0, 0.0, 0.0)),
-      mV(Vector3D(0.0, 1.0, 0.0)) {
-    mKind = Kind::Implicit;
-
-    mNormal = mU.cross(mV).normalize();
-    mD = mNormal.dot(mQ.pos());
-    mW = mNormal / mNormal.dot();
-}
-
-Triangle::Triangle(const Point3D& Q, const Vector3D& u, const Vector3D& v)
+TrianglePrim::TrianglePrim(
+    const Point3D& Q, const Vector3D& u, const Vector3D& v
+)
     : mQ(Q), mU(u), mV(v) {
     mKind = Kind::Implicit;
 
@@ -22,8 +13,9 @@ Triangle::Triangle(const Point3D& Q, const Vector3D& u, const Vector3D& v)
     mW = mNormal / mNormal.dot();
 }
 
-Option<Intersect> Triangle::intersect(const Ray& ray, const Interval& bounds)
-    const {
+Option<Intersect> TrianglePrim::intersect(
+    const Ray& ray, const Interval& bounds
+) const {
     const f64 denom = mNormal.dot(ray.direction);
 
     // No hit if the ray is parallel to the plane.

@@ -4,17 +4,16 @@
 #include "util/common.hpp"
 
 /// @brief Tube primitive.
-class Tube : public Primitive {
+class TubePrim : public Primitive {
 public:
-    Tube();
-    Tube(
+    TubePrim(
         const Point3D& center,
         const f64 radius,
         const f64 height,
         const bool top,
         const bool bottom
     );
-    ~Tube() override = default;
+    ~TubePrim() override = default;
 
     /// @brief Computes the surface intersection with the implicit tube quadric.
     virtual Option<Intersect> intersect(const Ray& ray, const Interval& bounds)

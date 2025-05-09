@@ -3,7 +3,6 @@
 #include "geometry/indexed_mesh.hpp"
 #include "geometry/mesh_geo.hpp"
 #include "geometry/obj_parser.hpp"
-#include "primitive/mesh.hpp"
 #include "util/files.hpp"
 
 MeshNode::MeshNode(const char* name, MaterialPtr material, const char* path)

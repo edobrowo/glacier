@@ -1,16 +1,12 @@
-#include "mesh.hpp"
+#include "mesh_prim.hpp"
 
-#include "triangle.hpp"
+#include "triangle_prim.hpp"
 
-Mesh::Mesh() : mMesh() {
+MeshPrim::MeshPrim(const IndexedMesh<VertexP>& mesh) : mMesh(mesh) {
     mKind = Kind::Mesh;
 }
 
-Mesh::Mesh(const IndexedMesh<VertexP>& mesh) : mMesh(mesh) {
-    mKind = Kind::Mesh;
-}
-
-Option<Intersect> Mesh::intersect(const Ray& ray, const Interval& bounds)
+Option<Intersect> MeshPrim::intersect(const Ray& ray, const Interval& bounds)
     const {
     Option<Intersect> closest = std::nullopt;
 
@@ -23,7 +19,7 @@ Option<Intersect> Mesh::intersect(const Ray& ray, const Interval& bounds)
         const Vector3D v = S - Q;
 
         if (const Option<Intersect> i =
-                Triangle(Q, u, v).intersect(ray, bounds)) {
+                TrianglePrim(Q, u, v).intersect(ray, bounds)) {
             if (!closest || i->t < closest->t)
                 closest = i;
         }

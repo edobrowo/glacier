@@ -1,8 +1,5 @@
 #pragma once
 
-#include <array>
-
-#include "geometry/bezier_patch_geo.hpp"
 #include "geometry_node.hpp"
 
 class BezierPatchNode : public GeometryNode {

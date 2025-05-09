@@ -1,7 +1,7 @@
 #include "triangle_geo.hpp"
 
 #include "math/constants.hpp"
-#include "primitive/triangle.hpp"
+#include "primitive/triangle_prim.hpp"
 
 TriangleGeo::TriangleGeo()
     : mQ(Point3D(-0.5, -0.5, 0.0)),
@@ -23,5 +23,5 @@ PrimitivePtr TriangleGeo::primitive(const Primitive::Kind kind) const {
 }
 
 PrimitivePtr TriangleGeo::buildImplicitPrimitive() const {
-    return std::make_unique<Triangle>(mQ, mU, mV);
+    return std::make_unique<TrianglePrim>(mQ, mU, mV);
 }

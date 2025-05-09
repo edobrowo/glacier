@@ -4,11 +4,10 @@
 #include "util/common.hpp"
 
 /// @brief Implicit sphere primitive.
-class Sphere : public Primitive {
+class SpherePrim : public Primitive {
 public:
-    Sphere();
-    Sphere(const Point3D& center, const f64 radius);
-    ~Sphere() override = default;
+    SpherePrim(const Point3D& center, const f64 radius);
+    ~SpherePrim() override = default;
 
     /// @brief Computes the surface intersection with an implicit sphere
     /// centered at the origin with unit radius.

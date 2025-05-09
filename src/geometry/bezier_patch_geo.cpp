@@ -4,7 +4,7 @@
 
 #include "indexed_mesh.hpp"
 #include "math/interpolation.hpp"
-#include "primitive/mesh.hpp"
+#include "primitive/mesh_prim.hpp"
 
 /// @brief Interpolate the point at parameters (u, v).
 static Point3D cubic_bezier_patch(
@@ -80,5 +80,5 @@ PrimitivePtr BezierPatchGeo::buildMeshPrimitive() const {
         }
     }
 
-    return std::make_unique<Mesh>(m);
+    return std::make_unique<MeshPrim>(m);
 }

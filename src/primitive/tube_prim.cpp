@@ -1,17 +1,8 @@
-#include "tube.hpp"
+#include "tube_prim.hpp"
 
 #include "math/rootfinding.hpp"
 
-Tube::Tube()
-    : mCenter(Point3D::zero()),
-      mRadius(1.0),
-      mHeight(1.0),
-      mTopCap(true),
-      mBottomCap(true) {
-    mKind = Kind::Implicit;
-}
-
-Tube::Tube(
+TubePrim::TubePrim(
     const Point3D& base,
     const f64 radius,
     const f64 height,
@@ -26,7 +17,7 @@ Tube::Tube(
     mKind = Kind::Implicit;
 }
 
-Option<Intersect> Tube::intersect(const Ray& ray, const Interval& bounds)
+Option<Intersect> TubePrim::intersect(const Ray& ray, const Interval& bounds)
     const {
     Option<Intersect> closest = std::nullopt;
 

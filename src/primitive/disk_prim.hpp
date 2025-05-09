@@ -4,14 +4,13 @@
 #include "math/vector.hpp"
 #include "primitive.hpp"
 
-/// @brief Triangle primitive.
-class Triangle : public Primitive {
+/// @brief Disk primitive.
+class DiskPrim : public Primitive {
 public:
-    Triangle();
-    Triangle(const Point3D& Q, const Vector3D& u, const Vector3D& v);
-    ~Triangle() override = default;
+    DiskPrim(const Point3D& Q, const Vector3D& u, const Vector3D& v);
+    ~DiskPrim() override = default;
 
-    /// @brief Computes the surface intersection with a triangle represented by
+    /// @brief Computes the surface intersection with a disk represented by
     /// barycentric coordinates.
     virtual Option<Intersect> intersect(const Ray& ray, const Interval& bounds)
         const override;

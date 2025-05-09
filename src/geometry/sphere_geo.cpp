@@ -2,10 +2,10 @@
 
 #include "indexed_mesh.hpp"
 #include "math/constants.hpp"
-#include "primitive/mesh.hpp"
-#include "primitive/sphere.hpp"
+#include "primitive/mesh_prim.hpp"
+#include "primitive/sphere_prim.hpp"
 
-SphereGeo::SphereGeo() : mCenter(Point3D::zero()), mRadius(1.0) {
+SphereGeo::SphereGeo() : mCenter(Point3D::zero()), mRadius(0.5) {
 }
 
 SphereGeo::SphereGeo(const Point3D& center, const f64 radius)
@@ -40,7 +40,7 @@ void SphereGeo::setDivisions(const Size u_div, const Size v_div) {
 }
 
 PrimitivePtr SphereGeo::buildImplicitPrimitive() const {
-    return std::make_unique<Sphere>(mCenter, mRadius);
+    return std::make_unique<SpherePrim>(mCenter, mRadius);
 }
 
 // TODO: normals and texture coordinates
@@ -57,9 +57,9 @@ PrimitivePtr SphereGeo::buildMeshPrimitive() const {
             const f64 azimuthal = 2.0 * math::pi<f64>() * u;
 
             const Point3D p(
-                std::cos(azimuthal) * std::sin(polar),
-                std::cos(polar),
-                std::sin(azimuthal) * std::sin(polar)
+                std::cos(azimuthal) * std::sin(polar) / 2.0,
+                std::cos(polar) / 2.0,
+                std::sin(azimuthal) * std::sin(polar) / 2.0
             );
 
             m.addVertex(VertexP{p});
@@ -76,5 +76,5 @@ PrimitivePtr SphereGeo::buildMeshPrimitive() const {
         }
     }
 
-    return std::make_unique<Mesh>(m);
+    return std::make_unique<MeshPrim>(m);
 }
