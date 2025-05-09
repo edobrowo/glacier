@@ -43,6 +43,7 @@ PrimitivePtr SphereGeo::buildImplicitPrimitive() const {
     return std::make_unique<SpherePrim>(mCenter, mRadius);
 }
 
+// TODO: mCenter and mRadius
 // TODO: normals and texture coordinates
 PrimitivePtr SphereGeo::buildMeshPrimitive() const {
     IndexedMesh<VertexP> m;
@@ -57,11 +58,12 @@ PrimitivePtr SphereGeo::buildMeshPrimitive() const {
             const f64 u = static_cast<f64>(ui) / mUDiv;
             const f64 azimuthal = 2.0 * math::pi<f64>() * u;
 
-            const Point3D p(
-                std::cos(azimuthal) * std::sin(polar) / 2.0,
-                std::cos(polar) / 2.0,
-                std::sin(azimuthal) * std::sin(polar) / 2.0
+            const Vector3D uv(
+                std::cos(azimuthal) * std::sin(polar),
+                std::cos(polar),
+                std::sin(azimuthal) * std::sin(polar)
             );
+            const Point3D p = mCenter + mRadius * uv;
 
             m.addVertex(VertexP{p});
 
@@ -79,8 +81,11 @@ PrimitivePtr SphereGeo::buildMeshPrimitive() const {
 
     // Top cap.
     {
-        const Point3D top_apex(0.0, 0.5, 0.0);
-        m.addVertex(VertexP{top_apex});
+        const Vector3D top_apex(0.0, 0.5, 0.0);
+        const Point3D point = mCenter + mRadius * top_apex;
+
+        m.addVertex(VertexP{point});
+
         const Index apex = m.vertices().size() - 1;
 
         for (Index ui = 0; ui < mUDiv; ++ui) {
@@ -93,8 +98,11 @@ PrimitivePtr SphereGeo::buildMeshPrimitive() const {
 
     // Bottom cap.
     {
-        const Point3D bottom_apex(0.0, -0.5, 0.0);
-        m.addVertex(VertexP{bottom_apex});
+        const Vector3D bottom_apex(0.0, -0.5, 0.0);
+        const Point3D point = mCenter + mRadius * bottom_apex;
+
+        m.addVertex(VertexP{point});
+
         const Index apex = m.vertices().size() - 1;
 
         for (Index ui = 0; ui < mUDiv; ++ui) {
