@@ -38,11 +38,8 @@ Option<Intersect> DiskPrim::intersect(const Ray& ray, const Interval& bounds)
     const f64 alpha = (uv * pv - vv * pu) / denom_bary;
     const f64 beta = (uv * pu - uu * pv) / denom_bary;
 
-    const f64 major = mU.length();
-    const f64 minor = mV.length();
-
     // No hit if the ray is outside the plane boundaries.
-    if (almost::g(math::sqr(alpha / major) + math::sqr(beta / minor), 1.0))
+    if (almost::g(math::sqr(alpha) + math::sqr(beta), 1.0))
         return std::nullopt;
 
     if (ray.direction.dot(mNormal) > 0.0)
