@@ -55,9 +55,9 @@ void BezierPatchGeo::setDivisions(const Size u_div, const Size v_div) {
 
 // TODO: normals and texture coordinates
 PrimitivePtr BezierPatchGeo::buildMeshPrimitive() const {
-    const Index row = mUDiv + 1;
-
     IndexedMesh<VertexP> m;
+
+    const Index row = mUDiv + 1;
     for (Index vi = 0; vi <= mVDiv; ++vi) {
         const f64 v = static_cast<f64>(vi) / mVDiv;
 
@@ -70,12 +70,12 @@ PrimitivePtr BezierPatchGeo::buildMeshPrimitive() const {
 
             if (ui < mUDiv && vi < mVDiv) {
                 const Index a = vi * row + ui;
-                const Index b = (vi + 1) * row + ui;
-                const Index c = vi * row + (ui + 1);
+                const Index b = vi * row + (ui + 1);
+                const Index c = (vi + 1) * row + ui;
                 const Index d = (vi + 1) * row + (ui + 1);
 
-                m.addTriangle(a, c, d);
-                m.addTriangle(a, d, b);
+                m.addTriangle(a, b, d);
+                m.addTriangle(a, d, c);
             }
         }
     }

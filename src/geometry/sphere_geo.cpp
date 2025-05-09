@@ -45,10 +45,11 @@ PrimitivePtr SphereGeo::buildImplicitPrimitive() const {
 
 // TODO: normals and texture coordinates
 PrimitivePtr SphereGeo::buildMeshPrimitive() const {
+    IndexedMesh<VertexP> m;
+
     const Index row = mUDiv + 1;
 
-    IndexedMesh<VertexP> m;
-    for (Index vi = 0; vi <= mVDiv; ++vi) {
+    for (Index vi = 1; vi < mVDiv; ++vi) {
         const f64 v = static_cast<f64>(vi) / mVDiv;
         const f64 polar = math::pi<f64>() * v;
 
@@ -64,15 +65,43 @@ PrimitivePtr SphereGeo::buildMeshPrimitive() const {
 
             m.addVertex(VertexP{p});
 
-            if (ui < mUDiv && vi < mVDiv) {
-                const Index a = vi * row + ui;
-                const Index b = (vi + 1) * row + ui;
-                const Index c = vi * row + (ui + 1);
-                const Index d = (vi + 1) * row + (ui + 1);
+            if (ui < mUDiv && vi < mVDiv - 1) {
+                const Index a = (vi - 1) * row + ui;
+                const Index b = (vi - 1) * row + (ui + 1);
+                const Index c = vi * row + ui;
+                const Index d = vi * row + (ui + 1);
 
-                m.addTriangle(a, c, d);
-                m.addTriangle(a, d, b);
+                m.addTriangle(a, b, d);
+                m.addTriangle(a, d, c);
             }
+        }
+    }
+
+    // Top cap.
+    {
+        const Point3D top_apex(0.0, 0.5, 0.0);
+        m.addVertex(VertexP{top_apex});
+        const Index apex = m.vertices().size() - 1;
+
+        for (Index ui = 0; ui < mUDiv; ++ui) {
+            const Index a = ui;
+            const Index b = ui + 1;
+
+            m.addTriangle(apex, b, a);
+        }
+    }
+
+    // Bottom cap.
+    {
+        const Point3D bottom_apex(0.0, -0.5, 0.0);
+        m.addVertex(VertexP{bottom_apex});
+        const Index apex = m.vertices().size() - 1;
+
+        for (Index ui = 0; ui < mUDiv; ++ui) {
+            const Index b = (mVDiv - 2) * row + ui;
+            const Index c = (mVDiv - 2) * row + (ui + 1);
+
+            m.addTriangle(apex, b, c);
         }
     }
 
