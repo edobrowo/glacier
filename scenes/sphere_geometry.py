@@ -3,6 +3,7 @@ from glacier import (
     Camera,
     Config,
     LambertianMaterial,
+    PrimitiveKind,
     SceneNode,
     SphereNode,
 )
@@ -20,17 +21,20 @@ root.add_child(tl)
 
 tr = SphereNode("tr", mat_tr)
 tr.t(-1.1, 1.1, 0.0)
-tr.renderAsMesh(4, 4)
+tr.set_primitive_kind(PrimitiveKind.Mesh)
+tr.set_divisions(4, 4)
 root.add_child(tr)
 
 bl = SphereNode("bl", mat_bl)
 bl.t(1.1, -1.1, 0.0)
-bl.renderAsMesh(8, 8)
+bl.set_primitive_kind(PrimitiveKind.Mesh)
+bl.set_divisions(8, 8)
 root.add_child(bl)
 
 br = SphereNode("br", mat_br)
 br.t(-1.1, -1.1, 0.0)
-br.renderAsMesh(16, 16)
+br.set_primitive_kind(PrimitiveKind.Mesh)
+br.set_divisions(16, 16)
 root.add_child(br)
 
 camera = Camera(
@@ -43,6 +47,6 @@ camera = Camera(
 )
 
 config = Config()
-config.samples_per_pixel = 20
+config.samples_per_pixel = 10
 
 glacier.render("out.png", camera, root, config)

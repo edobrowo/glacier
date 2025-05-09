@@ -11,7 +11,7 @@ mat = LambertianMaterial(color=[0.7, 0.5, 0.5])
 
 root = SceneNode("root")
 
-mesh = MeshNode("mesh", mat, "scenes/assets/cow.obj")
+mesh = MeshNode("mesh", mat, "scenes/obj/cow.obj")
 root.add_child(mesh)
 
 camera = Camera(

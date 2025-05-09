@@ -1,12 +1,15 @@
 #include "mesh_node.hpp"
 
 #include "geometry/indexed_mesh.hpp"
+#include "geometry/mesh_geo.hpp"
 #include "geometry/obj_parser.hpp"
 #include "primitive/mesh.hpp"
 #include "util/files.hpp"
 
 MeshNode::MeshNode(const char* name, MaterialPtr material, const char* path)
     : GeometryNode(name, nullptr, material) {
+    mPrimKind = Primitive::Kind::Mesh;
+
     const std::string& raw = files::read_to_string(path);
 
     const ObjData data = ObjParser().parse(raw);
@@ -15,5 +18,5 @@ MeshNode::MeshNode(const char* name, MaterialPtr material, const char* path)
 
     const IndexedMesh<VertexP> mesh(obj);
 
-    mPrimitive = std::make_unique<Mesh>(mesh);
+    mGeometry = std::make_unique<MeshGeo>(mesh);
 }

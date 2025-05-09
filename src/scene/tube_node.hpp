@@ -13,4 +13,6 @@ public:
         const f64 height
     );
     ~TubeNode() = default;
+
+    void setCapVisibility(const bool top, const bool bottom);
 };

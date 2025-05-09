@@ -6,12 +6,12 @@ from glacier import (
     SceneNode,
 )
 
-mat_disk = LambertianMaterial(color=[0.5, 0.5, 0.5])
+mat = LambertianMaterial(color=[0.5, 0.5, 0.5])
 
 root = SceneNode("root")
 
-plane = QuadNode("plane", mat_disk)
-root.add_child(plane)
+quad = QuadNode("quad", mat)
+root.add_child(quad)
 
 camera = Camera(
     look_from=[0.0, 0.0, -1.0],

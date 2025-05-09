@@ -1,9 +1,10 @@
 #include "quad_node.hpp"
 
-#include "primitive/quad.hpp"
+#include "geometry/quad_geo.hpp"
 
 QuadNode::QuadNode(const char* name, MaterialPtr material)
-    : GeometryNode(name, std::make_unique<Quad>(), material) {
+    : GeometryNode(name, std::make_unique<QuadGeo>(), material) {
+    mPrimKind = Primitive::Kind::Implicit;
 }
 
 QuadNode::QuadNode(
@@ -13,5 +14,6 @@ QuadNode::QuadNode(
     const Vector3D& u,
     const Vector3D& v
 )
-    : GeometryNode(name, std::make_unique<Quad>(Q, u, v), material) {
+    : GeometryNode(name, std::make_unique<QuadGeo>(Q, u, v), material) {
+    mPrimKind = Primitive::Kind::Implicit;
 }

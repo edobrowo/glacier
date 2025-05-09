@@ -3,16 +3,26 @@
 #include "math/rootfinding.hpp"
 
 Tube::Tube()
-    : top(true),
-      bot(true),
-      mCenter(Point3D::zero()),
+    : mCenter(Point3D::zero()),
       mRadius(1.0),
-      mHeight(1.0) {
+      mHeight(1.0),
+      mTopCap(true),
+      mBottomCap(true) {
     mKind = Kind::Implicit;
 }
 
-Tube::Tube(const Point3D& base, const f64 radius, const f64 height)
-    : top(true), bot(true), mCenter(base), mRadius(radius), mHeight(1.0) {
+Tube::Tube(
+    const Point3D& base,
+    const f64 radius,
+    const f64 height,
+    const bool top,
+    const bool bottom
+)
+    : mCenter(base),
+      mRadius(radius),
+      mHeight(height),
+      mTopCap(top),
+      mBottomCap(bottom) {
     mKind = Kind::Implicit;
 }
 
@@ -72,7 +82,7 @@ Option<Intersect> Tube::intersect(const Ray& ray, const Interval& bounds)
     }
 
     // Top disk.
-    if (top && ray.direction.z != 0.0) {
+    if (mTopCap && ray.direction.z != 0.0) {
         const f64 z = mCenter.z + mHeight / 2.0;
         const f64 t = (z - ray.origin.z) / ray.direction.z;
 
@@ -91,7 +101,7 @@ Option<Intersect> Tube::intersect(const Ray& ray, const Interval& bounds)
     }
 
     // Bottom disk.
-    if (bot && ray.direction.z != 0.0) {
+    if (mBottomCap && ray.direction.z != 0.0) {
         const f64 z = mCenter.z - mHeight / 2.0;
         const f64 t = (z - ray.origin.z) / ray.direction.z;
 

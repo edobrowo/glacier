@@ -1,15 +1,18 @@
 #include "bezier_patch_node.hpp"
 
-#include "geometry/bezier_patch_geo.hpp"
 #include "primitive/mesh.hpp"
 
 BezierPatchNode::BezierPatchNode(
     const char* name,
     MaterialPtr material,
-    const std::array<Point3D, 16>& control_points,
-    const Size u_div,
-    const Size v_div
+    const std::array<Point3D, 16>& control_points
 )
-    : GeometryNode(name, std::make_unique<Mesh>(), material) {
-    mPrimitive = BezierPatchGeo(control_points).toMeshPrimitive(u_div, v_div);
+    : GeometryNode(
+          name, std::make_unique<BezierPatchGeo>(control_points), material
+      ) {
+}
+
+void BezierPatchNode::setDivisions(const Size u_div, const Size v_div) {
+    BezierPatchGeo* geo = static_cast<BezierPatchGeo*>(mGeometry.get());
+    geo->setDivisions(u_div, v_div);
 }

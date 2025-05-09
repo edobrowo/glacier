@@ -1,14 +1,25 @@
 #include "geometry_node.hpp"
 
 GeometryNode::GeometryNode(
-    const char* name, PrimitivePtr&& primitive, MaterialPtr material
+    const char* name, GeometryPtr&& geometry, MaterialPtr material
 )
-    : SceneNode(name), mPrimitive(std::move(primitive)), mMaterial(material) {
+    : SceneNode(name),
+      mGeometry(std::move(geometry)),
+      mMaterial(material),
+      mPrimKind(Primitive::Kind::Mesh) {
     mKind = Kind::Geometry;
 }
 
-const PrimitivePtr& GeometryNode::primitive() const {
-    return mPrimitive;
+PrimitivePtr GeometryNode::primitive() const {
+    return mGeometry->primitive(mPrimKind);
+}
+
+void GeometryNode::setPrimitiveKind(const Primitive::Kind kind) {
+    mPrimKind = kind;
+}
+
+const GeometryPtr& GeometryNode::geometry() const {
+    return mGeometry;
 }
 
 const MaterialPtr& GeometryNode::material() const {

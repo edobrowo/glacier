@@ -1,25 +1,36 @@
 #pragma once
 
-#include "indexed_mesh.hpp"
-#include "math/constants.hpp"
+#include "geometry.hpp"
 #include "math/point.hpp"
-#include "primitive/mesh.hpp"
-#include "primitive/sphere.hpp"
+#include "primitive/primitive.hpp"
+#include "util/common.hpp"
 
 /// @brief Sphere geometry.
-class SphereGeo {
+class SphereGeo : public Geometry {
 public:
     SphereGeo();
     SphereGeo(const Point3D& center, const f64 radius);
     ~SphereGeo() = default;
 
-    /// @brief Convert the sphere to an implicit primitive representation.
-    PrimitivePtr toImplicitPrimitive() const;
+    virtual PrimitivePtr primitive(const Primitive::Kind kind) const override;
 
-    /// @brief Convert the sphere to a mesh via UV construction.
-    PrimitivePtr toMeshPrimitive(const Size u_div, const Size v_div) const;
+    /// @brief Retrieve a constant reference to the center.
+    const Point3D& center() const;
+
+    /// @brief Retrieve the radius.
+    f64 radius() const;
+
+    /// @brief Set number of UV divisions for UV mesh construction
+    void setDivisions(const Size u_div, const Size v_div);
 
 private:
     Point3D mCenter;
     f64 mRadius;
+    Size mUDiv, mVDiv;
+
+    /// @brief Convert the sphere to an implicit primitive representation.
+    PrimitivePtr buildImplicitPrimitive() const;
+
+    /// @brief Convert the sphere to a mesh via UV construction.
+    PrimitivePtr buildMeshPrimitive() const;
 };

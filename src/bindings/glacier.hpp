@@ -155,6 +155,12 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("color")
         );
 
+    // Primitive::Kind enum.
+    py::enum_<Primitive::Kind>(m, "PrimitiveKind")
+        .value("Mesh", Primitive::Kind::Mesh)
+        .value("Implicit", Primitive::Kind::Implicit)
+        .export_values();
+
     // SceneNode::Kind enum.
     py::enum_<SceneNode::Kind>(m, "SceneNodeKind")
         .value("Null", SceneNode::Kind::Null)
@@ -208,7 +214,8 @@ PYBIND11_MODULE(glacier, m) {
         .def_readwrite("name", &SceneNode::name);
 
     // GeometryNode class.
-    py::class_<GeometryNode, SceneNode, py::smart_holder>(m, "GeometryNode");
+    py::class_<GeometryNode, SceneNode, py::smart_holder>(m, "GeometryNode")
+        .def("set_primitive_kind", &GeometryNode::setPrimitiveKind);
 
     // SphereNode class.
     py::class_<SphereNode, GeometryNode, py::smart_holder>(m, "SphereNode")
@@ -237,13 +244,7 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("center"),
             py::arg("radius")
         )
-        .def("renderAsImplicit", &SphereNode::renderAsImplicit)
-        .def(
-            "renderAsMesh",
-            &SphereNode::renderAsMesh,
-            py::arg("u_div"),
-            py::arg("v_div")
-        );
+        .def("set_divisions", &SphereNode::setDivisions);
 
     // QuadNode class.
     py::class_<QuadNode, GeometryNode, py::smart_holder>(m, "QuadNode")
@@ -419,7 +420,8 @@ PYBIND11_MODULE(glacier, m) {
             py::arg("base"),
             py::arg("radius"),
             py::arg("height")
-        );
+        )
+        .def("set_cap_vis", &TubeNode::setCapVisibility);
 
     // BezierPatch node.
     py::class_<BezierPatchNode, GeometryNode, py::smart_holder>(
@@ -428,9 +430,7 @@ PYBIND11_MODULE(glacier, m) {
         .def(
             py::init([](const char* name,
                         MaterialPtr mat,
-                        std::vector<std::vector<f64>> points,
-                        const Size u_div,
-                        const Size v_div) {
+                        std::vector<std::vector<f64>> points) {
                 if (points.size() != 16)
                     throw std::runtime_error("points must be a 16-element lists"
                     );
@@ -461,16 +461,13 @@ PYBIND11_MODULE(glacier, m) {
                     Point3D(points[15][0], points[15][1], points[15][2]),
                 };
 
-                return new BezierPatchNode(
-                    name, mat, control_points, u_div, v_div
-                );
+                return new BezierPatchNode(name, mat, control_points);
             }),
             py::arg("name"),
             py::arg("material"),
-            py::arg("control_points"),
-            py::arg("u_div"),
-            py::arg("v_div")
-        );
+            py::arg("control_points")
+        )
+        .def("set_divisions", &BezierPatchNode::setDivisions);
 
     // Camera class.
     py::class_<Camera>(m, "Camera")

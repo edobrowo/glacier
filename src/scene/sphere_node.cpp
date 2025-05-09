@@ -3,7 +3,8 @@
 #include "geometry/sphere_geo.hpp"
 
 SphereNode::SphereNode(const char* name, MaterialPtr material)
-    : GeometryNode(name, std::make_unique<Sphere>(), material) {
+    : GeometryNode(name, std::make_unique<SphereGeo>(), material) {
+    mPrimKind = Primitive::Kind::Implicit;
 }
 
 SphereNode::SphereNode(
@@ -12,14 +13,13 @@ SphereNode::SphereNode(
     const Point3D& center,
     const f64 radius
 )
-    : GeometryNode(name, std::make_unique<Sphere>(center, radius), material) {
-    mGeo = SphereGeo(center, radius);
+    : GeometryNode(
+          name, std::make_unique<SphereGeo>(center, radius), material
+      ) {
+    mPrimKind = Primitive::Kind::Implicit;
 }
 
-void SphereNode::renderAsImplicit() {
-    mPrimitive = mGeo.toImplicitPrimitive();
-}
-
-void SphereNode::renderAsMesh(const Size u_div, const Size v_div) {
-    mPrimitive = mGeo.toMeshPrimitive(u_div, v_div);
+void SphereNode::setDivisions(const Size u_div, const Size v_div) {
+    SphereGeo* geo = static_cast<SphereGeo*>(mGeometry.get());
+    geo->setDivisions(u_div, v_div);
 }

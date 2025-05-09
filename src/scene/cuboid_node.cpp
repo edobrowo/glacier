@@ -1,9 +1,10 @@
 #include "cuboid_node.hpp"
 
-#include "primitive/cuboid.hpp"
+#include "geometry/cuboid_geo.hpp"
 
 CuboidNode::CuboidNode(const char* name, MaterialPtr material)
-    : GeometryNode(name, std::make_unique<Cuboid>(), material) {
+    : GeometryNode(name, std::make_unique<CuboidGeo>(), material) {
+    mPrimKind = Primitive::Kind::Implicit;
 }
 
 CuboidNode::CuboidNode(
@@ -14,5 +15,6 @@ CuboidNode::CuboidNode(
     const Vector3D& y,
     const Vector3D& z
 )
-    : GeometryNode(name, std::make_unique<Cuboid>(Q, x, y, z), material) {
+    : GeometryNode(name, std::make_unique<CuboidGeo>(Q, x, y, z), material) {
+    mPrimKind = Primitive::Kind::Implicit;
 }

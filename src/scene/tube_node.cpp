@@ -1,9 +1,10 @@
 #include "tube_node.hpp"
 
-#include "primitive/tube.hpp"
+#include "geometry/tube_geo.hpp"
 
 TubeNode::TubeNode(const char* name, MaterialPtr material)
-    : GeometryNode(name, std::make_unique<Tube>(), material) {
+    : GeometryNode(name, std::make_unique<TubeGeo>(), material) {
+    mPrimKind = Primitive::Kind::Implicit;
 }
 
 TubeNode::TubeNode(
@@ -14,6 +15,12 @@ TubeNode::TubeNode(
     const f64 height
 )
     : GeometryNode(
-          name, std::make_unique<Tube>(base, radius, height), material
+          name, std::make_unique<TubeGeo>(base, radius, height), material
       ) {
+    mPrimKind = Primitive::Kind::Implicit;
+}
+
+void TubeNode::setCapVisibility(const bool top, const bool bottom) {
+    TubeGeo* geo = static_cast<TubeGeo*>(mGeometry.get());
+    geo->setCapVisibility(top, bottom);
 }

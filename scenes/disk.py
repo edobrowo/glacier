@@ -6,11 +6,11 @@ from glacier import (
     SceneNode,
 )
 
-mat_disk = LambertianMaterial(color=[0.5, 0.5, 0.5])
+mat = LambertianMaterial(color=[0.5, 0.5, 0.5])
 
 root = SceneNode("root")
 
-disk = DiskNode("disk", mat_disk)
+disk = DiskNode("disk", mat)
 root.add_child(disk)
 
 camera = Camera(

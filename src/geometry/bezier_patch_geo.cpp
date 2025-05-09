@@ -2,7 +2,9 @@
 
 #include <algorithm>
 
+#include "indexed_mesh.hpp"
 #include "math/interpolation.hpp"
+#include "primitive/mesh.hpp"
 
 /// @brief Interpolate the point at parameters (u, v).
 static Point3D cubic_bezier_patch(
@@ -16,10 +18,20 @@ static Point3D cubic_bezier_patch(
     return math::cubic_bezier(std::span<const Point3D>(a), v);
 }
 
-BezierPatchGeo::BezierPatchGeo(std::span<const Point3D> points) {
+BezierPatchGeo::BezierPatchGeo(std::span<const Point3D> points)
+    : mUDiv(4), mVDiv(4) {
     assertm(points.size() == 16, "points must have 16 control points");
 
     std::copy(points.begin(), points.end(), mPoints.begin());
+}
+
+PrimitivePtr BezierPatchGeo::primitive(const Primitive::Kind kind) const {
+    switch (kind) {
+    case Primitive::Kind::Mesh:
+        return buildMeshPrimitive();
+    default:
+        unreachable;
+    }
 }
 
 const std::array<Point3D, 16>& BezierPatchGeo::points() const {
@@ -33,26 +45,30 @@ Point3D BezierPatchGeo::eval(const f64 u, const f64 v) const {
     return cubic_bezier_patch(mPoints, u, v);
 }
 
-// TODO: normals and texture coordinates
-PrimitivePtr BezierPatchGeo::toMeshPrimitive(const Size u_div, const Size v_div)
-    const {
+void BezierPatchGeo::setDivisions(const Size u_div, const Size v_div) {
     assertm(u_div > 0, "u_div must be greater than 0");
     assertm(v_div > 0, "v_div must be greater than 0");
 
-    const Index row = u_div + 1;
+    mUDiv = u_div;
+    mVDiv = v_div;
+}
+
+// TODO: normals and texture coordinates
+PrimitivePtr BezierPatchGeo::buildMeshPrimitive() const {
+    const Index row = mUDiv + 1;
 
     IndexedMesh<VertexP> m;
-    for (Index vi = 0; vi <= v_div; ++vi) {
-        const f64 v = static_cast<f64>(vi) / v_div;
+    for (Index vi = 0; vi <= mVDiv; ++vi) {
+        const f64 v = static_cast<f64>(vi) / mVDiv;
 
-        for (Index ui = 0; ui <= u_div; ++ui) {
-            const f64 u = static_cast<f64>(ui) / u_div;
+        for (Index ui = 0; ui <= mUDiv; ++ui) {
+            const f64 u = static_cast<f64>(ui) / mUDiv;
 
             const Point3D& p = eval(u, v);
 
             m.addVertex(VertexP{p});
 
-            if (ui < u_div && vi < v_div) {
+            if (ui < mUDiv && vi < mVDiv) {
                 const Index a = vi * row + ui;
                 const Index b = (vi + 1) * row + ui;
                 const Index c = vi * row + (ui + 1);

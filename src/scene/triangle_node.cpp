@@ -1,9 +1,10 @@
 #include "triangle_node.hpp"
 
-#include "primitive/triangle.hpp"
+#include "geometry/triangle_geo.hpp"
 
 TriangleNode::TriangleNode(const char* name, MaterialPtr material)
-    : GeometryNode(name, std::make_unique<Triangle>(), material) {
+    : GeometryNode(name, std::make_unique<TriangleGeo>(), material) {
+    mPrimKind = Primitive::Kind::Implicit;
 }
 
 TriangleNode::TriangleNode(
@@ -13,5 +14,6 @@ TriangleNode::TriangleNode(
     const Vector3D& u,
     const Vector3D& v
 )
-    : GeometryNode(name, std::make_unique<Triangle>(Q, u, v), material) {
+    : GeometryNode(name, std::make_unique<TriangleGeo>(Q, u, v), material) {
+    mPrimKind = Primitive::Kind::Implicit;
 }

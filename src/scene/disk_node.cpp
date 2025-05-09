@@ -1,9 +1,10 @@
 #include "disk_node.hpp"
 
-#include "primitive/disk.hpp"
+#include "geometry/disk_geo.hpp"
 
 DiskNode::DiskNode(const char* name, MaterialPtr material)
-    : GeometryNode(name, std::make_unique<Disk>(), material) {
+    : GeometryNode(name, std::make_unique<DiskGeo>(), material) {
+    mPrimKind = Primitive::Kind::Implicit;
 }
 
 DiskNode::DiskNode(
@@ -13,5 +14,6 @@ DiskNode::DiskNode(
     const Vector3D& u,
     const Vector3D& v
 )
-    : GeometryNode(name, std::make_unique<Disk>(Q, u, v), material) {
+    : GeometryNode(name, std::make_unique<DiskGeo>(Q, u, v), material) {
+    mPrimKind = Primitive::Kind::Implicit;
 }
