@@ -12,7 +12,9 @@ public:
     TubeGeo(const Point3D& center, const f64 radius, const f64 height);
     ~TubeGeo() = default;
 
-    virtual PrimitivePtr primitive(const Primitive::Kind kind) const override;
+    virtual PrimitivePtr buildPrimitive(
+        const Primitive::Kind kind
+    ) const override;
 
     void setCapVisibility(const bool top, const bool bottom);
 

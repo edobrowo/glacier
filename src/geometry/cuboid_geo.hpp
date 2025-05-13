@@ -17,7 +17,9 @@ public:
     );
     ~CuboidGeo() = default;
 
-    virtual PrimitivePtr primitive(const Primitive::Kind kind) const override;
+    virtual PrimitivePtr buildPrimitive(
+        const Primitive::Kind kind
+    ) const override;
 
 private:
     Point3D mQ;

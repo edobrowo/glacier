@@ -12,7 +12,9 @@ public:
     DiskGeo(const Point3D& Q, const Vector3D& u, const Vector3D& v);
     ~DiskGeo() = default;
 
-    virtual PrimitivePtr primitive(const Primitive::Kind kind) const override;
+    virtual PrimitivePtr buildPrimitive(
+        const Primitive::Kind kind
+    ) const override;
 
     /// @brief Set number of divisions for UV mesh construction
     void setDivisions(const Size div);

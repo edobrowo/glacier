@@ -18,7 +18,7 @@ CuboidGeo::CuboidGeo(
     : mQ(Q), mX(x), mY(y), mZ(z) {
 }
 
-PrimitivePtr CuboidGeo::primitive(const Primitive::Kind kind) const {
+PrimitivePtr CuboidGeo::buildPrimitive(const Primitive::Kind kind) const {
     switch (kind) {
     case Primitive::Kind::Implicit:
         return buildImplicitPrimitive();

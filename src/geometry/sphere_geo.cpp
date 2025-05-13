@@ -12,7 +12,7 @@ SphereGeo::SphereGeo(const Point3D& center, const f64 radius)
     : mCenter(center), mRadius(radius) {
 }
 
-PrimitivePtr SphereGeo::primitive(const Primitive::Kind kind) const {
+PrimitivePtr SphereGeo::buildPrimitive(const Primitive::Kind kind) const {
     switch (kind) {
     case Primitive::Kind::Implicit:
         return buildImplicitPrimitive();

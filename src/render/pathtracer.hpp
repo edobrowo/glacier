@@ -14,7 +14,7 @@
 /// testing, and pixel shading.
 class Pathtracer {
 public:
-    Pathtracer(const SceneGraph& scene, const Camera& camera);
+    Pathtracer(SceneGraph& scene, const Camera& camera);
     ~Pathtracer() = default;
 
     /// @brief Renders the scene from the view of the camera.
@@ -41,6 +41,6 @@ private:
     /// @brief Background color given a ray.
     Vector3D background(const Ray& ray) const;
 
-    const SceneGraph& mScene;
+    SceneGraph& mScene;
     const Camera& mCamera;
 };

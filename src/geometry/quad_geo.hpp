@@ -12,7 +12,9 @@ public:
     QuadGeo(const Point3D& Q, const Vector3D& u, const Vector3D& v);
     ~QuadGeo() = default;
 
-    virtual PrimitivePtr primitive(const Primitive::Kind kind) const override;
+    virtual PrimitivePtr buildPrimitive(
+        const Primitive::Kind kind
+    ) const override;
 
 private:
     Point3D mQ;

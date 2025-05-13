@@ -14,7 +14,9 @@ public:
     BezierPatchGeo(std::span<const Point3D> points);
     ~BezierPatchGeo() = default;
 
-    virtual PrimitivePtr primitive(const Primitive::Kind kind) const override;
+    virtual PrimitivePtr buildPrimitive(
+        const Primitive::Kind kind
+    ) const override;
 
     /// @brief Retrieve a constant reference to the control points.
     const std::array<Point3D, 16>& points() const;
@@ -22,7 +24,7 @@ public:
     /// @brief Evaluate the Bezier patch at parameters (u, v).
     Point3D eval(const f64 u, const f64 v) const;
 
-    /// @brief Set number of UV divisions for UV mesh construction
+    /// @brief Set number of UV divisions for UV mesh construction.
     void setDivisions(const Size u_div, const Size v_div);
 
 private:

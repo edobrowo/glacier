@@ -18,8 +18,8 @@ public:
     );
     ~GeometryNode() = default;
 
-    /// @brief Builds a primitive. The kind is specified with setPrimitiveKind.
-    PrimitivePtr primitive() const;
+    /// @brief Retrieves the cached primitive.
+    const PrimitivePtr& primitive() const;
 
     /// @brief Sets the primitive kind.
     void setPrimitiveKind(const Primitive::Kind kind);
@@ -30,8 +30,13 @@ public:
     /// @brief Retrieves a constant reference to the material.
     const MaterialPtr& material() const;
 
+    /// @brief Builds the primitive associated with the geometry. The kind is
+    /// specified with setPrimitiveKind.
+    void buildPrimitive();
+
 protected:
     GeometryPtr mGeometry;
     MaterialPtr mMaterial;
+    PrimitivePtr mPrimitive;
     Primitive::Kind mPrimKind;
 };

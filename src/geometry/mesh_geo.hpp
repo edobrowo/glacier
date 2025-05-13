@@ -13,7 +13,9 @@ public:
     MeshGeo(const IndexedMesh<VertexP>& mesh);
     ~MeshGeo() = default;
 
-    virtual PrimitivePtr primitive(const Primitive::Kind kind) const override;
+    virtual PrimitivePtr buildPrimitive(
+        const Primitive::Kind kind
+    ) const override;
 
 private:
     IndexedMesh<VertexP> mMesh;

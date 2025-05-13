@@ -6,12 +6,13 @@ GeometryNode::GeometryNode(
     : SceneNode(name),
       mGeometry(std::move(geometry)),
       mMaterial(material),
+      mPrimitive(nullptr),
       mPrimKind(Primitive::Kind::Mesh) {
     mKind = Kind::Geometry;
 }
 
-PrimitivePtr GeometryNode::primitive() const {
-    return mGeometry->primitive(mPrimKind);
+const PrimitivePtr& GeometryNode::primitive() const {
+    return mPrimitive;
 }
 
 void GeometryNode::setPrimitiveKind(const Primitive::Kind kind) {
@@ -24,4 +25,8 @@ const GeometryPtr& GeometryNode::geometry() const {
 
 const MaterialPtr& GeometryNode::material() const {
     return mMaterial;
+}
+
+void GeometryNode::buildPrimitive() {
+    mPrimitive = mGeometry->buildPrimitive(mPrimKind);
 }

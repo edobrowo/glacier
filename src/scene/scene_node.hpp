@@ -33,6 +33,9 @@ public:
     /// @brief Retrieves a constant reference to the node's children.
     const std::vector<SceneNodePtr>& children() const;
 
+    /// @brief Retrieves a mutable reference to the node's children.
+    std::vector<SceneNodePtr>& childrenMutable();
+
     /// @brief Adds a child node to the node. Transfers ownership of the node
     /// pointer to this node.
     void addChild(SceneNodePtr&& child);

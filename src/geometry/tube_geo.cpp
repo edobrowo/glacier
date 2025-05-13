@@ -17,7 +17,7 @@ TubeGeo::TubeGeo(const Point3D& center, const f64 radius, const f64 height)
       mBottomCap(true) {
 }
 
-PrimitivePtr TubeGeo::primitive(const Primitive::Kind kind) const {
+PrimitivePtr TubeGeo::buildPrimitive(const Primitive::Kind kind) const {
     switch (kind) {
     case Primitive::Kind::Implicit:
         return buildImplicitPrimitive();

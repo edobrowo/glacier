@@ -25,7 +25,7 @@ BezierPatchGeo::BezierPatchGeo(std::span<const Point3D> points)
     std::copy(points.begin(), points.end(), mPoints.begin());
 }
 
-PrimitivePtr BezierPatchGeo::primitive(const Primitive::Kind kind) const {
+PrimitivePtr BezierPatchGeo::buildPrimitive(const Primitive::Kind kind) const {
     switch (kind) {
     case Primitive::Kind::Mesh:
         return buildMeshPrimitive();

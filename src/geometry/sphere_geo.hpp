@@ -12,7 +12,9 @@ public:
     SphereGeo(const Point3D& center, const f64 radius);
     ~SphereGeo() = default;
 
-    virtual PrimitivePtr primitive(const Primitive::Kind kind) const override;
+    virtual PrimitivePtr buildPrimitive(
+        const Primitive::Kind kind
+    ) const override;
 
     /// @brief Retrieve a constant reference to the center.
     const Point3D& center() const;

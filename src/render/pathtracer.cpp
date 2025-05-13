@@ -8,8 +8,9 @@
 #include "scene/geometry_node.hpp"
 #include "util/log.hpp"
 
-Pathtracer::Pathtracer(const SceneGraph& scene, const Camera& camera)
+Pathtracer::Pathtracer(SceneGraph& scene, const Camera& camera)
     : mScene(scene), mCamera(camera) {
+    mScene.buildPrimitives();
 }
 
 Image Pathtracer::render() const {

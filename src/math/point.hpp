@@ -57,6 +57,9 @@ public:
 
     explicit Point(const Vector<T, dim>& v);
 
+    Point<T, dim>& operator+=(const Vector<T, dim>& rhs);
+    Point<T, dim>& operator-=(const Vector<T, dim>& rhs);
+
     /// @brief Constructs the point at (0, 0, 0).
     static Point<T, dim> zero();
 
@@ -278,6 +281,20 @@ Point<T, dim>& Point<T, dim>::operator=(const Point<T, dim>& other) {
 template <Numeric T, u32 dim>
 Point<T, dim>::Point(const Vector<T, dim>& v) {
     ::memcpy(components, v.data(), dim * sizeof(T));
+}
+
+template <Numeric T, u32 dim>
+Point<T, dim>& Point<T, dim>::operator+=(const Vector<T, dim>& rhs) {
+    for (Index i = 0; i < dim; ++i)
+        components[i] += rhs[i];
+    return *this;
+}
+
+template <Numeric T, u32 dim>
+Point<T, dim>& Point<T, dim>::operator-=(const Vector<T, dim>& rhs) {
+    for (Index i = 0; i < dim; ++i)
+        components[i] -= rhs[i];
+    return *this;
 }
 
 template <Numeric T, u32 dim>

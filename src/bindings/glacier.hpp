@@ -17,6 +17,7 @@
 #include "scene/disk_node.hpp"
 #include "scene/geometry_node.hpp"
 #include "scene/mesh_node.hpp"
+#include "scene/nurbs_node.hpp"
 #include "scene/quad_node.hpp"
 #include "scene/scene_node.hpp"
 #include "scene/sphere_node.hpp"
@@ -132,7 +133,8 @@ PYBIND11_MODULE(glacier, m) {
                         "MirrorSpecular color must be a 3-element list"
                     );
                 }
-                return new MirrorSpecular(Vector3D(color[0], color[1], color[2])
+                return new MirrorSpecular(
+                    Vector3D(color[0], color[1], color[2])
                 );
             }),
             py::arg("color")
@@ -448,7 +450,8 @@ PYBIND11_MODULE(glacier, m) {
                         MaterialPtr mat,
                         std::vector<std::vector<f64>> points) {
                 if (points.size() != 16)
-                    throw std::runtime_error("points must be a 16-element lists"
+                    throw std::runtime_error(
+                        "points must be a 16-element lists"
                     );
 
                 for (const std::vector<f64>& p : points) {
@@ -486,6 +489,63 @@ PYBIND11_MODULE(glacier, m) {
         .def(
             "set_divisions",
             &BezierPatchNode::setDivisions,
+            py::arg("u_div"),
+            py::arg("v_div")
+        );
+
+    // NURBS node.
+    py::class_<NURBSNode, GeometryNode, py::smart_holder>(m, "NURBSNode")
+        .def(
+            py::init([](const char* name,
+                        MaterialPtr mat,
+                        std::vector<std::vector<f64>> points,
+                        std::vector<f64> weights,
+                        std::vector<f64> u_knot_vector,
+                        std::vector<f64> v_knot_vector) {
+                if (points.size() != 4 || weights.size() != 4)
+                    throw std::runtime_error(
+                        "points and weights must be 4-element lists"
+                    );
+
+                if (u_knot_vector.size() != 4 || v_knot_vector.size() != 4)
+                    throw std::runtime_error(
+                        "u_knot_vector and v_knot_vector must be 4-element "
+                        "lists"
+                    );
+
+                for (const std::vector<f64>& p : points) {
+                    if (p.size() != 3)
+                        throw std::runtime_error(
+                            "point must be a 3-element list"
+                        );
+                }
+
+                const std::array<Point3D, 4> control_points = {
+                    Point3D(points[0][0], points[0][1], points[0][2]),
+                    Point3D(points[1][0], points[1][1], points[1][2]),
+                    Point3D(points[2][0], points[2][1], points[2][2]),
+                    Point3D(points[3][0], points[3][1], points[3][2])
+                };
+
+                return new NURBSNode(
+                    name,
+                    mat,
+                    control_points,
+                    weights,
+                    u_knot_vector,
+                    v_knot_vector
+                );
+            }),
+            py::arg("name"),
+            py::arg("material"),
+            py::arg("control_points"),
+            py::arg("control_weights"),
+            py::arg("u_knot_vector"),
+            py::arg("v_knot_vector")
+        )
+        .def(
+            "set_divisions",
+            &NURBSNode::setDivisions,
             py::arg("u_div"),
             py::arg("v_div")
         );

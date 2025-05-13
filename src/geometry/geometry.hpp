@@ -12,7 +12,7 @@ public:
     /// @brief Builds a primitive corresponding to the geometry.
     /// @param kind Rendering primitive kind.
     /// @return Unique pointer to the primitive.
-    virtual PrimitivePtr primitive(const Primitive::Kind kind) const = 0;
+    virtual PrimitivePtr buildPrimitive(const Primitive::Kind kind) const = 0;
 };
 
 using GeometryPtr = std::unique_ptr<Geometry>;

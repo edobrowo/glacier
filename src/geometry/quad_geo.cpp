@@ -15,7 +15,7 @@ QuadGeo::QuadGeo(const Point3D& Q, const Vector3D& u, const Vector3D& v)
     : mQ(Q), mU(u), mV(v) {
 }
 
-PrimitivePtr QuadGeo::primitive(const Primitive::Kind kind) const {
+PrimitivePtr QuadGeo::buildPrimitive(const Primitive::Kind kind) const {
     switch (kind) {
     case Primitive::Kind::Implicit:
         return buildImplicitPrimitive();
