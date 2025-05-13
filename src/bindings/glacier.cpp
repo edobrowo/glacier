@@ -16,12 +16,28 @@ void render(
 
     Pathtracer pt(scene, camera);
     pt.config.renderingMode = config.renderingMode;
+    pt.config.samplingKind = config.samplingKind;
     pt.config.samplesPerPixel = config.samplesPerPixel;
     pt.config.traceDepth = config.traceDepth;
 
     Log::i("Rendering mode = {}", config.renderingMode);
-    Log::i("Samples per pixel = {}", config.samplesPerPixel);
-    Log::i("Trace depth = {}", config.traceDepth);
+    Log::i("Sampling kind = {}", config.samplingKind);
+
+    if (config.samplingKind == SamplingKind::MonoStratified)
+        Log::i(
+            "Samples per pixel = {} (overriden to 1 due to SamplingKind)",
+            config.samplesPerPixel
+        );
+    else
+        Log::i("Samples per pixel = {}", config.samplesPerPixel);
+
+    if (config.renderingMode == RenderingMode::NormalMap)
+        Log::i(
+            "Trace depth = {} (overriden to 1 due to RenderingMode)",
+            config.traceDepth
+        );
+    else
+        Log::i("Trace depth = {}", config.traceDepth);
 
     const Image image = pt.render();
 

@@ -588,10 +588,17 @@ PYBIND11_MODULE(glacier, m) {
         .value("NormalMap", RenderingMode::NormalMap)
         .export_values();
 
+    // SamplingKind enum.
+    py::enum_<SamplingKind>(m, "SamplingKind")
+        .value("MonoStratified", SamplingKind::MonoStratified)
+        .value("RandomUniform", SamplingKind::RandomUniform)
+        .export_values();
+
     // Config struct.
     py::class_<Config>(m, "Config")
         .def(py::init<>())
         .def_readwrite("rendering_mode", &Config::renderingMode)
+        .def_readwrite("sampling_kind", &Config::samplingKind)
         .def_readwrite("samples_per_pixel", &Config::samplesPerPixel)
         .def_readwrite("trace_depth", &Config::traceDepth);
 

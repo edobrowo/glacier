@@ -28,14 +28,19 @@ Image Pathtracer::render() const {
             for (Index px = 0; px < mCamera.nx(); ++px) {
                 Vector3D color = Vector3D::zero();
 
-                for (Index sample = 0; sample < config.samplesPerPixel;
-                     ++sample) {
+                if (config.samplingKind == SamplingKind::MonoStratified) {
                     const Ray ray = generate(px, py);
+                    color = shadeRecursive(ray, 1);
+                } else {
+                    for (Index sample = 0; sample < config.samplesPerPixel;
+                         ++sample) {
+                        const Ray ray = generate(px, py);
 
-                    color += shadeRecursive(ray, 1);
+                        color += shadeRecursive(ray, 1);
+                    }
+
+                    color *= color_scale;
                 }
-
-                color *= color_scale;
 
                 image.set(px, py, color);
             }
@@ -62,7 +67,21 @@ Image Pathtracer::render() const {
 
 Ray Pathtracer::generate(const Index px, const Index py) const {
     const Point3D origin = mCamera.origin();
-    const Vector3D direction = (mCamera.sample(px, py) - origin).normalize();
+
+    Point3D point_sample;
+
+    switch (config.samplingKind) {
+    case SamplingKind::MonoStratified:
+        point_sample = mCamera.p(px, py);
+        break;
+    case SamplingKind::RandomUniform:
+        point_sample = mCamera.sample(px, py);
+        break;
+    default:
+        unreachable;
+    }
+
+    const Vector3D direction = (point_sample - origin).normalize();
 
     return Ray(origin, direction);
 }

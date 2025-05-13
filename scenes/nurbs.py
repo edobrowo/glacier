@@ -5,6 +5,7 @@ from glacier import (
     Config,
     LambertianMaterial,
     RenderingMode,
+    SamplingKind,
     SceneNode,
 )
 
@@ -42,7 +43,7 @@ camera = Camera(
 )
 
 config = Config()
-config.samples_per_pixel = 10
 config.rendering_mode = RenderingMode.NormalMap
+config.sampling_kind = SamplingKind.MonoStratified
 
 glacier.render("out.png", camera, root, config)

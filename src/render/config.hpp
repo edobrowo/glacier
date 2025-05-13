@@ -8,10 +8,32 @@ enum class RenderingMode {
     NormalMap,
 };
 
+enum class SamplingKind {
+    MonoStratified = 0,
+    RandomUniform,
+};
+
 struct Config {
     RenderingMode renderingMode = RenderingMode::Full;
+    SamplingKind samplingKind = SamplingKind::RandomUniform;
     u64 samplesPerPixel = 100;
     u64 traceDepth = 50;
+};
+
+template <>
+struct FormatWriter<SamplingKind> {
+    static void write(const SamplingKind& kind, StringBuffer& sb) {
+        switch (kind) {
+        case SamplingKind::MonoStratified:
+            sb.append("MonoStratified", 14);
+            break;
+        case SamplingKind::RandomUniform:
+            sb.append("RandomUniform", 13);
+            break;
+        default:
+            unreachable;
+        }
+    }
 };
 
 template <>
