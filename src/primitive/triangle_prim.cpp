@@ -42,7 +42,7 @@ Option<Intersect> TrianglePrim::intersect(
     const f64 beta = (uv * pu - uu * pv) / denom_bary;
 
     // No hit if the ray is outside the plane boundaries.
-    if (almost::le_zero(alpha) || almost::le_zero(beta) ||
+    if (almost::l_zero(alpha) || almost::l_zero(beta) ||
         almost::g(alpha + beta, 1.0))
         return std::nullopt;
 
