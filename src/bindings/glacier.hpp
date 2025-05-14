@@ -32,7 +32,7 @@ namespace py = pybind11;
 void render(
     const char* path,
     const Camera& camera,
-    SceneNodePtr&& root,
+    const SceneNodePtr& root,
     const Config& config
 );
 

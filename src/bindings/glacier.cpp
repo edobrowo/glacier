@@ -7,12 +7,12 @@
 void render(
     const char* path,
     const Camera& camera,
-    SceneNodePtr&& root,
+    const SceneNodePtr& root,
     const Config& config
 ) {
     SceneGraph scene;
 
-    scene.root()->addChild(std::move(root));
+    scene.root()->addChild(root);
 
     Pathtracer pt(scene, camera);
     pt.config.renderingMode = config.renderingMode;

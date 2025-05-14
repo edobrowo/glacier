@@ -7,7 +7,7 @@
 
 class SceneNode;
 
-using SceneNodePtr = std::unique_ptr<SceneNode>;
+using SceneNodePtr = std::shared_ptr<SceneNode>;
 
 /// @brief Generic scene node. All scene nodes have an ID, name, and associated
 /// local Transform.
@@ -36,9 +36,8 @@ public:
     /// @brief Retrieves a mutable reference to the node's children.
     std::vector<SceneNodePtr>& childrenMutable();
 
-    /// @brief Adds a child node to the node. Transfers ownership of the node
-    /// pointer to this node.
-    void addChild(SceneNodePtr&& child);
+    /// @brief Adds a child node to the node.
+    void addChild(const SceneNodePtr& child);
 
 public:
     std::string name;

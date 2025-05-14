@@ -31,6 +31,6 @@ std::vector<SceneNodePtr>& SceneNode::childrenMutable() {
     return mChildren;
 }
 
-void SceneNode::addChild(SceneNodePtr&& child) {
-    mChildren.push_back(std::move(child));
+void SceneNode::addChild(const SceneNodePtr& child) {
+    mChildren.push_back(child);
 }
