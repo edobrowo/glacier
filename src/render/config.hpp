@@ -25,10 +25,10 @@ struct FormatWriter<SamplingKind> {
     static void write(const SamplingKind& kind, StringBuffer& sb) {
         switch (kind) {
         case SamplingKind::MonoStratified:
-            sb.append("MonoStratified", 14);
+            sb.append("MonoStratified");
             break;
         case SamplingKind::RandomUniform:
-            sb.append("RandomUniform", 13);
+            sb.append("RandomUniform");
             break;
         default:
             unreachable;
@@ -41,10 +41,10 @@ struct FormatWriter<RenderingMode> {
     static void write(const RenderingMode& mode, StringBuffer& sb) {
         switch (mode) {
         case RenderingMode::Full:
-            sb.append("Full", 4);
+            sb.append("Full");
             break;
         case RenderingMode::NormalMap:
-            sb.append("NormalMap", 9);
+            sb.append("NormalMap");
             break;
         default:
             unreachable;

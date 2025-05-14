@@ -30,11 +30,11 @@ template <typename T>
 struct FormatWriter<Option<T>> {
     static void write(const Option<T>& opt, StringBuffer& sb) {
         if (opt) {
-            sb.append("Some(", 5);
+            sb.append("Some(");
             FormatWriter<T>::write(*opt, sb);
             sb.putSafe(')');
         } else {
-            sb.append("None", 4);
+            sb.append("None");
         }
     }
 };
@@ -105,7 +105,7 @@ struct FormatWriter<std::map<K, V>> {
             FormatWriter<V>::write(iter->second, sb);
             sb.putSafe('}');
             if (distance(iter, hashmap.end()) > 1)
-                sb.append(", ", 2);
+                sb.append(", ");
         }
         sb.putSafe('}');
     }

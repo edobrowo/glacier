@@ -44,7 +44,7 @@ struct VertexPT3N {
 template <>
 struct FormatWriter<VertexP> {
     static void write(const VertexP& v, StringBuffer& sb) {
-        sb.append("V(", 2);
+        sb.append("V(");
         sb.appendFormat("p={}", v.position);
         sb.putSafe(')');
     }
@@ -53,7 +53,7 @@ struct FormatWriter<VertexP> {
 template <>
 struct FormatWriter<VertexPT2> {
     static void write(const VertexPT2& v, StringBuffer& sb) {
-        sb.append("V(", 2);
+        sb.append("V(");
         sb.appendFormat("p={}, t={}", v.position, v.texture);
         sb.putSafe(')');
     }
@@ -62,7 +62,7 @@ struct FormatWriter<VertexPT2> {
 template <>
 struct FormatWriter<VertexPT3> {
     static void write(const VertexPT3& v, StringBuffer& sb) {
-        sb.append("V(", 2);
+        sb.append("V(");
         sb.appendFormat("p={}, t={}", v.position, v.texture);
         sb.putSafe(')');
     }
@@ -71,7 +71,7 @@ struct FormatWriter<VertexPT3> {
 template <>
 struct FormatWriter<VertexPN> {
     static void write(const VertexPN& v, StringBuffer& sb) {
-        sb.append("V(", 2);
+        sb.append("V(");
         sb.appendFormat("p={}, n={}", v.position, v.normal);
         sb.putSafe(')');
     }
@@ -80,7 +80,7 @@ struct FormatWriter<VertexPN> {
 template <>
 struct FormatWriter<VertexPT2N> {
     static void write(const VertexPT2N& v, StringBuffer& sb) {
-        sb.append("V(", 2);
+        sb.append("V(");
         sb.appendFormat("p={}, t={}, n={}", v.position, v.texture, v.normal);
         sb.putSafe(')');
     }
@@ -89,7 +89,7 @@ struct FormatWriter<VertexPT2N> {
 template <>
 struct FormatWriter<VertexPT3N> {
     static void write(const VertexPT3N& v, StringBuffer& sb) {
-        sb.append("V(", 2);
+        sb.append("V(");
         sb.appendFormat("p={}, t={}, n={}", v.position, v.texture, v.normal);
         sb.putSafe(')');
     }

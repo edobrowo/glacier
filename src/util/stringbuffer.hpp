@@ -19,7 +19,7 @@ public:
     void put(const char c);
     void putSafe(const char c);
 
-    void append(const char* str, const Size length);
+    void append(const char* str);
     void append(const std::string& str);
     void append(const std::string_view view);
 

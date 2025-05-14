@@ -38,10 +38,10 @@ void StringBuffer::putSafe(const char c) {
     put(c);
 }
 
-void StringBuffer::append(const char* str, const Size length) {
-    expand(mNext + length);
-    std::memcpy(mBuffer + mNext, str, sizeof(char) * length);
-    mNext += length;
+void StringBuffer::append(const char* str) {
+    Index i = 0;
+    while (str[i] != '\0')
+        putSafe(str[i++]);
 }
 
 void StringBuffer::append(const std::string& str) {

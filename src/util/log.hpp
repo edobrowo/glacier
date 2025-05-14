@@ -85,19 +85,19 @@ struct FormatWriter<Log::Level> {
     static void write(const Log::Level& label, StringBuffer& sb) {
         switch (label) {
         case Log::Level::Debug:
-            sb.append("DEBUG", 5);
+            sb.append("DEBUG");
             return;
         case Log::Level::Info:
-            sb.append("INFO", 4);
+            sb.append("INFO");
             return;
         case Log::Level::Warning:
-            sb.append("WARNING", 7);
+            sb.append("WARNING");
             return;
         case Log::Level::Error:
-            sb.append("ERROR", 5);
+            sb.append("ERROR");
             return;
         case Log::Level::Fatal:
-            sb.append("FATAL", 5);
+            sb.append("FATAL");
             return;
         default:
             unreachable;

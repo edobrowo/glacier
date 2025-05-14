@@ -192,9 +192,9 @@ template <>
 struct FormatWriter<bool> {
     static void write(bool value, StringBuffer& sb) {
         if (value)
-            sb.append("true", 4);
+            sb.append("true");
         else
-            sb.append("false", 5);
+            sb.append("false");
     }
 };
 

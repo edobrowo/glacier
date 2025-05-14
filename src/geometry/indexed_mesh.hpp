@@ -102,7 +102,7 @@ void IndexedMesh<Vertex>::addTriangle(
 template <>
 struct FormatWriter<IndexedTriangle> {
     static void write(const IndexedTriangle& tri, StringBuffer& sb) {
-        sb.append("Tri(", 4);
+        sb.append("Tri(");
         sb.appendFormat("a={}, b={}, c={}", tri.a, tri.b, tri.c);
         sb.putSafe(')');
     }
