@@ -12,7 +12,7 @@ public:
     /// properties correspond to a specular reflector controlled with a Phong
     /// coefficient.
     virtual Option<ScatterRecord> scatter(
-        const Ray& incident, const Intersect& intersect
+        const Ray& incident, const SurfaceInteraction& interaction
     ) const override;
 
 private:

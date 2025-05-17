@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "material/emissive.hpp"
-#include "primitive/intersect.hpp"
 #include "scene/geometry_node.hpp"
 #include "util/log.hpp"
 
@@ -91,10 +90,9 @@ Vector3D Pathtracer::shadeRecursive(const Ray& ray, const Size depth) const {
         return Vector3D::zero();
 
     if (const Option<SurfaceInteraction> option = intersect(ray)) {
-        const MaterialPtr mat = option->material;
-        const Intersect& i = option->intersect;
+        const MaterialPtr mat = option->mat;
 
-        const Option<ScatterRecord> record = mat->scatter(ray, i);
+        const Option<ScatterRecord> record = mat->scatter(ray, *option);
 
         switch (config.renderingMode) {
         case RenderingMode::Full:
@@ -109,7 +107,7 @@ Vector3D Pathtracer::shadeRecursive(const Ray& ray, const Size depth) const {
             }
             break;
         case RenderingMode::NormalMap:
-            return 0.5 * (i.normal.normalize() + Vector3D::one());
+            return 0.5 * (option->n.normalize() + Vector3D::one());
             break;
         default:
             unreachable;
@@ -141,11 +139,11 @@ Option<SurfaceInteraction> Pathtracer::intersectRecursive(
     // Compute the intersect with the current node if it contains a primitive.
     if (node->kind() == SceneNode::Kind::Geometry) {
         const GeometryNode* geo = static_cast<GeometryNode*>(node.get());
-        if (const Option<Intersect> intersect =
+        if (const Option<SurfaceInteraction> interaction =
                 geo->primitive()->intersect(inverse_ray, bounds)) {
-            closest = SurfaceInteraction(*intersect, geo->material());
-            closest_bounds.max =
-                std::min(closest->intersect.t, closest_bounds.max);
+            closest = interaction;
+            closest->mat = geo->material();
+            closest_bounds.max = std::min(closest->t, closest_bounds.max);
         }
     }
 
@@ -154,9 +152,9 @@ Option<SurfaceInteraction> Pathtracer::intersectRecursive(
     for (const SceneNodePtr& child : node->children()) {
         if (const Option<SurfaceInteraction> interaction =
                 intersectRecursive(child, inverse_ray, closest_bounds)) {
-            if (!closest || interaction->intersect.t < closest->intersect.t) {
+            if (!closest || interaction->t < closest->t) {
                 closest = interaction;
-                closest_bounds.max = interaction->intersect.t;
+                closest_bounds.max = interaction->t;
             }
         }
     }
@@ -166,10 +164,10 @@ Option<SurfaceInteraction> Pathtracer::intersectRecursive(
     // the upper 3x3 of the transpose of the inverse of the current node's
     // transformation.
     if (closest) {
-        Intersect& i = closest->intersect;
-        i.position = node->transform().matrix() * i.position;
-        i.normal = (Matrix3D(transpose(node->transform().inverse())) * i.normal)
-                       .normalize();
+        closest->p = node->transform().matrix() * closest->p;
+        closest->n =
+            (Matrix3D(transpose(node->transform().inverse())) * closest->n)
+                .normalize();
     }
 
     return closest;

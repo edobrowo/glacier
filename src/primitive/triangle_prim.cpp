@@ -13,7 +13,7 @@ TrianglePrim::TrianglePrim(
     mW = mNormal / mNormal.dot();
 }
 
-Option<Intersect> TrianglePrim::intersect(
+Option<SurfaceInteraction> TrianglePrim::intersect(
     const Ray& ray, const Interval& bounds
 ) const {
     const f64 denom = mNormal.dot(ray.direction);
@@ -47,7 +47,11 @@ Option<Intersect> TrianglePrim::intersect(
         return std::nullopt;
 
     if (ray.direction.dot(mNormal) > 0.0)
-        return Intersect(t, P, -mNormal, Intersect::Face::Inside);
+        return SurfaceInteraction(
+            P, -mNormal, SurfaceInteraction::Face::Inside, t
+        );
     else
-        return Intersect(t, P, mNormal, Intersect::Face::Outside);
+        return SurfaceInteraction(
+            P, mNormal, SurfaceInteraction::Face::Outside, t
+        );
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "intersect.hpp"
+#include "material/surface_interaction.hpp"
 #include "math/interval.hpp"
 #include "math/ray.hpp"
 #include "util/common.hpp"
@@ -20,8 +20,9 @@ public:
 
     /// @brief Determines the closest intersect between a ray and primitive
     /// within the specified parameter bounds.
-    virtual Option<Intersect> intersect(const Ray& ray, const Interval& bounds)
-        const;
+    virtual Option<SurfaceInteraction> intersect(
+        const Ray& ray, const Interval& bounds
+    ) const;
 
     /// @brief Retrieves the kind of the primitive.
     Kind kind() const;

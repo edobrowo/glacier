@@ -12,7 +12,7 @@ Specular::~Specular() {
 }
 
 Option<ScatterRecord> Specular::scatter(
-    const Ray& incident, const Intersect& intersect
+    const Ray& incident, const SurfaceInteraction& interaction
 ) const {
     const f64 x1 = thread_rng::uniform<f64>();
     const f64 x2 = thread_rng::uniform<f64>();
@@ -23,8 +23,8 @@ Option<ScatterRecord> Specular::scatter(
     const f64 alpha = std::acos(std::pow(1.0 - x1, exp));
     const f64 beta = 2.0 * math::pi<f64>() * x2;
 
-    const Point3D& p = intersect.position;
-    const Vector3D& n = intersect.normal;
+    const Point3D& p = interaction.p;
+    const Vector3D& n = interaction.n;
     const Vector3D& l = incident.direction;
 
     const Vector3D r = math::reflect(l, n);

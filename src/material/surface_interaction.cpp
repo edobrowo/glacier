@@ -1,31 +1,41 @@
 #include "surface_interaction.hpp"
 
 SurfaceInteraction::SurfaceInteraction(
-    const Intersect& intersect, MaterialPtr material
+    const Point3D& p, const Vector3D& n, const Face face, const f64 t
 )
-    : intersect(intersect), material(material) {
+    : p(p), n(n), face(face), mat(nullptr), t(t) {
 }
 
 SurfaceInteraction::SurfaceInteraction(const SurfaceInteraction& other)
-    : intersect(other.intersect), material(other.material) {
+    : p(other.p), n(other.n), face(other.face), mat(other.mat), t(other.t) {
 }
 
-SurfaceInteraction SurfaceInteraction::operator=(const SurfaceInteraction& other
+SurfaceInteraction SurfaceInteraction::operator=(
+    const SurfaceInteraction& other
 ) {
-    intersect = other.intersect;
-    material = other.material;
+    p = other.p;
+    n = other.n;
+    face = other.face;
+    mat = other.mat;
+    t = other.t;
 
     return *this;
 }
 
 SurfaceInteraction::SurfaceInteraction(SurfaceInteraction&& other)
-    : intersect(std::move(other.intersect)),
-      material(std::move(other.material)) {
+    : p(std::move(other.p)),
+      n(std::move(other.n)),
+      face(std::move(other.face)),
+      mat(std::move(other.mat)),
+      t(std::move(other.t)) {
 }
 
 SurfaceInteraction SurfaceInteraction::operator=(SurfaceInteraction&& other) {
-    intersect = std::move(other.intersect);
-    material = std::move(other.material);
+    p = std::move(other.p);
+    n = std::move(other.n);
+    face = std::move(other.face);
+    mat = std::move(other.mat);
+    t = std::move(other.t);
 
     return *this;
 }

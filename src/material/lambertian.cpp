@@ -11,7 +11,7 @@ Lambertian::~Lambertian() {
 }
 
 Option<ScatterRecord> Lambertian::scatter(
-    const Ray& incident, const Intersect& intersect
+    const Ray& incident, const SurfaceInteraction& interaction
 ) const {
     const f64 x1 = thread_rng::uniform<f64>();
     const f64 x2 = thread_rng::uniform<f64>();
@@ -20,8 +20,8 @@ Option<ScatterRecord> Lambertian::scatter(
     const f64 alpha = std::sqrt(std::acos(1.0 - x1));
     const f64 beta = 2.0 * math::pi<f64>() * x2;
 
-    const Point3D& p = intersect.position;
-    const Vector3D& n = intersect.normal;
+    const Point3D& p = interaction.p;
+    const Vector3D& n = interaction.n;
 
     const Vector3D direction = math::perturb(n, alpha, beta);
 

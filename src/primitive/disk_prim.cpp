@@ -11,8 +11,9 @@ DiskPrim::DiskPrim(const Point3D& Q, const Vector3D& u, const Vector3D& v)
     mW = mNormal / mNormal.dot();
 }
 
-Option<Intersect> DiskPrim::intersect(const Ray& ray, const Interval& bounds)
-    const {
+Option<SurfaceInteraction> DiskPrim::intersect(
+    const Ray& ray, const Interval& bounds
+) const {
     const f64 denom = mNormal.dot(ray.direction);
 
     // No hit if the ray is parallel to the plane.
@@ -43,7 +44,11 @@ Option<Intersect> DiskPrim::intersect(const Ray& ray, const Interval& bounds)
         return std::nullopt;
 
     if (ray.direction.dot(mNormal) > 0.0)
-        return Intersect(t, P, -mNormal, Intersect::Face::Inside);
+        return SurfaceInteraction(
+            P, -mNormal, SurfaceInteraction::Face::Inside, t
+        );
     else
-        return Intersect(t, P, mNormal, Intersect::Face::Outside);
+        return SurfaceInteraction(
+            P, mNormal, SurfaceInteraction::Face::Outside, t
+        );
 }

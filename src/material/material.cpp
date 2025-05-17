@@ -7,7 +7,7 @@ Material::~Material() {
 }
 
 Option<ScatterRecord> Material::scatter(
-    const Ray& incident, const Intersect& intersect
+    const Ray& incident, const SurfaceInteraction& interaction
 ) const {
     return std::nullopt;
 }

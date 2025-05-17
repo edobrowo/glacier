@@ -17,9 +17,10 @@ TubePrim::TubePrim(
     mKind = Kind::Implicit;
 }
 
-Option<Intersect> TubePrim::intersect(const Ray& ray, const Interval& bounds)
-    const {
-    Option<Intersect> closest = std::nullopt;
+Option<SurfaceInteraction> TubePrim::intersect(
+    const Ray& ray, const Interval& bounds
+) const {
+    Option<SurfaceInteraction> closest = std::nullopt;
 
     // Tube side.
     {
@@ -65,9 +66,13 @@ Option<Intersect> TubePrim::intersect(const Ray& ray, const Interval& bounds)
                 Vector3D normal =
                     Vector3D(p.x - mCenter.x, p.y - mCenter.y, 0.0) / mRadius;
                 if (ray.direction.dot(normal) > 0.0)
-                    closest = Intersect(t, p, -normal, Intersect::Face::Inside);
+                    closest = SurfaceInteraction(
+                        p, -normal, SurfaceInteraction::Face::Inside, t
+                    );
                 else
-                    closest = Intersect(t, p, normal, Intersect::Face::Outside);
+                    closest = SurfaceInteraction(
+                        p, normal, SurfaceInteraction::Face::Outside, t
+                    );
             }
         }
     }
@@ -84,9 +89,13 @@ Option<Intersect> TubePrim::intersect(const Ray& ray, const Interval& bounds)
             const Vector3D normal = Vector3D(0, 0, 1);
             if (dist2 <= mRadius * mRadius) {
                 if (ray.direction.dot(normal) > 0.0)
-                    closest = Intersect(t, p, -normal, Intersect::Face::Inside);
+                    closest = SurfaceInteraction(
+                        p, -normal, SurfaceInteraction::Face::Inside, t
+                    );
                 else
-                    closest = Intersect(t, p, normal, Intersect::Face::Outside);
+                    closest = SurfaceInteraction(
+                        p, normal, SurfaceInteraction::Face::Outside, t
+                    );
             }
         }
     }
@@ -103,9 +112,13 @@ Option<Intersect> TubePrim::intersect(const Ray& ray, const Interval& bounds)
             const Vector3D normal = Vector3D(0, 0, -1);
             if (dist2 <= mRadius * mRadius) {
                 if (ray.direction.dot(normal) > 0.0)
-                    closest = Intersect(t, p, -normal, Intersect::Face::Inside);
+                    closest = SurfaceInteraction(
+                        p, -normal, SurfaceInteraction::Face::Inside, t
+                    );
                 else
-                    closest = Intersect(t, p, normal, Intersect::Face::Outside);
+                    closest = SurfaceInteraction(
+                        p, normal, SurfaceInteraction::Face::Outside, t
+                    );
             }
         }
     }

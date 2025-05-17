@@ -1,14 +1,28 @@
 #pragma once
 
 #include "material.hpp"
-#include "primitive/intersect.hpp"
+#include "math/point.hpp"
+#include "math/vector.hpp"
 
-/// @brief Light ray-surface interaction record.
+class Material;
+using MaterialPtr = std::shared_ptr<Material>;
+
+/// @brief Ray-surface interaction record.
 struct SurfaceInteraction {
-    Intersect intersect;
-    MaterialPtr material;
+    enum class Face {
+        Outside = 0,
+        Inside
+    };
 
-    SurfaceInteraction(const Intersect& intersect, MaterialPtr material);
+    Point3D p;
+    Vector3D n;
+    Face face;
+    MaterialPtr mat;
+    f64 t;
+
+    SurfaceInteraction(
+        const Point3D& p, const Vector3D& n, const Face face, const f64 t
+    );
     ~SurfaceInteraction() = default;
 
     SurfaceInteraction(const SurfaceInteraction& other);

@@ -7,8 +7,9 @@ SpherePrim::SpherePrim(const Point3D& center, const f64 radius)
     mKind = Kind::Implicit;
 }
 
-Option<Intersect> SpherePrim::intersect(const Ray& ray, const Interval& bounds)
-    const {
+Option<SurfaceInteraction> SpherePrim::intersect(
+    const Ray& ray, const Interval& bounds
+) const {
     // Set up quadratic.
     const Vector3D oc = ray.origin - mCenter;
     const f64 a = ray.direction.dot();
@@ -44,7 +45,11 @@ Option<Intersect> SpherePrim::intersect(const Ray& ray, const Interval& bounds)
     const Vector3D normal = (p - mCenter) / mRadius;
 
     if (ray.direction.dot(normal) > 0.0)
-        return Intersect(t, p, -normal, Intersect::Face::Inside);
+        return SurfaceInteraction(
+            p, -normal, SurfaceInteraction::Face::Inside, t
+        );
     else
-        return Intersect(t, p, normal, Intersect::Face::Outside);
+        return SurfaceInteraction(
+            p, normal, SurfaceInteraction::Face::Outside, t
+        );
 }

@@ -12,8 +12,9 @@ public:
 
     /// @brief Computes the surface intersection with a triangle represented by
     /// barycentric coordinates.
-    virtual Option<Intersect> intersect(const Ray& ray, const Interval& bounds)
-        const override;
+    virtual Option<SurfaceInteraction> intersect(
+        const Ray& ray, const Interval& bounds
+    ) const override;
 
 private:
     Point3D mQ;

@@ -20,8 +20,9 @@ public:
 
     /// @brief Computes the surface intersection with the cuboid by computing
     /// the intersection with each of the 6 component quads.
-    virtual Option<Intersect> intersect(const Ray& ray, const Interval& bounds)
-        const override;
+    virtual Option<SurfaceInteraction> intersect(
+        const Ray& ray, const Interval& bounds
+    ) const override;
 
 private:
     std::array<QuadPrim, 6> mQuads;

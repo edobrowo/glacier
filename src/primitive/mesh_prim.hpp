@@ -10,8 +10,9 @@ public:
 
     /// @brief Computes the surface intersection with the mesh by computing
     /// the intersection with all component triangles.
-    virtual Option<Intersect> intersect(const Ray& ray, const Interval& bounds)
-        const override;
+    virtual Option<SurfaceInteraction> intersect(
+        const Ray& ray, const Interval& bounds
+    ) const override;
 
 private:
     IndexedMesh<VertexP> mMesh;
