@@ -1,11 +1,6 @@
-add_subdirectory(util)
-add_subdirectory(math)
-add_subdirectory(geometry)
-add_subdirectory(material)
-add_subdirectory(primitive)
+add_subdirectory(common)
 add_subdirectory(scene)
 add_subdirectory(render)
-add_subdirectory(bindings)
 
 # Python3 packages
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)

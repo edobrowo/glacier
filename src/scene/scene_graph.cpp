@@ -1,6 +1,6 @@
 #include "scene_graph.hpp"
 
-#include "geometry_node.hpp"
+#include "nodes/geometry_node.hpp"
 
 SceneGraph::SceneGraph() : mRoot(std::make_unique<SceneNode>("root")) {
 }

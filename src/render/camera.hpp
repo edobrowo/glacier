@@ -1,8 +1,8 @@
 #pragma once
 
-#include "math/point.hpp"
-#include "math/vector.hpp"
-#include "util/common.hpp"
+#include "common/math/point.hpp"
+#include "common/math/vector.hpp"
+#include "common/prelude.hpp"
 
 /// @brief Virtual camera class. Defines a camera frame using a
 /// lookfrom-lookat-fov parameterization. Provides pixel-to-worldspace

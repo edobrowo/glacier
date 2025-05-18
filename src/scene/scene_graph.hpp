@@ -1,6 +1,6 @@
 #pragma once
 
-#include "scene_node.hpp"
+#include "nodes/scene_node.hpp"
 
 /// @brief Hierarchical scene graph class.
 class SceneGraph {

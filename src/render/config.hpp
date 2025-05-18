@@ -1,7 +1,7 @@
 #pragma once
 
-#include "util/common.hpp"
-#include "util/format.hpp"
+#include "common/prelude.hpp"
+#include "common/util/format.hpp"
 
 enum class RenderingMode {
     Full = 0,
@@ -9,13 +9,13 @@ enum class RenderingMode {
 };
 
 enum class SamplingKind {
-    MonoStratified = 0,
-    RandomUniform,
+    Center = 0,
+    UniformRandom,
 };
 
 struct Config {
     RenderingMode renderingMode = RenderingMode::Full;
-    SamplingKind samplingKind = SamplingKind::RandomUniform;
+    SamplingKind samplingKind = SamplingKind::UniformRandom;
     u64 samplesPerPixel = 100;
     u64 traceDepth = 50;
 };
@@ -24,11 +24,11 @@ template <>
 struct FormatWriter<SamplingKind> {
     static void write(const SamplingKind& kind, StringBuffer& sb) {
         switch (kind) {
-        case SamplingKind::MonoStratified:
-            sb.append("MonoStratified");
+        case SamplingKind::Center:
+            sb.append("Center");
             break;
-        case SamplingKind::RandomUniform:
-            sb.append("RandomUniform");
+        case SamplingKind::UniformRandom:
+            sb.append("UniformRandom");
             break;
         default:
             unreachable;

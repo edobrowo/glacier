@@ -1,14 +1,14 @@
 #pragma once
 
-#include "camera.hpp"
-#include "config.hpp"
-#include "image.hpp"
-#include "material/surface_interaction.hpp"
-#include "math/interval.hpp"
-#include "math/ray.hpp"
-#include "primitive/primitive.hpp"
+#include "common/math/interval.hpp"
+#include "common/math/ray.hpp"
+#include "common/prelude.hpp"
+#include "common/util/image.hpp"
+#include "render/camera.hpp"
+#include "render/config.hpp"
+#include "render/material/surface_interaction.hpp"
+#include "render/primitive/primitive.hpp"
 #include "scene/scene_graph.hpp"
-#include "util/common.hpp"
 
 /// @brief Main path tracer routine class. Performs ray generation, intersection
 /// testing, and pixel shading.

@@ -1,11 +1,11 @@
-#include "pathtracer.hpp"
+#include "render/pathtracer.hpp"
 
 #include <thread>
 #include <vector>
 
-#include "material/emissive.hpp"
-#include "scene/geometry_node.hpp"
-#include "util/log.hpp"
+#include "common/util/log.hpp"
+#include "render/material/emissive.hpp"
+#include "scene/nodes/geometry_node.hpp"
 
 Pathtracer::Pathtracer(SceneGraph& scene, const Camera& camera)
     : mScene(scene), mCamera(camera) {
@@ -27,7 +27,7 @@ Image Pathtracer::render() const {
             for (Index px = 0; px < mCamera.nx(); ++px) {
                 Vector3D color = Vector3D::zero();
 
-                if (config.samplingKind == SamplingKind::MonoStratified) {
+                if (config.samplingKind == SamplingKind::Center) {
                     const Ray ray = generate(px, py);
                     color = shadeRecursive(ray, 1);
                 } else {
@@ -70,10 +70,10 @@ Ray Pathtracer::generate(const Index px, const Index py) const {
     Point3D point_sample;
 
     switch (config.samplingKind) {
-    case SamplingKind::MonoStratified:
+    case SamplingKind::Center:
         point_sample = mCamera.p(px, py);
         break;
-    case SamplingKind::RandomUniform:
+    case SamplingKind::UniformRandom:
         point_sample = mCamera.sample(px, py);
         break;
     default:

@@ -1,8 +1,8 @@
-#include "camera.hpp"
+#include "render/camera.hpp"
 
-#include "math/numeric.hpp"
-#include "util/log.hpp"
-#include "util/thread_random.hpp"
+#include "common/math/numeric.hpp"
+#include "common/util/log.hpp"
+#include "common/util/thread_random.hpp"
 
 Camera::Camera(
     const Point3D& look_from,
