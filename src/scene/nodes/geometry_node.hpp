@@ -1,8 +1,8 @@
 #pragma once
 
 #include "geometry/geometry.hpp"
-#include "material/material.hpp"
-#include "primitive/primitive.hpp"
+#include "render/material/material.hpp"
+#include "render/primitive/primitive.hpp"
 #include "scene_node.hpp"
 
 class GeometryNode;
@@ -16,7 +16,11 @@ public:
     GeometryNode(
         const char* name, GeometryPtr&& geometry, MaterialPtr material
     );
-    ~GeometryNode() = default;
+    virtual ~GeometryNode() override;
+
+    /// @brief Builds the primitive associated with the geometry. The kind is
+    /// specified with setPrimitiveKind.
+    virtual void buildPrimitive() = 0;
 
     /// @brief Retrieves the cached primitive.
     const PrimitivePtr& primitive() const;
@@ -29,10 +33,6 @@ public:
 
     /// @brief Retrieves a constant reference to the material.
     const MaterialPtr& material() const;
-
-    /// @brief Builds the primitive associated with the geometry. The kind is
-    /// specified with setPrimitiveKind.
-    void buildPrimitive();
 
 protected:
     GeometryPtr mGeometry;

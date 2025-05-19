@@ -1,52 +1,18 @@
-#include "geometry/sphere_geo.hpp"
+#include "geometry/sphere.hpp"
 
-#include "geometry/indexed_mesh.hpp"
+#include "geometry/triangle_mesh.hpp"
 #include "math/constants.hpp"
-#include "primitive/mesh_prim.hpp"
-#include "primitive/sphere_prim.hpp"
 
-SphereGeo::SphereGeo() : mCenter(Point3D::zero()), mRadius(0.5) {
+Sphere::Sphere() : mCenter(Point3D::zero()), mRadius(0.5) {
 }
 
-SphereGeo::SphereGeo(const Point3D& center, const f64 radius)
+Sphere::Sphere(const Point3D& center, const f64 radius)
     : mCenter(center), mRadius(radius) {
 }
 
-PrimitivePtr SphereGeo::buildPrimitive(const Primitive::Kind kind) const {
-    switch (kind) {
-    case Primitive::Kind::Implicit:
-        return buildImplicitPrimitive();
-    case Primitive::Kind::Mesh:
-        return buildMeshPrimitive();
-    default:
-        unreachable;
-    }
-}
-
-const Point3D& SphereGeo::center() const {
-    return mCenter;
-}
-
-f64 SphereGeo::radius() const {
-    return mRadius;
-}
-
-void SphereGeo::setDivisions(const Size u_div, const Size v_div) {
-    assertm(u_div > 0, "u_div must be greater than 0");
-    assertm(v_div > 0, "v_div must be greater than 0");
-
-    mUDiv = u_div;
-    mVDiv = v_div;
-}
-
-PrimitivePtr SphereGeo::buildImplicitPrimitive() const {
-    return std::make_unique<SpherePrim>(mCenter, mRadius);
-}
-
-// TODO: mCenter and mRadius
 // TODO: normals and texture coordinates
-PrimitivePtr SphereGeo::buildMeshPrimitive() const {
-    IndexedMesh<VertexP> m;
+TriangleMesh Sphere::mesh() const {
+    TriangleMesh mesh;
 
     const Index row = mUDiv + 1;
 
@@ -65,7 +31,7 @@ PrimitivePtr SphereGeo::buildMeshPrimitive() const {
             );
             const Point3D p = mCenter + mRadius * uv;
 
-            m.addVertex(VertexP{p});
+            mesh.addVertex(Vertex{p});
 
             if (ui < mUDiv && vi < mVDiv - 1) {
                 const Index a = (vi - 1) * row + ui;
@@ -73,8 +39,8 @@ PrimitivePtr SphereGeo::buildMeshPrimitive() const {
                 const Index c = vi * row + ui;
                 const Index d = vi * row + (ui + 1);
 
-                m.addTriangle(a, b, d);
-                m.addTriangle(a, d, c);
+                mesh.addTriangle(a, b, d);
+                mesh.addTriangle(a, d, c);
             }
         }
     }
@@ -84,15 +50,15 @@ PrimitivePtr SphereGeo::buildMeshPrimitive() const {
         const Vector3D top_apex(0.0, 0.5, 0.0);
         const Point3D point = mCenter + mRadius * top_apex;
 
-        m.addVertex(VertexP{point});
+        mesh.addVertex(Vertex{point});
 
-        const Index apex = m.vertices().size() - 1;
+        const Index apex = mesh.vertices().size() - 1;
 
         for (Index ui = 0; ui < mUDiv; ++ui) {
             const Index a = ui;
             const Index b = ui + 1;
 
-            m.addTriangle(apex, b, a);
+            mesh.addTriangle(apex, b, a);
         }
     }
 
@@ -101,17 +67,33 @@ PrimitivePtr SphereGeo::buildMeshPrimitive() const {
         const Vector3D bottom_apex(0.0, -0.5, 0.0);
         const Point3D point = mCenter + mRadius * bottom_apex;
 
-        m.addVertex(VertexP{point});
+        mesh.addVertex(Vertex{point});
 
-        const Index apex = m.vertices().size() - 1;
+        const Index apex = mesh.vertices().size() - 1;
 
         for (Index ui = 0; ui < mUDiv; ++ui) {
             const Index b = (mVDiv - 2) * row + ui;
             const Index c = (mVDiv - 2) * row + (ui + 1);
 
-            m.addTriangle(apex, b, c);
+            mesh.addTriangle(apex, b, c);
         }
     }
 
-    return std::make_unique<MeshPrim>(m);
+    return mesh;
+}
+
+const Point3D& Sphere::center() const {
+    return mCenter;
+}
+
+f64 Sphere::radius() const {
+    return mRadius;
+}
+
+void Sphere::setDivisions(const Size u_div, const Size v_div) {
+    assertm(u_div > 0, "u_div must be greater than 0");
+    assertm(v_div > 0, "v_div must be greater than 0");
+
+    mUDiv = u_div;
+    mVDiv = v_div;
 }

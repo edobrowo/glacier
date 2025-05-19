@@ -2,7 +2,7 @@
 
 #include "common/math/point.hpp"
 #include "common/math/vector.hpp"
-#include "primitive/primitive.hpp"
+#include "primitive.hpp"
 
 /// @brief Disk primitive.
 class DiskPrim : public Primitive {

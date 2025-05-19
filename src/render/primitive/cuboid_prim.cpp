@@ -1,4 +1,4 @@
-#include "primitive/cuboid_prim.hpp"
+#include "cuboid_prim.hpp"
 
 CuboidPrim::CuboidPrim(
     const Point3D& o,

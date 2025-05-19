@@ -1,4 +1,4 @@
-#include "primitive/primitive.hpp"
+#include "primitive.hpp"
 
 Primitive::Primitive() : mKind(Primitive::Kind::Null) {
 }

@@ -4,8 +4,8 @@
 
 #include "common/math/interval.hpp"
 #include "common/prelude.hpp"
-#include "primitive/primitive.hpp"
-#include "primitive/quad_prim.hpp"
+#include "primitive.hpp"
+#include "quad_prim.hpp"
 
 /// @brief Cuboid primitive.
 class CuboidPrim : public Primitive {

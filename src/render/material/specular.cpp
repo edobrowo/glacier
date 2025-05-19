@@ -1,4 +1,4 @@
-#include "material/specular.hpp"
+#include "specular.hpp"
 
 #include "common/math/vector_ops.hpp"
 #include "common/util/thread_random.hpp"

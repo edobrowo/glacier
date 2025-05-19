@@ -44,6 +44,6 @@ camera = Camera(
 
 config = Config()
 config.rendering_mode = RenderingMode.NormalMap
-config.sampling_kind = SamplingKind.MonoStratified
+config.sampling_kind = SamplingKind.Center
 
-glacier.render("out.png", camera, root, config)
+glacier.render("nurbs.png", camera, root, config)

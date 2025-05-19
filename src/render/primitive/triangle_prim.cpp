@@ -1,4 +1,4 @@
-#include "primitive/triangle_prim.hpp"
+#include "triangle_prim.hpp"
 
 #include "common/math/almost.hpp"
 

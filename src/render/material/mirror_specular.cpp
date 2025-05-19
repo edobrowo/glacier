@@ -1,4 +1,4 @@
-#include "material/mirror_specular.hpp"
+#include "mirror_specular.hpp"
 
 #include "common/math/vector_ops.hpp"
 

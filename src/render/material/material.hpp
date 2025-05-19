@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/math/vector.hpp"
-#include "material/scatter_record.hpp"
-#include "material/surface_interaction.hpp"
+#include "scatter_record.hpp"
+#include "surface_interaction.hpp"
 
 struct SurfaceInteraction;
 

@@ -1,9 +1,11 @@
 #include "tube_node.hpp"
 
-#include "geometry/tube_geo.hpp"
+#include "geometry/tube.hpp"
+#include "render/primitive/mesh_prim.hpp"
+#include "render/primitive/tube_prim.hpp"
 
 TubeNode::TubeNode(const char* name, MaterialPtr material)
-    : GeometryNode(name, std::make_unique<TubeGeo>(), material) {
+    : GeometryNode(name, std::make_unique<Tube>(), material) {
     mPrimKind = Primitive::Kind::Implicit;
 }
 
@@ -15,17 +17,42 @@ TubeNode::TubeNode(
     const f64 height
 )
     : GeometryNode(
-          name, std::make_unique<TubeGeo>(base, radius, height), material
+          name, std::make_unique<Tube>(base, radius, height), material
       ) {
     mPrimKind = Primitive::Kind::Implicit;
 }
 
+TubeNode::~TubeNode() {
+}
+
+void TubeNode::buildPrimitive() {
+    switch (mPrimKind) {
+    case Primitive::Kind::Mesh: {
+        mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
+        break;
+    }
+    case Primitive::Kind::Implicit: {
+        const Tube* tube = static_cast<Tube*>(mGeometry.get());
+        mPrimitive = std::make_unique<TubePrim>(
+            tube->center(),
+            tube->radius(),
+            tube->height(),
+            tube->topCapVisible(),
+            tube->bottomCapVisible()
+        );
+        break;
+    }
+    default:
+        unimplemented;
+    }
+}
+
 void TubeNode::setCapVisibility(const bool top, const bool bottom) {
-    TubeGeo* geo = static_cast<TubeGeo*>(mGeometry.get());
+    Tube* geo = static_cast<Tube*>(mGeometry.get());
     geo->setCapVisibility(top, bottom);
 }
 
 void TubeNode::setDivisions(const Size div) {
-    TubeGeo* geo = static_cast<TubeGeo*>(mGeometry.get());
+    Tube* geo = static_cast<Tube*>(mGeometry.get());
     geo->setDivisions(div);
 }

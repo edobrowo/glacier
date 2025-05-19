@@ -1,9 +1,6 @@
-#include "geometry/nurbs_geo.hpp"
+#include "geometry/nurbs.hpp"
 
 #include <algorithm>
-
-#include "geometry/indexed_mesh.hpp"
-#include "primitive/mesh_prim.hpp"
 
 // TODO: blossom-based?
 
@@ -40,7 +37,7 @@ f64 N(const Index i, const Index n, const f64 u, std::span<const f64> k) {
 
 }
 
-NURBSGeo::NURBSGeo(
+NURBS::NURBS(
     std::span<const Point3D> points,
     std::span<const f64> weights,
     std::span<const f64> u_knot_vector,
@@ -70,21 +67,41 @@ NURBSGeo::NURBSGeo(
     std::copy(v_knot_vector.begin(), v_knot_vector.end(), mVKnots.begin());
 }
 
-PrimitivePtr NURBSGeo::buildPrimitive(const Primitive::Kind kind) const {
-    switch (kind) {
-    case Primitive::Kind::Mesh:
-        return buildMeshPrimitive();
-    default:
-        unreachable;
+// TODO: normals and texture coordinates
+TriangleMesh NURBS::mesh() const {
+    TriangleMesh mesh;
+
+    const Index row = mUDiv + 1;
+    for (Index vi = 0; vi <= mVDiv; ++vi) {
+        const f64 v = static_cast<f64>(vi) / mVDiv;
+
+        for (Index ui = 0; ui <= mUDiv; ++ui) {
+            const f64 u = static_cast<f64>(ui) / mUDiv;
+
+            const Point3D& p = eval(u, v);
+
+            mesh.addVertex(Vertex{p});
+
+            if (ui < mUDiv - 1 && vi < mVDiv - 1) {
+                const Index a = vi * row + ui;
+                const Index b = vi * row + (ui + 1);
+                const Index c = (vi + 1) * row + ui;
+                const Index d = (vi + 1) * row + (ui + 1);
+
+                mesh.addTriangle(a, b, d);
+                mesh.addTriangle(a, d, c);
+            }
+        }
     }
+
+    return mesh;
 }
 
-const std::array<NURBSControlPoint, NURBSGeo::numPoints>&
-NURBSGeo::points() const {
+const std::array<NURBSControlPoint, NURBS::numPoints>& NURBS::points() const {
     return mPoints;
 }
 
-Point3D NURBSGeo::eval(const f64 u, const f64 v) const {
+Point3D NURBS::eval(const f64 u, const f64 v) const {
     assertm(0.0 <= u && u <= 1.0, "u must be in [0, 1]");
     assertm(0.0 <= v && v <= 1.0, "v must be in [0, 1]");
 
@@ -125,40 +142,10 @@ Point3D NURBSGeo::eval(const f64 u, const f64 v) const {
     return result;
 }
 
-void NURBSGeo::setDivisions(const Size u_div, const Size v_div) {
+void NURBS::setDivisions(const Size u_div, const Size v_div) {
     assertm(u_div > 0, "u_div must be greater than 0");
     assertm(v_div > 0, "v_div must be greater than 0");
 
     mUDiv = u_div;
     mVDiv = v_div;
-}
-
-// TODO: normals and texture coordinates
-PrimitivePtr NURBSGeo::buildMeshPrimitive() const {
-    IndexedMesh<VertexP> m;
-
-    const Index row = mUDiv + 1;
-    for (Index vi = 0; vi <= mVDiv; ++vi) {
-        const f64 v = static_cast<f64>(vi) / mVDiv;
-
-        for (Index ui = 0; ui <= mUDiv; ++ui) {
-            const f64 u = static_cast<f64>(ui) / mUDiv;
-
-            const Point3D& p = eval(u, v);
-
-            m.addVertex(VertexP{p});
-
-            if (ui < mUDiv - 1 && vi < mVDiv - 1) {
-                const Index a = vi * row + ui;
-                const Index b = vi * row + (ui + 1);
-                const Index c = (vi + 1) * row + ui;
-                const Index d = (vi + 1) * row + (ui + 1);
-
-                m.addTriangle(a, b, d);
-                m.addTriangle(a, d, c);
-            }
-        }
-    }
-
-    return std::make_unique<MeshPrim>(m);
 }

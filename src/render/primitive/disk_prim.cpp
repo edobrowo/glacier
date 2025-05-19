@@ -1,4 +1,4 @@
-#include "primitive/disk_prim.hpp"
+#include "disk_prim.hpp"
 
 #include "common/math/almost.hpp"
 

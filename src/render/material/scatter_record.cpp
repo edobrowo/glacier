@@ -1,4 +1,4 @@
-#include "material/scatter_record.hpp"
+#include "scatter_record.hpp"
 
 ScatterRecord::ScatterRecord(const Ray& ray, const Vector3D& color)
     : scattered(ray), color(color) {

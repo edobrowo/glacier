@@ -1,4 +1,4 @@
-#include "material/emissive.hpp"
+#include "emissive.hpp"
 
 Emissive::Emissive(const Vector3D& color) : mColor(color) {
     mKind = Kind::Emissive;

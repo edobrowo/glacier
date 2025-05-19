@@ -23,4 +23,4 @@ camera = Camera(
     ny=225
 )
 
-glacier.render("out.png", camera, root)
+glacier.render("cuboid.png", camera, root)

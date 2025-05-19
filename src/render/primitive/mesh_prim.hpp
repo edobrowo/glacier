@@ -1,11 +1,11 @@
 #pragma once
 
-#include "common/geometry/indexed_mesh.hpp"
-#include "primitive/primitive.hpp"
+#include "common/geometry/triangle_mesh.hpp"
+#include "primitive.hpp"
 
 class MeshPrim : public Primitive {
 public:
-    MeshPrim(const IndexedMesh<VertexP>& mesh);
+    MeshPrim(const TriangleMesh& mesh);
     ~MeshPrim() override = default;
 
     /// @brief Computes the surface intersection with the mesh by computing
@@ -15,5 +15,5 @@ public:
     ) const override;
 
 private:
-    IndexedMesh<VertexP> mMesh;
+    TriangleMesh mMesh;
 };

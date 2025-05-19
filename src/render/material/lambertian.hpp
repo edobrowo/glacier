@@ -1,6 +1,6 @@
 #pragma once
 
-#include "material/material.hpp"
+#include "material.hpp"
 
 /// @brief Lambertian (pure diffuse) material.
 class Lambertian : public Material {

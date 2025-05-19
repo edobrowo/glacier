@@ -1,6 +1,6 @@
 #pragma once
 
-#include "material/material.hpp"
+#include "material.hpp"
 
 /// @brief Phong-based specular material.
 class Specular : public Material {

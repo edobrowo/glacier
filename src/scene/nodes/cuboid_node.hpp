@@ -13,5 +13,7 @@ public:
         const Vector3D& y,
         const Vector3D& z
     );
-    ~CuboidNode() = default;
+    ~CuboidNode() override;
+
+    virtual void buildPrimitive() override;
 };

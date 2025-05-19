@@ -1,4 +1,4 @@
-#include "material/surface_interaction.hpp"
+#include "surface_interaction.hpp"
 
 SurfaceInteraction::SurfaceInteraction(
     const Point3D& p, const Vector3D& n, const Face face, const f64 t

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "material/material.hpp"
+#include "material.hpp"
 
 /// @brief Material that emits light.
 class Emissive : public Material {

@@ -11,6 +11,9 @@ SceneNode::SceneNode(const char* name)
     ++sNextId;
 }
 
+SceneNode::~SceneNode() {
+}
+
 u64 SceneNode::id() const {
     return mId;
 }

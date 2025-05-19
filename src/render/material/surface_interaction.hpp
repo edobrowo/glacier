@@ -2,7 +2,7 @@
 
 #include "common/math/point.hpp"
 #include "common/math/vector.hpp"
-#include "material/material.hpp"
+#include "material.hpp"
 
 class Material;
 using MaterialPtr = std::shared_ptr<Material>;

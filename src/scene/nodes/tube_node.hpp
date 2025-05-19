@@ -12,7 +12,9 @@ public:
         const f64 radius,
         const f64 height
     );
-    ~TubeNode() = default;
+    ~TubeNode() override;
+
+    virtual void buildPrimitive() override;
 
     void setCapVisibility(const bool top, const bool bottom);
     void setDivisions(const Size div);

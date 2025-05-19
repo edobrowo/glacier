@@ -36,4 +36,4 @@ camera = Camera(
 config = Config()
 config.samples_per_pixel = 10
 
-glacier.render("out.png", camera, root, config)
+glacier.render("bezier_patch.png", camera, root, config)

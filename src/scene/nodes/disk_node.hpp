@@ -12,7 +12,9 @@ public:
         const Vector3D& u,
         const Vector3D& v
     );
-    ~DiskNode() = default;
+    ~DiskNode() override;
+
+    virtual void buildPrimitive() override;
 
     void setDivisions(const Size div);
 };

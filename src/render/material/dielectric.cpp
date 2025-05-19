@@ -1,4 +1,4 @@
-#include "material/dielectric.hpp"
+#include "dielectric.hpp"
 
 #include "common/math/vector_ops.hpp"
 #include "common/util/thread_random.hpp"

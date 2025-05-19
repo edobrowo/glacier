@@ -3,7 +3,7 @@
 #include "common/math/interval.hpp"
 #include "common/math/ray.hpp"
 #include "common/prelude.hpp"
-#include "material/surface_interaction.hpp"
+#include "render/material/surface_interaction.hpp"
 
 /// @brief Rendering primitive base class. Defines an interface for ray-surface
 /// intersections.

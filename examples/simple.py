@@ -57,4 +57,4 @@ config.rendering_mode = RenderingMode.Full
 config.samples_per_pixel = 100
 config.trace_depth = 50
 
-glacier.render("out.png", camera, root, config)
+glacier.render("simple.png", camera, root, config)

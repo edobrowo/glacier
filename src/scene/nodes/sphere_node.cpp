@@ -1,9 +1,11 @@
 #include "sphere_node.hpp"
 
-#include "geometry/sphere_geo.hpp"
+#include "geometry/sphere.hpp"
+#include "render/primitive/mesh_prim.hpp"
+#include "render/primitive/sphere_prim.hpp"
 
 SphereNode::SphereNode(const char* name, MaterialPtr material)
-    : GeometryNode(name, std::make_unique<SphereGeo>(), material) {
+    : GeometryNode(name, std::make_unique<Sphere>(), material) {
     mPrimKind = Primitive::Kind::Implicit;
 }
 
@@ -13,13 +15,31 @@ SphereNode::SphereNode(
     const Point3D& center,
     const f64 radius
 )
-    : GeometryNode(
-          name, std::make_unique<SphereGeo>(center, radius), material
-      ) {
+    : GeometryNode(name, std::make_unique<Sphere>(center, radius), material) {
     mPrimKind = Primitive::Kind::Implicit;
 }
 
+SphereNode::~SphereNode() {
+}
+
+void SphereNode::buildPrimitive() {
+    switch (mPrimKind) {
+    case Primitive::Kind::Mesh: {
+        mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
+        break;
+    }
+    case Primitive::Kind::Implicit: {
+        const Sphere* sphere = static_cast<Sphere*>(mGeometry.get());
+        mPrimitive =
+            std::make_unique<SpherePrim>(sphere->center(), sphere->radius());
+        break;
+    }
+    default:
+        unimplemented;
+    }
+}
+
 void SphereNode::setDivisions(const Size u_div, const Size v_div) {
-    SphereGeo* geo = static_cast<SphereGeo*>(mGeometry.get());
+    Sphere* geo = static_cast<Sphere*>(mGeometry.get());
     geo->setDivisions(u_div, v_div);
 }

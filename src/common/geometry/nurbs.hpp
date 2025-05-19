@@ -4,9 +4,9 @@
 #include <span>
 
 #include "geometry/geometry.hpp"
+#include "geometry/triangle_mesh.hpp"
 #include "math/point.hpp"
 #include "prelude.hpp"
-#include "primitive/primitive.hpp"
 
 /// @brief Control point.
 struct NURBSControlPoint {
@@ -15,7 +15,7 @@ struct NURBSControlPoint {
 };
 
 /// @brief NURBS patch geometry.
-class NURBSGeo : public Geometry {
+class NURBS : public Geometry {
 public:
     static constexpr Size degree = 1;
     static constexpr Size numUPoints = 2;
@@ -24,17 +24,15 @@ public:
     static constexpr Size numUKnots = numUPoints + degree + 1;
     static constexpr Size numVKnots = numVPoints + degree + 1;
 
-    NURBSGeo(
+    NURBS(
         std::span<const Point3D> points,
         std::span<const f64> weights,
         std::span<const f64> u_knot_vector,
         std::span<const f64> v_knot_vector
     );
-    ~NURBSGeo() = default;
+    ~NURBS() = default;
 
-    virtual PrimitivePtr buildPrimitive(
-        const Primitive::Kind kind
-    ) const override;
+    virtual TriangleMesh mesh() const override;
 
     /// @brief Retrieve a constant reference to the control points.
     const std::array<NURBSControlPoint, numPoints>& points() const;
@@ -51,7 +49,4 @@ private:
     std::array<f64, numVKnots> mVKnots;
 
     Size mUDiv, mVDiv;
-
-    /// @brief Convert the NURBS patch to a mesh via UV construction.
-    PrimitivePtr buildMeshPrimitive() const;
 };

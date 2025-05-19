@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/prelude.hpp"
-#include "primitive/primitive.hpp"
+#include "primitive.hpp"
 
 /// @brief Tube primitive.
 class TubePrim : public Primitive {

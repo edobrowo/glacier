@@ -1,4 +1,4 @@
-#include "primitive/sphere_prim.hpp"
+#include "sphere_prim.hpp"
 
 #include "common/math/rootfinding.hpp"
 

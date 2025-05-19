@@ -19,7 +19,7 @@ public:
     };
 
     explicit SceneNode(const char* name);
-    ~SceneNode() = default;
+    virtual ~SceneNode();
 
     /// @brief Retrieves the ID of the node.
     u64 id() const;

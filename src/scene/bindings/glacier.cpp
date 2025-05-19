@@ -41,5 +41,5 @@ void render(
 
     const Image image = pt.render();
 
-    image.save("out.png");
+    image.save(path);
 }

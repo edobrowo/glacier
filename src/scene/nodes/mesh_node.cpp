@@ -1,9 +1,11 @@
 #include "mesh_node.hpp"
 
-#include "geometry/indexed_mesh.hpp"
-#include "geometry/mesh_geo.hpp"
+#include "common/util/files.hpp"
+#include "common/util/log.hpp"
+#include "geometry/mesh.hpp"
 #include "geometry/obj_parser.hpp"
-#include "util/files.hpp"
+#include "geometry/triangle_mesh.hpp"
+#include "render/primitive/mesh_prim.hpp"
 
 MeshNode::MeshNode(const char* name, MaterialPtr material, const char* path)
     : GeometryNode(name, nullptr, material) {
@@ -15,7 +17,21 @@ MeshNode::MeshNode(const char* name, MaterialPtr material, const char* path)
 
     const ObjObject& obj = data.objects.front();
 
-    const IndexedMesh<VertexP> mesh(obj);
+    const TriangleMesh mesh(obj);
 
-    mGeometry = std::make_unique<MeshGeo>(mesh);
+    mGeometry = std::make_unique<Mesh>(mesh);
+}
+
+MeshNode::~MeshNode() {
+}
+
+void MeshNode::buildPrimitive() {
+    switch (mPrimKind) {
+    case Primitive::Kind::Mesh: {
+        mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
+        break;
+    }
+    default:
+        unreachable;
+    }
 }

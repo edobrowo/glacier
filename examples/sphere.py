@@ -22,4 +22,4 @@ camera = Camera(
     ny=225
 )
 
-glacier.render("out.png", camera, root)
+glacier.render("sphere.png", camera, root)

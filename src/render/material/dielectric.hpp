@@ -1,6 +1,6 @@
 #pragma once
 
-#include "material/material.hpp"
+#include "material.hpp"
 
 /// @brief Dielectric material. Parameterized by the ratio if the material's
 /// refractive index over the refractive index of the enclosing media.

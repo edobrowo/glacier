@@ -11,7 +11,7 @@ mat = LambertianMaterial(color=[0.7, 0.5, 0.5])
 
 root = SceneNode("root")
 
-mesh = MeshNode("mesh", mat, "scenes/obj/cow.obj")
+mesh = MeshNode("mesh", mat, "examples/obj/cow.obj")
 root.add_child(mesh)
 
 camera = Camera(
@@ -27,4 +27,4 @@ config = Config()
 config.samples_per_pixel = 10
 config.trace_depth = 3
 
-glacier.render("out.png", camera, root, config)
+glacier.render("cow.png", camera, root, config)

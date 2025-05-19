@@ -1,6 +1,7 @@
 #include "nurbs_node.hpp"
 
-#include "geometry/nurbs_geo.hpp"
+#include "geometry/nurbs.hpp"
+#include "render/primitive/mesh_prim.hpp"
 
 NURBSNode::NURBSNode(
     const char* name,
@@ -12,14 +13,28 @@ NURBSNode::NURBSNode(
 )
     : GeometryNode(
           name,
-          std::make_unique<NURBSGeo>(
+          std::make_unique<NURBS>(
               points, weights, u_knot_vector, v_knot_vector
           ),
           material
       ) {
 }
 
+NURBSNode::~NURBSNode() {
+}
+
+void NURBSNode::buildPrimitive() {
+    switch (mPrimKind) {
+    case Primitive::Kind::Mesh: {
+        mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
+        break;
+    }
+    default:
+        unreachable;
+    }
+}
+
 void NURBSNode::setDivisions(const Size u_div, const Size v_div) {
-    NURBSGeo* geo = static_cast<NURBSGeo*>(mGeometry.get());
+    NURBS* geo = static_cast<NURBS*>(mGeometry.get());
     geo->setDivisions(u_div, v_div);
 }

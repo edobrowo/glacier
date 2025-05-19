@@ -4,19 +4,17 @@
 #include <span>
 
 #include "geometry/geometry.hpp"
+#include "geometry/triangle_mesh.hpp"
 #include "math/point.hpp"
 #include "prelude.hpp"
-#include "primitive/primitive.hpp"
 
 /// @brief Bezier patch geometry.
-class BezierPatchGeo : public Geometry {
+class BezierPatch : public Geometry {
 public:
-    BezierPatchGeo(std::span<const Point3D> points);
-    ~BezierPatchGeo() = default;
+    BezierPatch(std::span<const Point3D> points);
+    ~BezierPatch() = default;
 
-    virtual PrimitivePtr buildPrimitive(
-        const Primitive::Kind kind
-    ) const override;
+    virtual TriangleMesh mesh() const override;
 
     /// @brief Retrieve a constant reference to the control points.
     const std::array<Point3D, 16>& points() const;
@@ -30,7 +28,4 @@ public:
 private:
     std::array<Point3D, 16> mPoints;
     Size mUDiv, mVDiv;
-
-    /// @brief Convert the Bezier patch to a mesh via UV construction.
-    PrimitivePtr buildMeshPrimitive() const;
 };

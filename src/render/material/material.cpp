@@ -1,4 +1,4 @@
-#include "material/material.hpp"
+#include "material.hpp"
 
 Material::Material() : mKind(Material::Kind::Null) {
 }

@@ -12,7 +12,9 @@ public:
         std::span<const f64> u_knot_vector,
         std::span<const f64> v_knot_vector
     );
-    ~NURBSNode() = default;
+    ~NURBSNode() override;
+
+    virtual void buildPrimitive() override;
 
     void setDivisions(const Size u_div, const Size v_div);
 };

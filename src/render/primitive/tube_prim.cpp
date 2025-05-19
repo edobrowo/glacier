@@ -1,4 +1,4 @@
-#include "primitive/tube_prim.hpp"
+#include "tube_prim.hpp"
 
 #include "common/math/rootfinding.hpp"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "material/material.hpp"
+#include "material.hpp"
 
 /// @brief Mirror (reflective) material.
 class MirrorSpecular : public Material {

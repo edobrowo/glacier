@@ -11,6 +11,9 @@ GeometryNode::GeometryNode(
     mKind = Kind::Geometry;
 }
 
+GeometryNode::~GeometryNode() {
+}
+
 const PrimitivePtr& GeometryNode::primitive() const {
     return mPrimitive;
 }
@@ -25,8 +28,4 @@ const GeometryPtr& GeometryNode::geometry() const {
 
 const MaterialPtr& GeometryNode::material() const {
     return mMaterial;
-}
-
-void GeometryNode::buildPrimitive() {
-    mPrimitive = mGeometry->buildPrimitive(mPrimKind);
 }
