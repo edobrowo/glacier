@@ -7,19 +7,11 @@ GeometryNode::GeometryNode(
       mGeometry(std::move(geometry)),
       mMaterial(material),
       mPrimitive(nullptr),
-      mPrimKind(Primitive::Kind::Mesh) {
+      mPrimitiveKind(Primitive::Kind::Mesh) {
     mKind = Kind::Geometry;
 }
 
 GeometryNode::~GeometryNode() {
-}
-
-const PrimitivePtr& GeometryNode::primitive() const {
-    return mPrimitive;
-}
-
-void GeometryNode::setPrimitiveKind(const Primitive::Kind kind) {
-    mPrimKind = kind;
 }
 
 const GeometryPtr& GeometryNode::geometry() const {
@@ -28,4 +20,16 @@ const GeometryPtr& GeometryNode::geometry() const {
 
 const MaterialPtr& GeometryNode::material() const {
     return mMaterial;
+}
+
+Primitive::Kind GeometryNode::primitiveKind() const {
+    return mPrimitiveKind;
+}
+
+void GeometryNode::setPrimitiveKind(const Primitive::Kind kind) {
+    mPrimitiveKind = kind;
+}
+
+const PrimitivePtr& GeometryNode::primitive() const {
+    return mPrimitive;
 }

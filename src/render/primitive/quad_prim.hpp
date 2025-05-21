@@ -20,6 +20,7 @@ private:
     Point3D mQ;
     Vector3D mU, mV;
 
-    Vector3D mNormal, mW;
+    Normal3D mNormal;
+    Vector3D mW;
     f64 mD;
 };

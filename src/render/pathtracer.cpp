@@ -130,11 +130,12 @@ Option<SurfaceInteraction> Pathtracer::intersectRecursive(
     Option<SurfaceInteraction> closest = std::nullopt;
     Interval closest_bounds(bounds);
 
+    const Transform& transform = node->transform().transform();
+    const Transform& inverse = invert(transform);
+
     // On "the way down", transform the ray with the current node's inverse
     // transformation.
-    const Ray inverse_ray =
-        Ray(node->transform().inverse() * ray.origin,
-            node->transform().inverse() * ray.direction);
+    const Ray inverse_ray = inverse(ray);
 
     // Compute the intersect with the current node if it contains a primitive.
     if (node->kind() == SceneNode::Kind::Geometry) {
@@ -164,10 +165,8 @@ Option<SurfaceInteraction> Pathtracer::intersectRecursive(
     // the upper 3x3 of the transpose of the inverse of the current node's
     // transformation.
     if (closest) {
-        closest->p = node->transform().matrix() * closest->p;
-        closest->n =
-            (Matrix3D(transpose(node->transform().inverse())) * closest->n)
-                .normalize();
+        closest->p = transform(closest->p);
+        closest->n = transform(closest->n).normalize();
     }
 
     return closest;

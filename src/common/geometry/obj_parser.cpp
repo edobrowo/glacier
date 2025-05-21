@@ -170,7 +170,7 @@ View ObjParser::parseLine(View view, ObjData& data) const {
         break;
     }
     case Keyword::VertexNormal: {
-        const ParseResult<Vector3D> result = parseVertexNormal(view);
+        const ParseResult<Normal3D> result = parseVertexNormal(view);
         obj.vertexNormals.push_back(result.value);
         view = result.rest;
         break;
@@ -259,15 +259,15 @@ ParseResult<Point3D> ObjParser::parseVertexTexture(View view) const {
     return {p, view};
 }
 
-ParseResult<Vector3D> ObjParser::parseVertexNormal(View view) const {
+ParseResult<Normal3D> ObjParser::parseVertexNormal(View view) const {
     const ParseResult<f64> c1 = parseFloat(view);
     const ParseResult<f64> c2 = parseFloat(c1.rest);
     const ParseResult<f64> c3 = parseFloat(c2.rest);
 
-    const Vector3D p(c1.value, c2.value, c3.value);
+    const Normal3D n(c1.value, c2.value, c3.value);
     view = c3.rest;
 
-    return {p, view};
+    return {n, view};
 }
 
 ParseResult<i64> ObjParser::parsePoint(View view) const {

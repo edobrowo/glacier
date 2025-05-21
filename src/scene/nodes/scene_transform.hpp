@@ -1,10 +1,10 @@
 #pragma once
 
-#include "math/matrix.hpp"
-#include "math/vector.hpp"
+#include "common/math/transform.hpp"
+#include "common/math/vector.hpp"
 
-/// @brief Transform class.
-class Transform {
+/// @brief SceneTransform class.
+class SceneTransform {
 public:
     enum class Order {
         SRT = 0,
@@ -24,14 +24,17 @@ public:
         ZYX
     };
 
-    Transform();
-    ~Transform() = default;
+    SceneTransform();
+    ~SceneTransform() = default;
 
-    /// @brief Retrieves the model transform.
-    const Matrix4D& matrix() const;
+    SceneTransform(const SceneTransform& other);
+    SceneTransform(SceneTransform&& other);
 
-    /// @brief Retrieves the inverse of the model transform.
-    const Matrix4D& inverse() const;
+    SceneTransform& operator=(const SceneTransform& other);
+    SceneTransform& operator=(SceneTransform&& other);
+
+    /// @brief Retrieves the affine transform.
+    const Transform& transform() const;
 
     /// @brief Retrieves a constant reference to the scale parameters.
     const Vector3D& s() const;
@@ -74,6 +77,5 @@ private:
     Order mOrder;
     RotationOrder mRotationOrder;
 
-    Matrix4D mMatrix;
-    Matrix4D mInverse;
+    Transform mTransform;
 };

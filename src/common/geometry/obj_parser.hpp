@@ -4,6 +4,7 @@
 #include <string_view>
 #include <vector>
 
+#include "math/normal.hpp"
 #include "math/point.hpp"
 #include "math/vector.hpp"
 #include "prelude.hpp"
@@ -64,7 +65,7 @@ struct ObjObject {
     // Vertex data.
     std::vector<Point3D> vertexPositions;
     std::vector<Point3D> vertexTexture;
-    std::vector<Vector3D> vertexNormals;
+    std::vector<Normal3D> vertexNormals;
 
     // Elements.
     std::vector<i64> points;
@@ -103,7 +104,7 @@ private:
     /// @brief Parses a vertex normal line from the beginning of the view.
     /// @returns A ParseResult containing the parsed vertex normal and the
     /// remaining view.
-    obj::ParseResult<Vector3D> parseVertexNormal(obj::View view) const;
+    obj::ParseResult<Normal3D> parseVertexNormal(obj::View view) const;
 
     /// @brief Parses a point element line from the beginning of the view.
     /// @returns A ParseResult containing the parsed point index and the
@@ -254,7 +255,7 @@ struct FormatWriter<ObjObject> {
         if (!obj.vertexTexture.empty())
             sb.putSafe('\n');
 
-        for (const Vector3D& vn : obj.vertexNormals)
+        for (const Normal3D& vn : obj.vertexNormals)
             sb.appendFormat("vn {} {} {}\n", vn.x, vn.y, vn.z);
         if (!obj.vertexNormals.empty())
             sb.putSafe('\n');

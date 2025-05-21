@@ -310,9 +310,7 @@ T& Point<T, dim>::operator[](const Index i) {
 }
 
 template <Numeric T, u32 dim>
-static Point<T, dim> operator+(
-    const Point<T, dim>& lhs, const Vector<T, dim>& rhs
-) {
+Point<T, dim> operator+(const Point<T, dim>& lhs, const Vector<T, dim>& rhs) {
     Point<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] + rhs[i];
@@ -320,9 +318,7 @@ static Point<T, dim> operator+(
 }
 
 template <Numeric T, u32 dim>
-static Point<T, dim> operator+(
-    const Vector<T, dim>& lhs, const Point<T, dim>& rhs
-) {
+Point<T, dim> operator+(const Vector<T, dim>& lhs, const Point<T, dim>& rhs) {
     Point<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] + rhs[i];
@@ -330,9 +326,7 @@ static Point<T, dim> operator+(
 }
 
 template <Numeric T, u32 dim>
-static Point<T, dim> operator-(
-    const Point<T, dim>& lhs, const Vector<T, dim>& rhs
-) {
+Point<T, dim> operator-(const Point<T, dim>& lhs, const Vector<T, dim>& rhs) {
     Point<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] - rhs[i];
@@ -340,9 +334,7 @@ static Point<T, dim> operator-(
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator-(
-    const Point<T, dim>& lhs, const Point<T, dim>& rhs
-) {
+Vector<T, dim> operator-(const Point<T, dim>& lhs, const Point<T, dim>& rhs) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] - rhs[i];

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "math/normal.hpp"
 #include "math/point.hpp"
 #include "math/vector.hpp"
 #include "util/format.hpp"
@@ -7,7 +8,7 @@
 /// @brief Vertex with position, 2D texture, and surface normal attributes.
 struct Vertex {
     Point3D p;
-    Vector3D n;
+    Normal3D n;
     Point2D uv;
 };
 

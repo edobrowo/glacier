@@ -22,7 +22,7 @@ SceneNode::Kind SceneNode::kind() const {
     return mKind;
 }
 
-Transform& SceneNode::transform() {
+SceneTransform& SceneNode::transform() {
     return mTransform;
 }
 

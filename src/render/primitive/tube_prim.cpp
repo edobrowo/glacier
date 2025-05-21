@@ -63,8 +63,8 @@ Option<SurfaceInteraction> TubePrim::intersect(
 
             // Compare hit point to z bounds.
             if (Interval(-mHeight / 2.0, mHeight / 2.0).contains(p.z)) {
-                Vector3D normal =
-                    Vector3D(p.x - mCenter.x, p.y - mCenter.y, 0.0) / mRadius;
+                Normal3D normal =
+                    Normal3D(p.x - mCenter.x, p.y - mCenter.y, 0.0) / mRadius;
                 if (ray.direction.dot(normal) > 0.0)
                     closest = SurfaceInteraction(
                         p, -normal, SurfaceInteraction::Face::Inside, t
@@ -86,7 +86,7 @@ Option<SurfaceInteraction> TubePrim::intersect(
             const Point3D p = ray.at(t);
             const f64 dist2 = (p.x - mCenter.x) * (p.x - mCenter.x) +
                               (p.y - mCenter.y) * (p.y - mCenter.y);
-            const Vector3D normal = Vector3D(0, 0, 1);
+            const Normal3D normal = Normal3D(0, 0, 1);
             if (dist2 <= mRadius * mRadius) {
                 if (ray.direction.dot(normal) > 0.0)
                     closest = SurfaceInteraction(
@@ -109,7 +109,7 @@ Option<SurfaceInteraction> TubePrim::intersect(
             const Point3D p = ray.at(t);
             const f64 dist2 = (p.x - mCenter.x) * (p.x - mCenter.x) +
                               (p.y - mCenter.y) * (p.y - mCenter.y);
-            const Vector3D normal = Vector3D(0, 0, -1);
+            const Normal3D normal = Normal3D(0, 0, -1);
             if (dist2 <= mRadius * mRadius) {
                 if (ray.direction.dot(normal) > 0.0)
                     closest = SurfaceInteraction(

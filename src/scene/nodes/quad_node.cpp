@@ -6,7 +6,7 @@
 
 QuadNode::QuadNode(const char* name, MaterialPtr material)
     : GeometryNode(name, std::make_unique<Quad>(), material) {
-    mPrimKind = Primitive::Kind::Implicit;
+    mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
 QuadNode::QuadNode(
@@ -17,14 +17,14 @@ QuadNode::QuadNode(
     const Vector3D& v
 )
     : GeometryNode(name, std::make_unique<Quad>(Q, u, v), material) {
-    mPrimKind = Primitive::Kind::Implicit;
+    mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
 QuadNode::~QuadNode() {
 }
 
 void QuadNode::buildPrimitive() {
-    switch (mPrimKind) {
+    switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {
         mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
         break;

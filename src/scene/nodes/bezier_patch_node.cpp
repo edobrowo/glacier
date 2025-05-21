@@ -17,7 +17,7 @@ BezierPatchNode::~BezierPatchNode() {
 }
 
 void BezierPatchNode::buildPrimitive() {
-    switch (mPrimKind) {
+    switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {
         // TODO: this is a more copy than needed
         mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());

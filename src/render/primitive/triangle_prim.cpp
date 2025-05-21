@@ -8,9 +8,9 @@ TrianglePrim::TrianglePrim(
     : mQ(Q), mU(u), mV(v) {
     mKind = Kind::Implicit;
 
-    mNormal = mU.cross(mV).normalize();
+    mNormal = Normal3D(mU.cross(mV)).normalize();
     mD = mNormal.dot(mQ.pos());
-    mW = mNormal / mNormal.dot();
+    mW = Vector3D(mNormal) / mNormal.dot();
 }
 
 Option<SurfaceInteraction> TrianglePrim::intersect(

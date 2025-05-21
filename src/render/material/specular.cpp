@@ -24,7 +24,7 @@ Option<ScatterRecord> Specular::scatter(
     const f64 beta = 2.0 * math::pi<f64>() * x2;
 
     const Point3D& p = interaction.p;
-    const Vector3D& n = interaction.n;
+    const Normal3D& n = interaction.n;
     const Vector3D& l = incident.direction;
 
     const Vector3D r = math::reflect(l, n);

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "math/normal.hpp"
 #include "math/numeric.hpp"
 #include "prelude.hpp"
 #include "util/format.hpp"
@@ -17,6 +18,9 @@ protected:
 };
 
 }
+
+template <Numeric T, u32 dim>
+class Normal;
 
 /// @brief Statically-sized vector class.
 template <Numeric T, u32 dim>
@@ -54,6 +58,9 @@ public:
     Vector(const Vector<T, dim>& other);
     Vector<T, dim>& operator=(const Vector<T, dim>& other);
 
+    explicit Vector(const Normal<T, 3>& other)
+        requires(dim == 3);
+
     /// @brief Constructs the zero vector.
     static Vector<T, dim> zero();
 
@@ -67,7 +74,9 @@ public:
     T& operator[](const Index i);
 
     Vector<T, dim>& operator+=(const Vector<T, dim>& rhs);
+    Vector<T, dim>& operator+=(const Normal<T, dim>& rhs);
     Vector<T, dim>& operator-=(const Vector<T, dim>& rhs);
+    Vector<T, dim>& operator-=(const Normal<T, dim>& rhs);
     Vector<T, dim>& operator*=(const T rhs);
     Vector<T, dim>& operator*=(const Vector<T, dim>& rhs);
     Vector<T, dim>& operator/=(const T rhs);
@@ -81,6 +90,9 @@ public:
 
     /// @brief Determines the dot product with another vector.
     T dot(const Vector<T, dim>& other) const;
+
+    /// @brief Determines the dot product with another normal.
+    T dot(const Normal<T, dim>& other) const;
 
     /// @brief Determines the cross product with another vector.
     Vector<T, dim> cross(const Vector<T, dim>& other) const
@@ -311,6 +323,13 @@ Vector<T, dim>& Vector<T, dim>::operator=(const Vector<T, dim>& other) {
 }
 
 template <Numeric T, u32 dim>
+Vector<T, dim>::Vector(const Normal<T, 3>& other)
+    requires(dim == 3)
+{
+    ::memcpy(components, other.data(), dim * sizeof(T));
+}
+
+template <Numeric T, u32 dim>
 T Vector<T, dim>::operator[](const Index i) const {
     assertm(i < dim, "i not less than dim");
     return components[i];
@@ -330,7 +349,21 @@ Vector<T, dim>& Vector<T, dim>::operator+=(const Vector<T, dim>& rhs) {
 }
 
 template <Numeric T, u32 dim>
+Vector<T, dim>& Vector<T, dim>::operator+=(const Normal<T, dim>& rhs) {
+    for (Index i = 0; i < dim; ++i)
+        components[i] += rhs.components[i];
+    return *this;
+}
+
+template <Numeric T, u32 dim>
 Vector<T, dim>& Vector<T, dim>::operator-=(const Vector<T, dim>& rhs) {
+    for (Index i = 0; i < dim; ++i)
+        components[i] -= rhs.components[i];
+    return *this;
+}
+
+template <Numeric T, u32 dim>
+Vector<T, dim>& Vector<T, dim>::operator-=(const Normal<T, dim>& rhs) {
     for (Index i = 0; i < dim; ++i)
         components[i] -= rhs.components[i];
     return *this;
@@ -352,8 +385,9 @@ Vector<T, dim>& Vector<T, dim>::operator*=(const Vector<T, dim>& rhs) {
 
 template <Numeric T, u32 dim>
 Vector<T, dim>& Vector<T, dim>::operator/=(const T rhs) {
+    const T s = T(1) / rhs;
     for (Index i = 0; i < dim; ++i)
-        components[i] /= rhs;
+        components[i] *= s;
     return *this;
 }
 
@@ -365,7 +399,7 @@ Vector<T, dim>& Vector<T, dim>::operator/=(const Vector<T, dim>& rhs) {
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator-(const Vector<T, dim>& rhs) {
+Vector<T, dim> operator-(const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = -rhs[i];
@@ -373,9 +407,7 @@ static Vector<T, dim> operator-(const Vector<T, dim>& rhs) {
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator+(
-    const Vector<T, dim>& lhs, const Vector<T, dim>& rhs
-) {
+Vector<T, dim> operator+(const Vector<T, dim>& lhs, const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] + rhs[i];
@@ -383,9 +415,23 @@ static Vector<T, dim> operator+(
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator-(
-    const Vector<T, dim>& lhs, const Vector<T, dim>& rhs
-) {
+Vector<T, dim> operator+(const Vector<T, dim>& lhs, const Normal<T, dim>& rhs) {
+    Vector<T, dim> result;
+    for (Index i = 0; i < dim; ++i)
+        result[i] = lhs[i] + rhs[i];
+    return result;
+}
+
+template <Numeric T, u32 dim>
+Vector<T, dim> operator+(const Normal<T, dim>& lhs, const Vector<T, dim>& rhs) {
+    Vector<T, dim> result;
+    for (Index i = 0; i < dim; ++i)
+        result[i] = lhs[i] + rhs[i];
+    return result;
+}
+
+template <Numeric T, u32 dim>
+Vector<T, dim> operator-(const Vector<T, dim>& lhs, const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] - rhs[i];
@@ -393,7 +439,23 @@ static Vector<T, dim> operator-(
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator*(const Vector<T, dim>& lhs, const T& rhs) {
+Vector<T, dim> operator-(const Vector<T, dim>& lhs, const Normal<T, dim>& rhs) {
+    Vector<T, dim> result;
+    for (Index i = 0; i < dim; ++i)
+        result[i] = lhs[i] - rhs[i];
+    return result;
+}
+
+template <Numeric T, u32 dim>
+Vector<T, dim> operator-(const Normal<T, dim>& lhs, const Vector<T, dim>& rhs) {
+    Vector<T, dim> result;
+    for (Index i = 0; i < dim; ++i)
+        result[i] = lhs[i] - rhs[i];
+    return result;
+}
+
+template <Numeric T, u32 dim>
+Vector<T, dim> operator*(const Vector<T, dim>& lhs, const T& rhs) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] * rhs;
@@ -401,7 +463,7 @@ static Vector<T, dim> operator*(const Vector<T, dim>& lhs, const T& rhs) {
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator*(const T& lhs, const Vector<T, dim>& rhs) {
+Vector<T, dim> operator*(const T& lhs, const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs * rhs[i];
@@ -409,15 +471,16 @@ static Vector<T, dim> operator*(const T& lhs, const Vector<T, dim>& rhs) {
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator/(const Vector<T, dim>& lhs, const T& rhs) {
+Vector<T, dim> operator/(const Vector<T, dim>& lhs, const T& rhs) {
     Vector<T, dim> result;
+    const T s = T(1) / rhs;
     for (Index i = 0; i < dim; ++i)
-        result[i] = lhs[i] / rhs;
+        result[i] = lhs[i] * s;
     return result;
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator/(const T& lhs, const Vector<T, dim>& rhs) {
+Vector<T, dim> operator/(const T& lhs, const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs / rhs[i];
@@ -425,9 +488,7 @@ static Vector<T, dim> operator/(const T& lhs, const Vector<T, dim>& rhs) {
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator*(
-    const Vector<T, dim>& lhs, const Vector<T, dim>& rhs
-) {
+Vector<T, dim> operator*(const Vector<T, dim>& lhs, const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] * rhs[i];
@@ -435,9 +496,7 @@ static Vector<T, dim> operator*(
 }
 
 template <Numeric T, u32 dim>
-static Vector<T, dim> operator/(
-    const Vector<T, dim>& lhs, const Vector<T, dim>& rhs
-) {
+Vector<T, dim> operator/(const Vector<T, dim>& lhs, const Vector<T, dim>& rhs) {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = lhs[i] / rhs[i];
@@ -445,7 +504,7 @@ static Vector<T, dim> operator/(
 }
 
 template <Numeric T, u32 dim>
-static bool operator==(const Vector<T, dim>& lhs, const Vector<T, dim>& rhs) {
+bool operator==(const Vector<T, dim>& lhs, const Vector<T, dim>& rhs) {
     for (Index i = 0; i < dim; ++i)
         if (lhs[i] != rhs[i])
             return false;
@@ -453,7 +512,7 @@ static bool operator==(const Vector<T, dim>& lhs, const Vector<T, dim>& rhs) {
 }
 
 template <Numeric T, u32 dim>
-static bool operator!=(const Vector<T, dim>& lhs, const Vector<T, dim>& rhs) {
+bool operator!=(const Vector<T, dim>& lhs, const Vector<T, dim>& rhs) {
     return !(lhs == rhs);
 }
 
@@ -469,6 +528,14 @@ T Vector<T, dim>::dot() const {
 
 template <Numeric T, u32 dim>
 T Vector<T, dim>::dot(const Vector<T, dim>& other) const {
+    T result = T(0);
+    for (Index i = 0; i < dim; ++i)
+        result += components[i] * other[i];
+    return result;
+}
+
+template <Numeric T, u32 dim>
+T Vector<T, dim>::dot(const Normal<T, dim>& other) const {
     T result = T(0);
     for (Index i = 0; i < dim; ++i)
         result += components[i] * other[i];

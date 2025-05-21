@@ -15,9 +15,9 @@ f64 angle(const Vector3D& v, const Vector3D& w);
 Vector3D perturb(const Vector3D& v, const f64 alpha, const f64 beta);
 
 /// @brief Reflects vector `l` through normal `n`.
-Vector3D reflect(const Vector3D& l, const Vector3D& n);
+Vector3D reflect(const Vector3D& l, const Normal3D& n);
 
 /// @brief Refracts vector `l` via normal `n` via refractive index ratio `eta`.
-Vector3D refract(const Vector3D& l, const Vector3D& n, const f64 eta);
+Vector3D refract(const Vector3D& l, const Normal3D& n, const f64 eta);
 
 };

@@ -10,7 +10,7 @@ f64 angle(const Vector3D& v, const Vector3D& w) {
     return std::acos(v.dot(w) / (v.length() * w.length()));
 }
 
-Vector3D reflect(const Vector3D& l, const Vector3D& n) {
+Vector3D reflect(const Vector3D& l, const Normal3D& n) {
     return l - 2.0 * l.dot(n) * n;
 }
 
@@ -29,10 +29,10 @@ Vector3D perturb(const Vector3D& v, const f64 alpha, const f64 beta) {
     return v_p;
 }
 
-Vector3D refract(const Vector3D& l, const Vector3D& n, const f64 eta) {
+Vector3D refract(const Vector3D& l, const Normal3D& n, const f64 eta) {
     const f64 cos_theta = std::min(-l.dot(n), 1.0);
     const Vector3D R_perp = eta * (l + cos_theta * n);
-    const Vector3D R_para = -std::sqrt(math::abs(1.0 - R_perp.dot())) * n;
+    const Vector3D R_para(-std::sqrt(math::abs(1.0 - R_perp.dot())) * n);
     return R_perp + R_para;
 }
 

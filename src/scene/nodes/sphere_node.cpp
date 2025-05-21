@@ -6,7 +6,7 @@
 
 SphereNode::SphereNode(const char* name, MaterialPtr material)
     : GeometryNode(name, std::make_unique<Sphere>(), material) {
-    mPrimKind = Primitive::Kind::Implicit;
+    mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
 SphereNode::SphereNode(
@@ -16,14 +16,14 @@ SphereNode::SphereNode(
     const f64 radius
 )
     : GeometryNode(name, std::make_unique<Sphere>(center, radius), material) {
-    mPrimKind = Primitive::Kind::Implicit;
+    mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
 SphereNode::~SphereNode() {
 }
 
 void SphereNode::buildPrimitive() {
-    switch (mPrimKind) {
+    switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {
         mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
         break;

@@ -40,40 +40,40 @@ PYBIND11_MODULE(glacier, m) {
     m.doc() = "Glacier renderer module.";
 
     // Transform::Order enum.
-    py::enum_<Transform::Order>(m, "TransformOrder")
-        .value("SRT", Transform::Order::SRT)
-        .value("STR", Transform::Order::STR)
-        .value("RST", Transform::Order::RST)
-        .value("RTS", Transform::Order::RTS)
-        .value("TSR", Transform::Order::TSR)
-        .value("TRS", Transform::Order::TRS)
+    py::enum_<SceneTransform::Order>(m, "TransformOrder")
+        .value("SRT", SceneTransform::Order::SRT)
+        .value("STR", SceneTransform::Order::STR)
+        .value("RST", SceneTransform::Order::RST)
+        .value("RTS", SceneTransform::Order::RTS)
+        .value("TSR", SceneTransform::Order::TSR)
+        .value("TRS", SceneTransform::Order::TRS)
         .export_values();
 
     // Transform::RotationOrder enum.
-    py::enum_<Transform::RotationOrder>(m, "RotationOrder")
-        .value("XYZ", Transform::RotationOrder::XYZ)
-        .value("XZY", Transform::RotationOrder::XZY)
-        .value("YXZ", Transform::RotationOrder::YXZ)
-        .value("YZX", Transform::RotationOrder::YZX)
-        .value("ZXY", Transform::RotationOrder::ZXY)
-        .value("ZYX", Transform::RotationOrder::ZYX)
+    py::enum_<SceneTransform::RotationOrder>(m, "RotationOrder")
+        .value("XYZ", SceneTransform::RotationOrder::XYZ)
+        .value("XZY", SceneTransform::RotationOrder::XZY)
+        .value("YXZ", SceneTransform::RotationOrder::YXZ)
+        .value("YZX", SceneTransform::RotationOrder::YZX)
+        .value("ZXY", SceneTransform::RotationOrder::ZXY)
+        .value("ZYX", SceneTransform::RotationOrder::ZYX)
         .export_values();
 
     // Transform class.
-    py::class_<Transform>(m, "Transform")
+    py::class_<SceneTransform>(m, "Transform")
         .def(py::init<>())
-        .def("s", py::overload_cast<f64, f64, f64>(&Transform::s))
+        .def("s", py::overload_cast<f64, f64, f64>(&SceneTransform::s))
         .def(
             "r",
             [](SceneNode& self, const f64 x, const f64 y, const f64 z) {
                 self.transform().r(math::rad(x), math::rad(y), math::rad(z));
             }
         )
-        .def("t", py::overload_cast<f64, f64, f64>(&Transform::t))
-        .def("set_order", &Transform::setOrder, py::arg("order"))
+        .def("t", py::overload_cast<f64, f64, f64>(&SceneTransform::t))
+        .def("set_order", &SceneTransform::setOrder, py::arg("order"))
         .def(
             "set_rotation_order",
-            &Transform::setRotationOrder,
+            &SceneTransform::setRotationOrder,
             py::arg("rot_order")
         );
 

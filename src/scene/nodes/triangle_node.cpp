@@ -6,7 +6,7 @@
 
 TriangleNode::TriangleNode(const char* name, MaterialPtr material)
     : GeometryNode(name, std::make_unique<Triangle>(), material) {
-    mPrimKind = Primitive::Kind::Implicit;
+    mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
 TriangleNode::TriangleNode(
@@ -17,14 +17,14 @@ TriangleNode::TriangleNode(
     const Vector3D& v
 )
     : GeometryNode(name, std::make_unique<Triangle>(Q, u, v), material) {
-    mPrimKind = Primitive::Kind::Implicit;
+    mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
 TriangleNode::~TriangleNode() {
 }
 
 void TriangleNode::buildPrimitive() {
-    switch (mPrimKind) {
+    switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {
         mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
         break;

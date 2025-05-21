@@ -23,7 +23,7 @@ Option<ScatterRecord> Dielectric::scatter(
 
     const bool entering = interaction.face == SurfaceInteraction::Face::Outside;
 
-    const Vector3D n = interaction.n;
+    const Normal3D& n = interaction.n;
     const f64 ri = entering ? mEta : (1.0 / mEta);
 
     const Vector3D l = incident.direction.normalize();

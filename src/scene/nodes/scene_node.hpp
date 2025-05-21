@@ -3,7 +3,7 @@
 #include <string>
 
 #include "common/prelude.hpp"
-#include "geometry/transform.hpp"
+#include "scene_transform.hpp"
 
 class SceneNode;
 
@@ -28,7 +28,7 @@ public:
     Kind kind() const;
 
     /// @brief Retrieves a mutable reference to the node's transform.
-    Transform& transform();
+    SceneTransform& transform();
 
     /// @brief Retrieves a constant reference to the node's children.
     const std::vector<SceneNodePtr>& children() const;
@@ -47,6 +47,6 @@ protected:
 
     u64 mId;
     Kind mKind;
-    Transform mTransform;
+    SceneTransform mTransform;
     std::vector<SceneNodePtr> mChildren;
 };

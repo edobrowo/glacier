@@ -13,7 +13,7 @@ Option<ScatterRecord> MirrorSpecular::scatter(
     const Ray& incident, const SurfaceInteraction& interaction
 ) const {
     const Point3D& p = interaction.p;
-    const Vector3D& n = interaction.n;
+    const Normal3D& n = interaction.n;
     const Vector3D& l = incident.direction;
 
     const Vector3D& r = math::reflect(l, n);

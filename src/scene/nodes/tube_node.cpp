@@ -6,7 +6,7 @@
 
 TubeNode::TubeNode(const char* name, MaterialPtr material)
     : GeometryNode(name, std::make_unique<Tube>(), material) {
-    mPrimKind = Primitive::Kind::Implicit;
+    mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
 TubeNode::TubeNode(
@@ -19,14 +19,14 @@ TubeNode::TubeNode(
     : GeometryNode(
           name, std::make_unique<Tube>(base, radius, height), material
       ) {
-    mPrimKind = Primitive::Kind::Implicit;
+    mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
 TubeNode::~TubeNode() {
 }
 
 void TubeNode::buildPrimitive() {
-    switch (mPrimKind) {
+    switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {
         mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
         break;

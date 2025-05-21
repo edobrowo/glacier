@@ -6,7 +6,7 @@
 
 DiskNode::DiskNode(const char* name, MaterialPtr material)
     : GeometryNode(name, std::make_unique<Disk>(), material) {
-    mPrimKind = Primitive::Kind::Implicit;
+    mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
 DiskNode::DiskNode(
@@ -17,14 +17,14 @@ DiskNode::DiskNode(
     const Vector3D& v
 )
     : GeometryNode(name, std::make_unique<Disk>(Q, u, v), material) {
-    mPrimKind = Primitive::Kind::Implicit;
+    mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
 DiskNode::~DiskNode() {
 }
 
 void DiskNode::buildPrimitive() {
-    switch (mPrimKind) {
+    switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {
         mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
         break;

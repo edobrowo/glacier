@@ -1,7 +1,7 @@
 #include "surface_interaction.hpp"
 
 SurfaceInteraction::SurfaceInteraction(
-    const Point3D& p, const Vector3D& n, const Face face, const f64 t
+    const Point3D& p, const Normal3D& n, const Face face, const f64 t
 )
     : p(p), n(n), face(face), mat(nullptr), t(t) {
 }

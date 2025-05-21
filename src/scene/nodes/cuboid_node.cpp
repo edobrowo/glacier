@@ -6,7 +6,7 @@
 
 CuboidNode::CuboidNode(const char* name, MaterialPtr material)
     : GeometryNode(name, std::make_unique<Cuboid>(), material) {
-    mPrimKind = Primitive::Kind::Implicit;
+    mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
 CuboidNode::CuboidNode(
@@ -18,14 +18,14 @@ CuboidNode::CuboidNode(
     const Vector3D& z
 )
     : GeometryNode(name, std::make_unique<Cuboid>(Q, x, y, z), material) {
-    mPrimKind = Primitive::Kind::Implicit;
+    mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
 CuboidNode::~CuboidNode() {
 }
 
 void CuboidNode::buildPrimitive() {
-    switch (mPrimKind) {
+    switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {
         mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
         break;

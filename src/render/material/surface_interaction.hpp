@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/math/normal.hpp"
 #include "common/math/point.hpp"
 #include "common/math/vector.hpp"
 #include "material.hpp"
@@ -15,13 +16,13 @@ struct SurfaceInteraction {
     };
 
     Point3D p;
-    Vector3D n;
+    Normal3D n;
     Face face;
     MaterialPtr mat;
     f64 t;
 
     SurfaceInteraction(
-        const Point3D& p, const Vector3D& n, const Face face, const f64 t
+        const Point3D& p, const Normal3D& n, const Face face, const f64 t
     );
     ~SurfaceInteraction() = default;
 

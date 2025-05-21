@@ -42,7 +42,7 @@ Option<SurfaceInteraction> SpherePrim::intersect(
 
     const Point3D p = ray.at(t);
 
-    const Vector3D normal = (p - mCenter) / mRadius;
+    const Normal3D normal = Normal3D(p - mCenter) / mRadius;
 
     if (ray.direction.dot(normal) > 0.0)
         return SurfaceInteraction(

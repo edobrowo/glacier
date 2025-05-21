@@ -24,7 +24,7 @@ NURBSNode::~NURBSNode() {
 }
 
 void NURBSNode::buildPrimitive() {
-    switch (mPrimKind) {
+    switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {
         mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
         break;

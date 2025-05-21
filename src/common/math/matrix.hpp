@@ -301,31 +301,6 @@ static Vector<T, p> operator*(
     return result;
 }
 
-template <std::floating_point T>
-static Vector<T, 3> operator*(
-    const Matrix<T, 4, 4>& lhs, const Vector<T, 3>& rhs
-) {
-    Vector<T, 3> result;
-    for (Index row = 0; row < 3; ++row)
-        for (Index col = 0; col < 3; ++col)
-            result[row] += lhs(row, col) * rhs[col];
-    return result;
-}
-
-template <std::floating_point T>
-static Point<T, 3> operator*(
-    const Matrix<T, 4, 4>& lhs, const Point<T, 3>& rhs
-) {
-    Point<T, 3> result;
-    for (Index row = 0; row < 3; ++row)
-        for (Index col = 0; col < 3; ++col)
-            result[row] += lhs(row, col) * rhs[col];
-    result[0] += lhs(0, 3);
-    result[1] += lhs(1, 3);
-    result[2] += lhs(2, 3);
-    return result;
-}
-
 template <std::floating_point T, u32 p, u32 q, u32 r>
 static Matrix<T, p, r> operator*(
     const Matrix<T, p, q>& lhs, const Matrix<T, q, r>& rhs
@@ -383,7 +358,7 @@ static Matrix<T, dim2, dim2> embed_ident(
     assertm(x < dim1, "x not less than dim1");
     assertm(y < dim1, "y not less than dim1");
     assertm(dim1 <= dim2, "dim1 not less than or equal to dim2");
-    Matrix<T, dim2, dim2> result = ident<T, dim2>();
+    Matrix<T, dim2, dim2> result = Matrix<T, dim2, dim2>::ident();
     for (Index row = x; row < dim1; ++row)
         for (Index col = y; col < dim1; ++col)
             result(row, col) = value(row, col);

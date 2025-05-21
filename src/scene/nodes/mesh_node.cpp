@@ -9,7 +9,7 @@
 
 MeshNode::MeshNode(const char* name, MaterialPtr material, const char* path)
     : GeometryNode(name, nullptr, material) {
-    mPrimKind = Primitive::Kind::Mesh;
+    mPrimitiveKind = Primitive::Kind::Mesh;
 
     const std::string& raw = files::read_to_string(path);
 
@@ -26,7 +26,7 @@ MeshNode::~MeshNode() {
 }
 
 void MeshNode::buildPrimitive() {
-    switch (mPrimKind) {
+    switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {
         mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
         break;
