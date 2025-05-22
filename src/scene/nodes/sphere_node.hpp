@@ -13,5 +13,7 @@ public:
     );
     ~SphereNode() override;
 
+    virtual PrimitivePtr buildPrimitive() const override;
+
     void setDivisions(const Size u_div, const Size v_div);
 };

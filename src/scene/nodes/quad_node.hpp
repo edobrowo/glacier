@@ -13,4 +13,6 @@ public:
         const Vector3D& v
     );
     ~QuadNode() override;
+
+    virtual PrimitivePtr buildPrimitive() const override;
 };

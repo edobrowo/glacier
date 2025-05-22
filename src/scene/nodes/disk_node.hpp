@@ -14,5 +14,7 @@ public:
     );
     ~DiskNode() override;
 
+    virtual PrimitivePtr buildPrimitive() const override;
+
     void setDivisions(const Size div);
 };

@@ -14,4 +14,6 @@ public:
         const Vector3D& z
     );
     ~CuboidNode() override;
+
+    virtual PrimitivePtr buildPrimitive() const override;
 };

@@ -5,7 +5,6 @@
 
 #include "common/util/log.hpp"
 #include "matrix_stack.hpp"
-#include "primitive_builder.hpp"
 #include "render/material/emissive.hpp"
 #include "scene/nodes/geometry_node.hpp"
 
@@ -17,34 +16,12 @@ void buildPrimitivesRecursive(
     std::vector<PrimitivePtr>& primitives
 ) {
     stack.push(node->transform().transform());
-    PrimitivePtr prim = nullptr;
 
-    if (auto cuboid = dynamic_cast<CuboidNode*>(node.get())) {
-        prim = PrimitiveBuilder<CuboidNode>::build(*cuboid);
-        prim->setMaterial(cuboid->material());
-    } else if (auto disk = dynamic_cast<DiskNode*>(node.get())) {
-        prim = PrimitiveBuilder<DiskNode>::build(*disk);
-        prim->setMaterial(disk->material());
-    } else if (auto quad = dynamic_cast<QuadNode*>(node.get())) {
-        prim = PrimitiveBuilder<QuadNode>::build(*quad);
-        prim->setMaterial(quad->material());
-    } else if (auto sphere = dynamic_cast<SphereNode*>(node.get())) {
-        prim = PrimitiveBuilder<SphereNode>::build(*sphere);
-        prim->setMaterial(sphere->material());
-    } else if (auto tri = dynamic_cast<TriangleNode*>(node.get())) {
-        prim = PrimitiveBuilder<TriangleNode>::build(*tri);
-        prim->setMaterial(tri->material());
-    } else if (auto tube = dynamic_cast<TubeNode*>(node.get())) {
-        prim = PrimitiveBuilder<TubeNode>::build(*tube);
-        prim->setMaterial(tube->material());
-    } else if (auto geo = dynamic_cast<GeometryNode*>(node.get())) {
-        prim = PrimitiveBuilder<GeometryNode>::build(*geo);
-        prim->setMaterial(geo->material());
-    }
-
-    if (prim) {
-        prim->setObjectToWorld(stack.reduce());
-        primitives.push_back(std::move(prim));
+    if (const GeometryNode* geo = dynamic_cast<GeometryNode*>(node.get())) {
+        PrimitivePtr primitive = geo->buildPrimitive();
+        primitive->setMaterial(geo->material());
+        primitive->setObjectToWorld(stack.reduce());
+        primitives.push_back(std::move(primitive));
     }
 
     for (const SceneNodePtr& child : node->children())

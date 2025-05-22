@@ -30,6 +30,10 @@ public:
     /// @brief Sets the primitive kind.
     void setPrimitiveKind(const Primitive::Kind kind);
 
+    /// @brief Builds the primitive associated with the geometry. The kind is
+    /// specified with setPrimitiveKind.
+    virtual PrimitivePtr buildPrimitive() const;
+
 protected:
     GeometryPtr mGeometry;
     MaterialPtr mMaterial;

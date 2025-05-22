@@ -1,5 +1,7 @@
 #include "geometry_node.hpp"
 
+#include "render/primitive/mesh_prim.hpp"
+
 GeometryNode::GeometryNode(
     const char* name, GeometryPtr&& geometry, MaterialPtr material
 )
@@ -27,4 +29,13 @@ Primitive::Kind GeometryNode::primitiveKind() const {
 
 void GeometryNode::setPrimitiveKind(const Primitive::Kind kind) {
     mPrimitiveKind = kind;
+}
+
+PrimitivePtr GeometryNode::buildPrimitive() const {
+    switch (mPrimitiveKind) {
+    case Primitive::Kind::Mesh:
+        return std::make_unique<MeshPrim>(mGeometry->mesh());
+    default:
+        unreachable;
+    }
 }

@@ -22,3 +22,17 @@ TriangleNode::TriangleNode(
 
 TriangleNode::~TriangleNode() {
 }
+
+PrimitivePtr TriangleNode::buildPrimitive() const {
+    switch (mPrimitiveKind) {
+    case Primitive::Kind::Mesh: {
+        return std::make_unique<MeshPrim>(mGeometry->mesh());
+    }
+    case Primitive::Kind::Implicit: {
+        const Triangle* tri = static_cast<Triangle*>(mGeometry.get());
+        return std::make_unique<TrianglePrim>(tri->Q, tri->x, tri->y);
+    }
+    default:
+        unimplemented;
+    }
+}

@@ -22,3 +22,17 @@ QuadNode::QuadNode(
 
 QuadNode::~QuadNode() {
 }
+
+PrimitivePtr QuadNode::buildPrimitive() const {
+    switch (mPrimitiveKind) {
+    case Primitive::Kind::Mesh: {
+        return std::make_unique<MeshPrim>(mGeometry->mesh());
+    }
+    case Primitive::Kind::Implicit: {
+        const Quad* disk = static_cast<Quad*>(mGeometry.get());
+        return std::make_unique<QuadPrim>(disk->Q, disk->x, disk->y);
+    }
+    default:
+        unreachable;
+    }
+}
