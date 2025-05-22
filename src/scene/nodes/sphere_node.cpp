@@ -22,23 +22,6 @@ SphereNode::SphereNode(
 SphereNode::~SphereNode() {
 }
 
-void SphereNode::buildPrimitive() {
-    switch (mPrimitiveKind) {
-    case Primitive::Kind::Mesh: {
-        mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
-        break;
-    }
-    case Primitive::Kind::Implicit: {
-        const Sphere* sphere = static_cast<Sphere*>(mGeometry.get());
-        mPrimitive =
-            std::make_unique<SpherePrim>(sphere->center(), sphere->radius());
-        break;
-    }
-    default:
-        unimplemented;
-    }
-}
-
 void SphereNode::setDivisions(const Size u_div, const Size v_div) {
     Sphere* geo = static_cast<Sphere*>(mGeometry.get());
     geo->setDivisions(u_div, v_div);

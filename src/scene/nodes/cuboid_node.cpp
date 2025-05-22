@@ -23,21 +23,3 @@ CuboidNode::CuboidNode(
 
 CuboidNode::~CuboidNode() {
 }
-
-void CuboidNode::buildPrimitive() {
-    switch (mPrimitiveKind) {
-    case Primitive::Kind::Mesh: {
-        mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
-        break;
-    }
-    case Primitive::Kind::Implicit: {
-        const Cuboid* cuboid = static_cast<Cuboid*>(mGeometry.get());
-        mPrimitive = std::make_unique<CuboidPrim>(
-            cuboid->Q, cuboid->x, cuboid->y, cuboid->z
-        );
-        break;
-    }
-    default:
-        unreachable;
-    }
-}

@@ -29,7 +29,3 @@ Primitive::Kind GeometryNode::primitiveKind() const {
 void GeometryNode::setPrimitiveKind(const Primitive::Kind kind) {
     mPrimitiveKind = kind;
 }
-
-const PrimitivePtr& GeometryNode::primitive() const {
-    return mPrimitive;
-}

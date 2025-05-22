@@ -16,18 +16,6 @@ BezierPatchNode::BezierPatchNode(
 BezierPatchNode::~BezierPatchNode() {
 }
 
-void BezierPatchNode::buildPrimitive() {
-    switch (mPrimitiveKind) {
-    case Primitive::Kind::Mesh: {
-        // TODO: this is a more copy than needed
-        mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
-        break;
-    }
-    default:
-        unreachable;
-    }
-}
-
 void BezierPatchNode::setDivisions(const Size u_div, const Size v_div) {
     BezierPatch* geo = static_cast<BezierPatch*>(mGeometry.get());
     geo->setDivisions(u_div, v_div);

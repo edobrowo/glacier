@@ -14,8 +14,6 @@ public:
     );
     ~TubeNode() override;
 
-    virtual void buildPrimitive() override;
-
     void setCapVisibility(const bool top, const bool bottom);
     void setDivisions(const Size div);
 };

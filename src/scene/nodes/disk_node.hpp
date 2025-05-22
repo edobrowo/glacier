@@ -14,7 +14,5 @@ public:
     );
     ~DiskNode() override;
 
-    virtual void buildPrimitive() override;
-
     void setDivisions(const Size div);
 };

@@ -13,6 +13,4 @@ public:
         const Vector3D& v
     );
     ~TriangleNode() override;
-
-    virtual void buildPrimitive() override;
 };

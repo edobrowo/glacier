@@ -30,12 +30,15 @@ public:
     /// @brief Sets the primitive kind.
     void setPrimitiveKind(const Primitive::Kind kind);
 
-    /// @brief Builds the primitive associated with the geometry. The kind is
-    /// specified with setPrimitiveKind.
-    virtual void buildPrimitive() = 0;
+    /// @brief Sets the cached primitive.
+    void setPrimitive(PrimitivePtr&& prim) {
+        mPrimitive = std::move(prim);
+    }
 
     /// @brief Retrieves the cached primitive.
-    const PrimitivePtr& primitive() const;
+    const PrimitivePtr& primitive() const {
+        return mPrimitive;
+    }
 
 protected:
     GeometryPtr mGeometry;

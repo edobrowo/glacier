@@ -23,22 +23,6 @@ DiskNode::DiskNode(
 DiskNode::~DiskNode() {
 }
 
-void DiskNode::buildPrimitive() {
-    switch (mPrimitiveKind) {
-    case Primitive::Kind::Mesh: {
-        mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
-        break;
-    }
-    case Primitive::Kind::Implicit: {
-        const Disk* disk = static_cast<Disk*>(mGeometry.get());
-        mPrimitive = std::make_unique<DiskPrim>(disk->Q, disk->x, disk->y);
-        break;
-    }
-    default:
-        unreachable;
-    }
-}
-
 void DiskNode::setDivisions(const Size div) {
     Disk* geo = static_cast<Disk*>(mGeometry.get());
     geo->setDivisions(div);

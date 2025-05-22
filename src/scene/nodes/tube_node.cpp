@@ -25,28 +25,6 @@ TubeNode::TubeNode(
 TubeNode::~TubeNode() {
 }
 
-void TubeNode::buildPrimitive() {
-    switch (mPrimitiveKind) {
-    case Primitive::Kind::Mesh: {
-        mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
-        break;
-    }
-    case Primitive::Kind::Implicit: {
-        const Tube* tube = static_cast<Tube*>(mGeometry.get());
-        mPrimitive = std::make_unique<TubePrim>(
-            tube->center(),
-            tube->radius(),
-            tube->height(),
-            tube->topCapVisible(),
-            tube->bottomCapVisible()
-        );
-        break;
-    }
-    default:
-        unimplemented;
-    }
-}
-
 void TubeNode::setCapVisibility(const bool top, const bool bottom) {
     Tube* geo = static_cast<Tube*>(mGeometry.get());
     geo->setCapVisibility(top, bottom);

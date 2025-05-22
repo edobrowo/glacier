@@ -11,7 +11,5 @@ public:
     );
     ~BezierPatchNode() override;
 
-    virtual void buildPrimitive() override;
-
     void setDivisions(const Size u_div, const Size v_div);
 };

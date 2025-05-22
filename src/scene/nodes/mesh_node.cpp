@@ -24,14 +24,3 @@ MeshNode::MeshNode(const char* name, MaterialPtr material, const char* path)
 
 MeshNode::~MeshNode() {
 }
-
-void MeshNode::buildPrimitive() {
-    switch (mPrimitiveKind) {
-    case Primitive::Kind::Mesh: {
-        mPrimitive = std::make_unique<MeshPrim>(mGeometry->mesh());
-        break;
-    }
-    default:
-        unreachable;
-    }
-}
