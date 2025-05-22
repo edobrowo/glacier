@@ -7,9 +7,6 @@ Lambertian::Lambertian(const Vector3D& color) : Material(), mColor(color) {
     mKind = Kind::Lambertian;
 }
 
-Lambertian::~Lambertian() {
-}
-
 Option<ScatterRecord> Lambertian::scatter(
     const Ray& incident, const SurfaceInteraction& interaction
 ) const {

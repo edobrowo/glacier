@@ -1,8 +1,5 @@
 #include "matrix_stack.hpp"
 
-MatrixStack::MatrixStack() : mStack() {
-}
-
 void MatrixStack::push(const Transform& transform) {
     mStack.push_back(transform);
 }

@@ -16,7 +16,7 @@ public:
     GeometryNode(
         const char* name, GeometryPtr&& geometry, MaterialPtr material
     );
-    virtual ~GeometryNode() override;
+    ~GeometryNode() override = default;
 
     /// @brief Retrieves a constant reference to the geometry.
     const GeometryPtr& geometry() const;

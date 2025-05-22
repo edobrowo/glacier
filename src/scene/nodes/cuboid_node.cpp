@@ -21,9 +21,6 @@ CuboidNode::CuboidNode(
     mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
-CuboidNode::~CuboidNode() {
-}
-
 PrimitivePtr CuboidNode::buildPrimitive() const {
     switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {

@@ -11,7 +11,7 @@ public:
 
     /// @brief Computes the surface intersection with an implicit sphere
     /// centered at the origin with unit radius.
-    virtual Option<SurfaceInteraction> intersect(
+    Option<SurfaceInteraction> intersect(
         const Ray& ray, const Interval& bounds
     ) const override;
 

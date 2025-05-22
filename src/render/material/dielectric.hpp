@@ -7,10 +7,10 @@
 class Dielectric : public Material {
 public:
     explicit Dielectric(const f64 eta);
-    virtual ~Dielectric();
+    ~Dielectric() override = default;
 
     /// @brief Scatters the incident ray via refraction.
-    virtual Option<ScatterRecord> scatter(
+    Option<ScatterRecord> scatter(
         const Ray& incident, const SurfaceInteraction& interaction
     ) const override;
 

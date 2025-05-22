@@ -21,6 +21,3 @@ MeshNode::MeshNode(const char* name, MaterialPtr material, const char* path)
 
     mGeometry = std::make_unique<Mesh>(mesh);
 }
-
-MeshNode::~MeshNode() {
-}

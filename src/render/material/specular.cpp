@@ -8,9 +8,6 @@ Specular::Specular(const Vector3D& color, const f64 phong)
     mKind = Kind::Specular;
 }
 
-Specular::~Specular() {
-}
-
 Option<ScatterRecord> Specular::scatter(
     const Ray& incident, const SurfaceInteraction& interaction
 ) const {

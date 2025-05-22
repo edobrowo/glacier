@@ -19,9 +19,6 @@ SphereNode::SphereNode(
     mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
-SphereNode::~SphereNode() {
-}
-
 PrimitivePtr SphereNode::buildPrimitive() const {
     switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {

@@ -10,9 +10,9 @@ class Mesh : public Geometry {
 public:
     Mesh();
     Mesh(const TriangleMesh& mesh);
-    ~Mesh() = default;
+    ~Mesh() override = default;
 
-    virtual TriangleMesh mesh() const override;
+    TriangleMesh mesh() const override;
 
 private:
     TriangleMesh mMesh;

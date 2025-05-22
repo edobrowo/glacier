@@ -20,9 +20,6 @@ DiskNode::DiskNode(
     mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
-DiskNode::~DiskNode() {
-}
-
 PrimitivePtr DiskNode::buildPrimitive() const {
     switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {

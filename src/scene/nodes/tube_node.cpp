@@ -22,9 +22,6 @@ TubeNode::TubeNode(
     mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
-TubeNode::~TubeNode() {
-}
-
 PrimitivePtr TubeNode::buildPrimitive() const {
     switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {

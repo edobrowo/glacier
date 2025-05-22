@@ -11,9 +11,9 @@ public:
         const Point3D& center,
         const f64 radius
     );
-    ~SphereNode() override;
+    ~SphereNode() override = default;
 
-    virtual PrimitivePtr buildPrimitive() const override;
+    PrimitivePtr buildPrimitive() const override;
 
     void setDivisions(const Size u_div, const Size v_div);
 };

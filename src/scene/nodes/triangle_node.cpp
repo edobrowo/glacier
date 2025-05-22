@@ -20,9 +20,6 @@ TriangleNode::TriangleNode(
     mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
-TriangleNode::~TriangleNode() {
-}
-
 PrimitivePtr TriangleNode::buildPrimitive() const {
     switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {

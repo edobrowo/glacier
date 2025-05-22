@@ -7,9 +7,6 @@ Dielectric::Dielectric(const f64 eta) : mEta(eta) {
     mKind = Kind::Dielectric;
 }
 
-Dielectric::~Dielectric() {
-}
-
 /// @brief Reflectance calculated using Schlick's approximation
 static f64 reflectance(const f64 cosine, const f64 ri) {
     const f64 r0 = math::sqr((1.0 - ri) / (1.0 + ri));

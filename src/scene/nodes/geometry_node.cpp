@@ -12,9 +12,6 @@ GeometryNode::GeometryNode(
     mKind = Kind::Geometry;
 }
 
-GeometryNode::~GeometryNode() {
-}
-
 const GeometryPtr& GeometryNode::geometry() const {
     return mGeometry;
 }

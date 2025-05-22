@@ -9,9 +9,9 @@ class Triangle : public Geometry {
 public:
     Triangle();
     Triangle(const Point3D& Q, const Vector3D& u, const Vector3D& v);
-    ~Triangle() = default;
+    ~Triangle() override = default;
 
-    virtual TriangleMesh mesh() const override;
+    TriangleMesh mesh() const override;
 
     Point3D Q;
     Vector3D x, y;

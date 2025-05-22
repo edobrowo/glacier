@@ -6,9 +6,6 @@ MirrorSpecular::MirrorSpecular(const Vector3D& color) : mColor(color) {
     mKind = Kind::MirrorSpecular;
 }
 
-MirrorSpecular::~MirrorSpecular() {
-}
-
 Option<ScatterRecord> MirrorSpecular::scatter(
     const Ray& incident, const SurfaceInteraction& interaction
 ) const {

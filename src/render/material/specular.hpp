@@ -6,12 +6,12 @@
 class Specular : public Material {
 public:
     Specular(const Vector3D& color, const f64 phong);
-    virtual ~Specular();
+    ~Specular() override = default;
 
     /// @brief Scatters the incident ray where the material appearance
     /// properties correspond to a specular reflector controlled with a Phong
     /// coefficient.
-    virtual Option<ScatterRecord> scatter(
+    Option<ScatterRecord> scatter(
         const Ray& incident, const SurfaceInteraction& interaction
     ) const override;
 

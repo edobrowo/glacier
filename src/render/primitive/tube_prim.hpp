@@ -16,7 +16,7 @@ public:
     ~TubePrim() override = default;
 
     /// @brief Computes the surface intersection with the implicit tube quadric.
-    virtual Option<SurfaceInteraction> intersect(
+    Option<SurfaceInteraction> intersect(
         const Ray& ray, const Interval& bounds
     ) const override;
 

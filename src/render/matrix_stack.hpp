@@ -6,7 +6,7 @@
 
 class MatrixStack {
 public:
-    MatrixStack();
+    MatrixStack() = default;
     ~MatrixStack() = default;
 
     void push(const Transform& transform);

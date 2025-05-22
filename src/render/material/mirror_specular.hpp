@@ -6,11 +6,11 @@
 class MirrorSpecular : public Material {
 public:
     MirrorSpecular(const Vector3D& color);
-    virtual ~MirrorSpecular();
+    ~MirrorSpecular() = default;
 
     /// @brief Scatters the incident ray where the material appearance
     /// properties correspond to a mirror reflector.
-    virtual Option<ScatterRecord> scatter(
+    Option<ScatterRecord> scatter(
         const Ray& incident, const SurfaceInteraction& interaction
     ) const override;
 

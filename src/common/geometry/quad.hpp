@@ -10,9 +10,9 @@ class Quad : public Geometry {
 public:
     Quad();
     Quad(const Point3D& Q, const Vector3D& u, const Vector3D& v);
-    ~Quad() = default;
+    ~Quad() override = default;
 
-    virtual TriangleMesh mesh() const override;
+    TriangleMesh mesh() const override;
 
     Point3D Q;
     Vector3D x, y;

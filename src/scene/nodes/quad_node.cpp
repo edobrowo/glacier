@@ -20,9 +20,6 @@ QuadNode::QuadNode(
     mPrimitiveKind = Primitive::Kind::Implicit;
 }
 
-QuadNode::~QuadNode() {
-}
-
 PrimitivePtr QuadNode::buildPrimitive() const {
     switch (mPrimitiveKind) {
     case Primitive::Kind::Mesh: {

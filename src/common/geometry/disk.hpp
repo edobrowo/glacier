@@ -10,9 +10,9 @@ class Disk : public Geometry {
 public:
     Disk();
     Disk(const Point3D& Q, const Vector3D& x, const Vector3D& y);
-    ~Disk() = default;
+    ~Disk() override = default;
 
-    virtual TriangleMesh mesh() const override;
+    TriangleMesh mesh() const override;
 
     /// @brief Set number of divisions for UV mesh construction
     void setDivisions(const Size div);

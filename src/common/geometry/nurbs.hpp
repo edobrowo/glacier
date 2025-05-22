@@ -30,9 +30,9 @@ public:
         std::span<const f64> u_knot_vector,
         std::span<const f64> v_knot_vector
     );
-    ~NURBS() = default;
+    ~NURBS() override = default;
 
-    virtual TriangleMesh mesh() const override;
+    TriangleMesh mesh() const override;
 
     /// @brief Retrieve a constant reference to the control points.
     const std::array<NURBSControlPoint, numPoints>& points() const;

@@ -12,9 +12,9 @@
 class BezierPatch : public Geometry {
 public:
     BezierPatch(std::span<const Point3D> points);
-    ~BezierPatch() = default;
+    ~BezierPatch() override = default;
 
-    virtual TriangleMesh mesh() const override;
+    TriangleMesh mesh() const override;
 
     /// @brief Retrieve a constant reference to the control points.
     const std::array<Point3D, 16>& points() const;

@@ -12,9 +12,9 @@ public:
         const f64 radius,
         const f64 height
     );
-    ~TubeNode() override;
+    ~TubeNode() override = default;
 
-    virtual PrimitivePtr buildPrimitive() const override;
+    PrimitivePtr buildPrimitive() const override;
 
     void setCapVisibility(const bool top, const bool bottom);
     void setDivisions(const Size div);

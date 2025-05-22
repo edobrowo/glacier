@@ -7,7 +7,7 @@ set_target_properties(glacier PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PYMODULE_OUTPUT_DIRECTORY}
 )
 
-target_link_libraries(glacier PUBLIC render scene ${LIBRARIES})
+target_link_libraries(glacier PUBLIC render ${LIBRARIES})
 
 # Generate stubs using pybind11-stubgen.
 add_custom_command(

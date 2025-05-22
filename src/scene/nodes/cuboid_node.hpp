@@ -13,7 +13,7 @@ public:
         const Vector3D& y,
         const Vector3D& z
     );
-    ~CuboidNode() override;
+    ~CuboidNode() override = default;
 
-    virtual PrimitivePtr buildPrimitive() const override;
+    PrimitivePtr buildPrimitive() const override;
 };

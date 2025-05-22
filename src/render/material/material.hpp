@@ -20,7 +20,7 @@ public:
     };
 
     Material();
-    virtual ~Material();
+    virtual ~Material() = default;
 
     /// @brief Scatters the incident ray according to local surface geometry and
     /// material appearance properties.

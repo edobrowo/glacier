@@ -20,9 +20,6 @@ NURBSNode::NURBSNode(
       ) {
 }
 
-NURBSNode::~NURBSNode() {
-}
-
 void NURBSNode::setDivisions(const Size u_div, const Size v_div) {
     NURBS* geo = static_cast<NURBS*>(mGeometry.get());
     geo->setDivisions(u_div, v_div);

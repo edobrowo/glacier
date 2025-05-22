@@ -6,11 +6,11 @@
 class Lambertian : public Material {
 public:
     explicit Lambertian(const Vector3D& color);
-    virtual ~Lambertian();
+    ~Lambertian() override = default;
 
     /// @brief Scatters the incident ray where the material appearance
     /// properties correspond to a cosine distributed diffuse material.
-    virtual Option<ScatterRecord> scatter(
+    Option<ScatterRecord> scatter(
         const Ray& incident, const SurfaceInteraction& interaction
     ) const override;
 

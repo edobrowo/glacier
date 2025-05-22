@@ -26,13 +26,13 @@ int main(int argc, char** argv) {
         fclose(file);
 
         if (result != 0) {
-            eprintln("Error: Invalid Python script");
+            eprintln("Error: Invalid Python script: {}", path);
             return EXIT_FAILURE;
         }
 
         Py_Finalize();
     } else {
-        eprintln("Error: Path does not point to a valid file.");
+        eprintln("Error: Path does not point to a valid file: {}", path);
         return EXIT_FAILURE;
     }
 

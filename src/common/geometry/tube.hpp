@@ -10,9 +10,9 @@ class Tube : public Geometry {
 public:
     Tube();
     Tube(const Point3D& center, const f64 radius, const f64 height);
-    ~Tube() = default;
+    ~Tube() override = default;
 
-    virtual TriangleMesh mesh() const override;
+    TriangleMesh mesh() const override;
 
     /// @brief Center of the tube.
     Point3D center() const;

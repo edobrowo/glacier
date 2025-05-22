@@ -12,7 +12,7 @@ public:
         const Vector3D& u,
         const Vector3D& v
     );
-    ~TriangleNode() override;
+    ~TriangleNode() override = default;
 
-    virtual PrimitivePtr buildPrimitive() const override;
+    PrimitivePtr buildPrimitive() const override;
 };

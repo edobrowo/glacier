@@ -20,7 +20,7 @@ public:
 
     /// @brief Computes the surface intersection with the cuboid by computing
     /// the intersection with each of the 6 component quads.
-    virtual Option<SurfaceInteraction> intersect(
+    Option<SurfaceInteraction> intersect(
         const Ray& ray, const Interval& bounds
     ) const override;
 

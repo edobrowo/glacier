@@ -6,7 +6,7 @@
 class Emissive : public Material {
 public:
     Emissive(const Vector3D& color);
-    virtual ~Emissive();
+    ~Emissive() override = default;
 
     /// @brief The emitted color of the light.
     Vector3D emitted() const;

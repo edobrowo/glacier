@@ -12,7 +12,7 @@ public:
 
     /// @brief Computes the surface intersection with a quadrilateral
     /// represented by barycentric coordinates.
-    virtual Option<SurfaceInteraction> intersect(
+    Option<SurfaceInteraction> intersect(
         const Ray& ray, const Interval& bounds
     ) const override;
 

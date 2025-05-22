@@ -15,9 +15,9 @@ public:
         const Vector3D& y,
         const Vector3D& z
     );
-    ~Cuboid() = default;
+    ~Cuboid() override = default;
 
-    virtual TriangleMesh mesh() const override;
+    TriangleMesh mesh() const override;
 
     Point3D Q;
     Vector3D x, y, z;
