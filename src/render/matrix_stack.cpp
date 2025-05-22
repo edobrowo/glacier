@@ -13,7 +13,7 @@ void MatrixStack::pop() {
 
 Transform MatrixStack::reduce() const {
     Transform result;
-    for (auto it = mStack.rbegin(); it != mStack.rend(); ++it)
-        result *= *it;
+    for (const Transform& transform : mStack)
+        result *= transform;
     return result;
 }

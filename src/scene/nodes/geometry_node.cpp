@@ -6,7 +6,6 @@ GeometryNode::GeometryNode(
     : SceneNode(name),
       mGeometry(std::move(geometry)),
       mMaterial(material),
-      mPrimitive(nullptr),
       mPrimitiveKind(Primitive::Kind::Mesh) {
     mKind = Kind::Geometry;
 }

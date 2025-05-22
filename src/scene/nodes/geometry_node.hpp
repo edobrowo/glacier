@@ -30,19 +30,8 @@ public:
     /// @brief Sets the primitive kind.
     void setPrimitiveKind(const Primitive::Kind kind);
 
-    /// @brief Sets the cached primitive.
-    void setPrimitive(PrimitivePtr&& prim) {
-        mPrimitive = std::move(prim);
-    }
-
-    /// @brief Retrieves the cached primitive.
-    const PrimitivePtr& primitive() const {
-        return mPrimitive;
-    }
-
 protected:
     GeometryPtr mGeometry;
     MaterialPtr mMaterial;
-    PrimitivePtr mPrimitive;
     Primitive::Kind mPrimitiveKind;
 };

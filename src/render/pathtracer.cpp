@@ -4,13 +4,19 @@
 #include <vector>
 
 #include "common/util/log.hpp"
+#include "matrix_stack.hpp"
+#include "primitive_builder.hpp"
 #include "render/material/emissive.hpp"
-#include "render/primitive_builder.hpp"
 #include "scene/nodes/geometry_node.hpp"
 
 namespace {
 
-void buildPrimitivesRecursive(SceneNodePtr& node) {
+void buildPrimitivesRecursive(
+    const SceneNodePtr& node,
+    MatrixStack& stack,
+    std::vector<PrimitivePtr>& primitives
+) {
+    stack.push(node->transform().transform());
     PrimitivePtr prim = nullptr;
 
     if (auto cuboid = dynamic_cast<CuboidNode*>(node.get())) {
@@ -36,19 +42,23 @@ void buildPrimitivesRecursive(SceneNodePtr& node) {
         prim->setMaterial(geo->material());
     }
 
-    if (auto geo = dynamic_cast<GeometryNode*>(node.get()))
-        geo->setPrimitive(std::move(prim));
+    if (prim) {
+        prim->setObjectToWorld(stack.reduce());
+        primitives.push_back(std::move(prim));
+    }
 
-    for (SceneNodePtr& child : node->childrenMutable())
-        buildPrimitivesRecursive(child);
+    for (const SceneNodePtr& child : node->children())
+        buildPrimitivesRecursive(child, stack, primitives);
+
+    stack.pop();
 }
 
 }
 
-Pathtracer::Pathtracer(SceneGraph& scene, const Camera& camera)
-    : mScene(scene), mCamera(camera) {
-    buildPrimitivesRecursive(mScene.rootMutable());
-    // mScene.buildPrimitives();
+Pathtracer::Pathtracer(const SceneGraph& scene, const Camera& camera)
+    : mPrimitives(), mCamera(camera) {
+    MatrixStack stack;
+    buildPrimitivesRecursive(scene.root(), stack, mPrimitives);
 }
 
 Image Pathtracer::render() const {
@@ -157,55 +167,31 @@ Vector3D Pathtracer::shadeRecursive(const Ray& ray, const Size depth) const {
 }
 
 Option<SurfaceInteraction> Pathtracer::intersect(const Ray& ray) const {
-    return intersectRecursive(
-        mScene.root(), ray, Interval(0.001, math::infinity<f64>())
-    );
-}
-
-Option<SurfaceInteraction> Pathtracer::intersectRecursive(
-    const SceneNodePtr& node, const Ray& ray, const Interval& bounds
-) const {
     // Current closest intersection and interval.
     Option<SurfaceInteraction> closest = std::nullopt;
-    Interval closest_bounds(bounds);
+    Interval bounds(0.001, math::infinity<f64>());
 
-    const Transform& transform = node->transform().transform();
-    const Transform& inverse = invert(transform);
+    for (const PrimitivePtr& primitive : mPrimitives) {
+        const Transform& object_to_world = primitive->objectToWorld();
+        const Transform world_to_object = invert(object_to_world);
 
-    // On "the way down", transform the ray with the current node's inverse
-    // transformation.
-    const Ray inverse_ray = inverse(ray);
+        // Transform the ray with the primitive's world to object
+        // transformation.
+        const Ray inverse_ray = world_to_object(ray);
 
-    // Compute the intersect with the current node if it contains a primitive.
-    if (node->kind() == SceneNode::Kind::Geometry) {
-        const GeometryNode* geo = static_cast<GeometryNode*>(node.get());
+        // Compute the surface interaction with the current primitive.
         if (const Option<SurfaceInteraction> interaction =
-                geo->primitive()->intersect(inverse_ray, bounds)) {
-            closest = interaction;
-            closest->mat = geo->material();
-            closest_bounds.max = std::min(closest->t, closest_bounds.max);
-        }
-    }
-
-    // Recursively compute the intersection over all children nodes, and
-    // determine the minimum intersection.
-    for (const SceneNodePtr& child : node->children()) {
-        if (const Option<SurfaceInteraction> interaction =
-                intersectRecursive(child, inverse_ray, closest_bounds)) {
+                primitive->intersect(inverse_ray, bounds)) {
             if (!closest || interaction->t < closest->t) {
                 closest = interaction;
-                closest_bounds.max = interaction->t;
+
+                closest->p = object_to_world(interaction->p);
+                closest->n = (object_to_world(interaction->n)).normalize();
+                closest->mat = primitive->material();
+
+                bounds.max = std::min(closest->t, bounds.max);
             }
         }
-    }
-
-    // On "the way up", create a new ray where the origin is transformed with
-    // the current node's transformation, and the normal is transformed with
-    // the upper 3x3 of the transpose of the inverse of the current node's
-    // transformation.
-    if (closest) {
-        closest->p = transform(closest->p);
-        closest->n = transform(closest->n).normalize();
     }
 
     return closest;

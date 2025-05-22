@@ -14,7 +14,7 @@
 /// testing, and pixel shading.
 class Pathtracer {
 public:
-    Pathtracer(SceneGraph& scene, const Camera& camera);
+    Pathtracer(const SceneGraph& scene, const Camera& camera);
     ~Pathtracer() = default;
 
     /// @brief Renders the scene from the view of the camera.
@@ -33,14 +33,9 @@ private:
     /// @brief Finds the closest intersect of the ray with the scene.
     Option<SurfaceInteraction> intersect(const Ray& ray) const;
 
-    /// @brief Recursively finds the closest intersect.
-    Option<SurfaceInteraction> intersectRecursive(
-        const SceneNodePtr& node, const Ray& ray, const Interval& bounds
-    ) const;
-
     /// @brief Background color given a ray.
     Vector3D background(const Ray& ray) const;
 
-    SceneGraph& mScene;
+    std::vector<PrimitivePtr> mPrimitives;
     const Camera& mCamera;
 };
