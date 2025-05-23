@@ -9,6 +9,13 @@ DiskPrim::DiskPrim(const Point3D& Q, const Vector3D& u, const Vector3D& v)
     mNormal = Normal3D(mU.cross(mV)).normalize();
     mD = mNormal.dot(mQ.pos());
     mW = Vector3D(mNormal) / mNormal.dot();
+
+    const Vector3D extent(
+        std::sqrt(mU.x * mU.x + mV.x * mV.x),
+        std::sqrt(mU.y * mU.y + mV.y * mV.y),
+        std::sqrt(mU.z * mU.z + mV.z * mV.z)
+    );
+    mBbox = AABB(mQ - extent, mQ + extent);
 }
 
 Option<SurfaceInteraction> DiskPrim::intersect(

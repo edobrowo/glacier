@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/math/aabb.hpp"
 #include "common/math/interval.hpp"
 #include "common/math/matrix.hpp"
 #include "common/math/ray.hpp"
@@ -25,7 +26,7 @@ public:
     /// within the specified parameter bounds.
     virtual Option<SurfaceInteraction> intersect(
         const Ray& ray, const Interval& bounds
-    ) const;
+    ) const = 0;
 
     /// @brief Retrieves the kind of the primitive.
     Kind kind() const;
@@ -42,10 +43,15 @@ public:
     /// @brief Sets the material.
     void setMaterial(const MaterialPtr& material);
 
+    /// @brief Retrieves a constant reference to the transformed AABB of the
+    /// primitive.
+    const AABB& aabb() const;
+
 protected:
     Kind mKind;
     Transform mObjectToWorld;
     MaterialPtr mMaterial;
+    AABB mBbox;
 };
 
-using PrimitivePtr = std::unique_ptr<Primitive>;
+using PrimitivePtr = std::shared_ptr<Primitive>;

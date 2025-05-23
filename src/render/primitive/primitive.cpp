@@ -1,16 +1,13 @@
 #include "primitive.hpp"
 
 Primitive::Primitive()
-    : mKind(Primitive::Kind::Null), mObjectToWorld(), mMaterial(nullptr) {
+    : mKind(Primitive::Kind::Null),
+      mObjectToWorld(),
+      mMaterial(nullptr),
+      mBbox() {
 }
 
 Primitive::~Primitive() {
-}
-
-Option<SurfaceInteraction> Primitive::intersect(
-    const Ray& ray, const Interval& bounds
-) const {
-    return std::nullopt;
 }
 
 Primitive::Kind Primitive::kind() const {
@@ -31,4 +28,8 @@ const MaterialPtr& Primitive::material() const {
 
 void Primitive::setMaterial(const MaterialPtr& material) {
     mMaterial = material;
+}
+
+const AABB& Primitive::aabb() const {
+    return mBbox;
 }

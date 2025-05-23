@@ -8,6 +8,7 @@
 #include "render/config.hpp"
 #include "render/material/surface_interaction.hpp"
 #include "render/primitive/primitive.hpp"
+#include "render/spatial_structure.hpp"
 #include "scene/scene_graph.hpp"
 
 /// @brief Main path tracer routine class. Performs ray generation, intersection
@@ -30,12 +31,9 @@ private:
     /// @brief Recursively determines the pixel color.
     Vector3D shadeRecursive(const Ray& ray, const Size depth) const;
 
-    /// @brief Finds the closest intersect of the ray with the scene.
-    Option<SurfaceInteraction> intersect(const Ray& ray) const;
-
     /// @brief Background color given a ray.
     Vector3D background(const Ray& ray) const;
 
-    std::vector<PrimitivePtr> mPrimitives;
+    std::unique_ptr<SpatialStructure> mWorld;
     const Camera& mCamera;
 };

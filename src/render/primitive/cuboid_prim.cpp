@@ -28,6 +28,29 @@ CuboidPrim::CuboidPrim(
           }
       ) {
     mKind = Kind::Implicit;
+
+    // clang-format off
+    std::array<Point3D, 8> corners = {
+        o,
+        o + x,
+        o + y,
+        o + x + y,
+        o + z,
+        o + z + x,
+        o + z + y,
+        o + z + x + y
+    };
+    // clang-format on
+
+    Point3D min = corners.front();
+    Point3D max = corners.front();
+
+    for (Index i = 1; i < corners.size(); ++i) {
+        min = min.min(corners[i]);
+        max = max.max(corners[i]);
+    }
+
+    mBbox = AABB(min, max);
 }
 
 Option<SurfaceInteraction> CuboidPrim::intersect(

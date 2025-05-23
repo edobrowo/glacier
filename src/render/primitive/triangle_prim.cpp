@@ -11,6 +11,10 @@ TrianglePrim::TrianglePrim(
     mNormal = Normal3D(mU.cross(mV)).normalize();
     mD = mNormal.dot(mQ.pos());
     mW = Vector3D(mNormal) / mNormal.dot();
+
+    const AABB bbox1 = AABB(mQ, mQ + mU);
+    const AABB bbox2 = AABB(mQ, mQ + mV);
+    mBbox = bbox1.enclosure(bbox2);
 }
 
 Option<SurfaceInteraction> TrianglePrim::intersect(

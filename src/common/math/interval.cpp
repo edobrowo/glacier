@@ -19,10 +19,27 @@ Interval& Interval::operator=(const Interval& other) {
     return *this;
 }
 
+f64 Interval::size() const {
+    return max - min;
+}
+
 bool Interval::contains(const f64 a) const {
     return min <= a && a <= max;
 }
 
 bool Interval::surrounds(const f64 a) const {
     return min < a && a < max;
+}
+
+Interval Interval::expand(const f64 epsilon) const {
+    const f64 padding = epsilon / 2.0;
+    return Interval(min - padding, max + padding);
+}
+
+Interval Interval::enclosure(const Interval& other) const {
+    return Interval(std::min(min, other.min), std::max(max, other.max));
+}
+
+Interval Interval::intersection(const Interval& other) const {
+    return Interval(std::max(min, other.min), std::min(max, other.max));
 }

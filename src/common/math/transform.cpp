@@ -12,6 +12,28 @@ Transform::Transform(const Matrix4D& matrix, const Matrix4D& inverse)
     : mMatrix(matrix), mInverse(inverse) {
 }
 
+Transform::Transform(const Transform& other)
+    : mMatrix(other.mMatrix), mInverse(other.mInverse) {
+}
+
+Transform::Transform(Transform&& other)
+    : mMatrix(std::move(other.mMatrix)), mInverse(std::move(other.mInverse)) {
+}
+
+Transform& Transform::operator=(const Transform& other) {
+    mMatrix = other.mMatrix;
+    mInverse = other.mInverse;
+
+    return *this;
+}
+
+Transform& Transform::operator=(Transform&& other) {
+    mMatrix = std::move(other.mMatrix);
+    mInverse = std::move(other.mInverse);
+
+    return *this;
+}
+
 Transform Transform::scale(const Vector3D& factor) {
     // clang-format off
     return Transform(
@@ -133,28 +155,6 @@ Transform Transform::translate(const f64 delta) {
     return Transform::translate(Vector3D::uniform(delta));
 }
 
-Transform::Transform(const Transform& other)
-    : mMatrix(other.mMatrix), mInverse(other.mInverse) {
-}
-
-Transform::Transform(Transform&& other)
-    : mMatrix(std::move(other.mMatrix)), mInverse(std::move(other.mInverse)) {
-}
-
-Transform& Transform::operator=(const Transform& other) {
-    mMatrix = other.mMatrix;
-    mInverse = other.mInverse;
-
-    return *this;
-}
-
-Transform& Transform::operator=(Transform&& other) {
-    mMatrix = std::move(other.mMatrix);
-    mInverse = std::move(other.mInverse);
-
-    return *this;
-}
-
 const Matrix4D& Transform::matrix() const {
     return mMatrix;
 }
@@ -194,6 +194,32 @@ Point3D Transform::operator()(const Point3D& p) const {
 
 Ray Transform::operator()(const Ray& ray) const {
     return Ray((*this)(ray.origin), (*this)(ray.direction));
+}
+
+AABB Transform::operator()(const AABB& aabb) const {
+    Point3D min = aabb.min();
+    Point3D max = aabb.max();
+
+    const std::array<Point3D, 8> corners = {
+        (*this)(min),
+        (*this)(Point3D(min.x, min.y, max.z)),
+        (*this)(Point3D(min.x, max.y, min.z)),
+        (*this)(Point3D(min.x, max.y, max.z)),
+        (*this)(Point3D(max.x, min.y, min.z)),
+        (*this)(Point3D(max.x, min.y, max.z)),
+        (*this)(Point3D(max.x, max.y, min.z)),
+        (*this)(max)
+    };
+
+    min = corners.front();
+    max = corners.front();
+
+    for (Index i = 1; i < corners.size(); ++i) {
+        min = min.min(corners[i]);
+        max = max.max(corners[i]);
+    }
+
+    return AABB(min, max);
 }
 
 void Transform::operator*=(const Transform& other) {

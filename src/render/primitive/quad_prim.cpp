@@ -9,6 +9,10 @@ QuadPrim::QuadPrim(const Point3D& Q, const Vector3D& u, const Vector3D& v)
     mNormal = Normal3D(mU.cross(mV)).normalize();
     mD = mNormal.dot(mQ.pos());
     mW = Vector3D(mNormal) / mNormal.dot();
+
+    const AABB bbox1 = AABB(mQ, mQ + mU + mV);
+    const AABB bbox2 = AABB(mQ + mU, mQ + mV);
+    mBbox = bbox1.enclosure(bbox2);
 }
 
 Option<SurfaceInteraction> QuadPrim::intersect(

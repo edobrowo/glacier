@@ -3,18 +3,21 @@
 #include "common/math/rootfinding.hpp"
 
 TubePrim::TubePrim(
-    const Point3D& base,
+    const Point3D& center,
     const f64 radius,
     const f64 height,
     const bool top,
     const bool bottom
 )
-    : mCenter(base),
+    : mCenter(center),
       mRadius(radius),
       mHeight(height),
       mTopCap(top),
       mBottomCap(bottom) {
     mKind = Kind::Implicit;
+
+    const Vector3D extent(mRadius, mRadius, mHeight / 2.0);
+    mBbox = AABB(mCenter - extent, mCenter + extent);
 }
 
 Option<SurfaceInteraction> TubePrim::intersect(

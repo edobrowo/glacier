@@ -73,6 +73,14 @@ public:
     /// @brief Builds the position vector corresponding to this point.
     Vector<T, dim> pos() const;
 
+    /// @brief Creates a new point consisting of the minimum components of two
+    /// vectors.
+    Point<T, dim> min(const Point<T, dim>& other) const;
+
+    /// @brief Creates a new point consisting of the maximum components of two
+    /// vectors.
+    Point<T, dim> max(const Point<T, dim>& other) const;
+
     /// @brief Retrieves a pointer to the components buffer.
     const T* data() const;
 
@@ -346,6 +354,22 @@ Vector<T, dim> Point<T, dim>::pos() const {
     Vector<T, dim> result;
     for (Index i = 0; i < dim; ++i)
         result[i] = components[i];
+    return result;
+}
+
+template <Numeric T, u32 dim>
+Point<T, dim> Point<T, dim>::min(const Point<T, dim>& other) const {
+    Point<T, dim> result;
+    for (Index i = 0; i < dim; ++i)
+        result[i] = std::min(components[i], other[i]);
+    return result;
+}
+
+template <Numeric T, u32 dim>
+Point<T, dim> Point<T, dim>::max(const Point<T, dim>& other) const {
+    Point<T, dim> result;
+    for (Index i = 0; i < dim; ++i)
+        result[i] = std::max(components[i], other[i]);
     return result;
 }
 

@@ -4,6 +4,20 @@
 
 MeshPrim::MeshPrim(const TriangleMesh& mesh) : mMesh(mesh) {
     mKind = Kind::Mesh;
+
+    if (mMesh.vertices().empty())
+        return;
+
+    Point3D min = mMesh.vertices().front().p;
+    Point3D max = mMesh.vertices().front().p;
+
+    for (Index i = 1; i < mMesh.vertices().size(); ++i) {
+        const Point3D& p = mMesh.vertices()[i].p;
+        min = min.min(p);
+        max = max.max(p);
+    }
+
+    mBbox = AABB(min, max);
 }
 
 Option<SurfaceInteraction> MeshPrim::intersect(

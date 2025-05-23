@@ -5,12 +5,14 @@
 
 #include "common/util/log.hpp"
 #include "matrix_stack.hpp"
+#include "render/bvh.hpp"
 #include "render/material/emissive.hpp"
+#include "render/prim_list.hpp"
 #include "scene/nodes/geometry_node.hpp"
 
 namespace {
 
-void buildPrimitivesRecursive(
+void collapsePrimitivesRecursive(
     const SceneNodePtr& node,
     MatrixStack& stack,
     std::vector<PrimitivePtr>& primitives
@@ -19,13 +21,15 @@ void buildPrimitivesRecursive(
 
     if (const GeometryNode* geo = dynamic_cast<GeometryNode*>(node.get())) {
         PrimitivePtr primitive = geo->buildPrimitive();
+
         primitive->setMaterial(geo->material());
         primitive->setObjectToWorld(stack.reduce());
+
         primitives.push_back(std::move(primitive));
     }
 
     for (const SceneNodePtr& child : node->children())
-        buildPrimitivesRecursive(child, stack, primitives);
+        collapsePrimitivesRecursive(child, stack, primitives);
 
     stack.pop();
 }
@@ -33,9 +37,15 @@ void buildPrimitivesRecursive(
 }
 
 Pathtracer::Pathtracer(const SceneGraph& scene, const Camera& camera)
-    : mPrimitives(), mCamera(camera) {
+    : mWorld(nullptr), mCamera(camera) {
     MatrixStack stack;
-    buildPrimitivesRecursive(scene.root(), stack, mPrimitives);
+    std::vector<PrimitivePtr> primitives;
+    collapsePrimitivesRecursive(scene.root(), stack, primitives);
+
+    // TODO: switch over spatial structures
+    mWorld = std::make_unique<BVH>();
+
+    mWorld->build(primitives);
 }
 
 Image Pathtracer::render() const {
@@ -115,7 +125,7 @@ Vector3D Pathtracer::shadeRecursive(const Ray& ray, const Size depth) const {
     if (depth >= config.traceDepth)
         return Vector3D::zero();
 
-    if (const Option<SurfaceInteraction> option = intersect(ray)) {
+    if (const Option<SurfaceInteraction> option = mWorld->intersect(ray)) {
         const MaterialPtr mat = option->mat;
 
         const Option<ScatterRecord> record = mat->scatter(ray, *option);
@@ -141,37 +151,6 @@ Vector3D Pathtracer::shadeRecursive(const Ray& ray, const Size depth) const {
     }
 
     return background(ray);
-}
-
-Option<SurfaceInteraction> Pathtracer::intersect(const Ray& ray) const {
-    // Current closest intersection and interval.
-    Option<SurfaceInteraction> closest = std::nullopt;
-    Interval bounds(0.001, math::infinity<f64>());
-
-    for (const PrimitivePtr& primitive : mPrimitives) {
-        const Transform& object_to_world = primitive->objectToWorld();
-        const Transform world_to_object = invert(object_to_world);
-
-        // Transform the ray with the primitive's world to object
-        // transformation.
-        const Ray inverse_ray = world_to_object(ray);
-
-        // Compute the surface interaction with the current primitive.
-        if (const Option<SurfaceInteraction> interaction =
-                primitive->intersect(inverse_ray, bounds)) {
-            if (!closest || interaction->t < closest->t) {
-                closest = interaction;
-
-                closest->p = object_to_world(interaction->p);
-                closest->n = (object_to_world(interaction->n)).normalize();
-                closest->mat = primitive->material();
-
-                bounds.max = std::min(closest->t, bounds.max);
-            }
-        }
-    }
-
-    return closest;
 }
 
 Vector3D Pathtracer::background(const Ray& ray) const {

@@ -101,6 +101,14 @@ public:
     /// @brief Creates a new vector that is normalized.
     Vector<T, dim> normalize() const;
 
+    /// @brief Creates a new vector consisting of the minimum components of two
+    /// vectors.
+    Vector<T, dim> min(const Vector<T, dim>& other) const;
+
+    /// @brief Creates a new vector consisting of the maximum components of two
+    /// vectors.
+    Vector<T, dim> max(const Vector<T, dim>& other) const;
+
     /// @brief Creates a new vector clamped by the specified uniform bounds.
     Vector<T, dim> clamp(const T low, const T high) const;
 
@@ -556,6 +564,22 @@ Vector<T, dim> Vector<T, dim>::cross(const Vector<T, dim>& other) const
 template <Numeric T, u32 dim>
 Vector<T, dim> Vector<T, dim>::normalize() const {
     return *this / length();
+}
+
+template <Numeric T, u32 dim>
+Vector<T, dim> Vector<T, dim>::min(const Vector<T, dim>& other) const {
+    Vector<T, dim> result;
+    for (Index i = 0; i < dim; ++i)
+        result[i] = std::min(components[i], other[i]);
+    return result;
+}
+
+template <Numeric T, u32 dim>
+Vector<T, dim> Vector<T, dim>::max(const Vector<T, dim>& other) const {
+    Vector<T, dim> result;
+    for (Index i = 0; i < dim; ++i)
+        result[i] = std::max(components[i], other[i]);
+    return result;
 }
 
 template <Numeric T, u32 dim>

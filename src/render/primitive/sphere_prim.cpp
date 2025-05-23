@@ -5,6 +5,9 @@
 SpherePrim::SpherePrim(const Point3D& center, const f64 radius)
     : Primitive(), mCenter(center), mRadius(radius) {
     mKind = Kind::Implicit;
+
+    const Vector3D extent = Vector3D::uniform(mRadius);
+    mBbox = AABB(mCenter - extent, mCenter + extent);
 }
 
 Option<SurfaceInteraction> SpherePrim::intersect(
