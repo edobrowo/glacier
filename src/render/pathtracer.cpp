@@ -36,14 +36,24 @@ void collapsePrimitivesRecursive(
 
 }
 
-Pathtracer::Pathtracer(const SceneGraph& scene, const Camera& camera)
-    : mWorld(nullptr), mCamera(camera) {
+Pathtracer::Pathtracer(
+    const SceneGraph& scene, const Camera& camera, const Config& config
+)
+    : config(config), mWorld(nullptr), mCamera(camera) {
     MatrixStack stack;
     std::vector<PrimitivePtr> primitives;
     collapsePrimitivesRecursive(scene.root(), stack, primitives);
 
-    // TODO: switch over spatial structures
-    mWorld = std::make_unique<BVH>();
+    switch (config.spatialKind) {
+    case SpatialKind::PrimList:
+        mWorld = std::make_unique<PrimList>();
+        break;
+    case SpatialKind::BVH:
+        mWorld = std::make_unique<BVH>();
+        break;
+    default:
+        unreachable;
+    }
 
     mWorld->build(primitives);
 }

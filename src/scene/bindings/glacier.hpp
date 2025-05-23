@@ -594,11 +594,18 @@ PYBIND11_MODULE(glacier, m) {
         .value("UniformRandom", SamplingKind::UniformRandom)
         .export_values();
 
+    // SpatialKind enum.
+    py::enum_<SpatialKind>(m, "SpatialKind")
+        .value("PrimList", SpatialKind::PrimList)
+        .value("BVH", SpatialKind::BVH)
+        .export_values();
+
     // Config struct.
     py::class_<Config>(m, "Config")
         .def(py::init<>())
         .def_readwrite("rendering_mode", &Config::renderingMode)
         .def_readwrite("sampling_kind", &Config::samplingKind)
+        .def_readwrite("spatial_kind", &Config::spatialKind)
         .def_readwrite("samples_per_pixel", &Config::samplesPerPixel)
         .def_readwrite("trace_depth", &Config::traceDepth);
 

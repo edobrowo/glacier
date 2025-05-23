@@ -14,14 +14,11 @@ void render(
 
     scene.root()->addChild(root);
 
-    Pathtracer pt(scene, camera);
-    pt.config.renderingMode = config.renderingMode;
-    pt.config.samplingKind = config.samplingKind;
-    pt.config.samplesPerPixel = config.samplesPerPixel;
-    pt.config.traceDepth = config.traceDepth;
+    Pathtracer pt(scene, camera, config);
 
     Log::i("Rendering mode = {}", config.renderingMode);
     Log::i("Sampling kind = {}", config.samplingKind);
+    Log::i("Spatial kind = {}", config.spatialKind);
 
     if (config.samplingKind == SamplingKind::Center)
         Log::i(

@@ -15,7 +15,9 @@
 /// testing, and pixel shading.
 class Pathtracer {
 public:
-    Pathtracer(const SceneGraph& scene, const Camera& camera);
+    Pathtracer(
+        const SceneGraph& scene, const Camera& camera, const Config& config
+    );
     ~Pathtracer() = default;
 
     /// @brief Renders the scene from the view of the camera.
