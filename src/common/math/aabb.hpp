@@ -21,6 +21,12 @@ public:
     AABB& operator=(const AABB& other);
     AABB& operator=(AABB&& other);
 
+    /// @brief The empty AABB.
+    static const AABB empty;
+
+    /// @brief The universe AABB.
+    static const AABB universe;
+
     /// @brief Retrieves a point corresponding to the minimum AABB bound.
     Point3D min() const;
 
@@ -42,8 +48,8 @@ public:
     /// @brief Creates a new AABB that is the intersection of two AABBs.
     AABB intersection(const AABB& other) const;
 
-    /// @brief Minimum interval size for a bounding box axis.
-    static constexpr f64 MINIMUM_AXIS_SIZE = 0.0001;
+    /// @brief Retrieves index of the longest axis.
+    Index longestAxis() const;
 
     union {
         struct {
@@ -55,6 +61,11 @@ public:
     };
 
 private:
+    /// @brief Minimum interval size for a bounding box axis.
+    static constexpr f64 MINIMUM_AXIS_SIZE = 0.0001;
+
+    /// @brief Pads each axis of the AABB with MINIMUM_AXIS_SIZE if its size is
+    /// less than MINIMUM_AXIS_SIZE.
     void padWithMinimum();
 };
 

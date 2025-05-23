@@ -2,8 +2,6 @@
 
 #include <algorithm>
 
-#include "common/util/thread_random.hpp"
-
 BVHPrim::BVHPrim(const PrimitivePtr& prim) : mPrimitive(prim) {
 }
 
@@ -96,8 +94,11 @@ BVHNodePtr BVH::buildRecursive(std::span<PrimitivePtr> prims) const {
         return std::make_shared<BVHBranch>(left, right);
     }
 
-    // TODO: Improved splitting.
-    const u32 ax = static_cast<u32>(std::floor(thread_rng::uniform(0.0, 3.0)));
+    AABB total = AABB::empty;
+    for (const PrimitivePtr& prim : prims)
+        total = total.enclosure(prim->aabb());
+
+    const Index ax = total.longestAxis();
     auto comparator = [ax](
                           const PrimitivePtr& left, const PrimitivePtr& right
                       ) { return boxAxisCompare(left, right, ax); };
@@ -105,10 +106,7 @@ BVHNodePtr BVH::buildRecursive(std::span<PrimitivePtr> prims) const {
     std::sort(std::begin(prims), std::end(prims), comparator);
 
     const Index middle = prims.size() / 2;
-    std::span<PrimitivePtr> prims_left = prims.subspan(0, middle);
-    std::span<PrimitivePtr> prims_right = prims.subspan(middle);
-
-    BVHNodePtr left = buildRecursive(prims_left);
-    BVHNodePtr right = buildRecursive(prims_right);
+    BVHNodePtr left = buildRecursive(prims.subspan(0, middle));
+    BVHNodePtr right = buildRecursive(prims.subspan(middle));
     return std::make_shared<BVHBranch>(left, right);
 }

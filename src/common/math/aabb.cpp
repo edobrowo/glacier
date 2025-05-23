@@ -1,5 +1,10 @@
 #include "aabb.hpp"
 
+const AABB AABB::empty =
+    AABB(Interval::empty, Interval::empty, Interval::empty);
+const AABB AABB::universe =
+    AABB(Interval::universe, Interval::universe, Interval::universe);
+
 AABB::AABB() : x(Interval::empty), y(Interval::empty), z(Interval::empty) {
 }
 
@@ -92,6 +97,13 @@ AABB AABB::intersection(const AABB& other) const {
         y.intersection(other.y),
         z.intersection(other.z)
     );
+}
+
+Index AABB::longestAxis() const {
+    if (x.size() > y.size())
+        return x.size() > z.size() ? 0 : 2;
+    else
+        return y.size() > z.size() ? 1 : 2;
 }
 
 void AABB::padWithMinimum() {
